@@ -1,13 +1,11 @@
-package sample.controllers;
+package sample;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sample.model.Postgresql;
 
@@ -74,12 +72,12 @@ public class Controller {
 				case "supervisor":
                 default:
                 try {
-                        home_controller controller = new home_controller();
+                       // home_controller controller = new home_controller();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
-                        loader.setController(controller);
-                        home_controller display =  loader.getController();
-                        display.setRole(role);
-                        display.setUsername(username);
+                       // loader.setController(controller);
+                       // home_controller display =  loader.getController();
+                       // display.setRole(role);
+                       // display.setUsername(username);
 
                         root = loader.load();
                         stage = (Stage) login_btn.getScene().getWindow(); // get Scene (screen) associated with the login button
