@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -24,11 +24,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="5407bb1e-601e-4413-b902-7d0206d3ca1c">
-        <schema name="public" object-types="table, view, sequence, function, constraint, index, column, dataset trigger" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="5407bb1e-601e-4413-b902-7d0206d3ca1c">
@@ -83,7 +79,7 @@
           <database value="Pumpcrete" />
           <type value="USER_PASSWORD" />
           <user value="postgres" />
-          <deprecated-pwd value="c3dlbmd0M3ky" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />
