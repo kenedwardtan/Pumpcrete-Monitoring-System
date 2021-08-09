@@ -27,12 +27,16 @@ public class Controller {
     private Button login_btn;
     @FXML
     private Button create_btn;
-    @FXML
-    private MenuButton create_role_btn;
-    @FXML
-    private MenuItem role_admin_btn;
-    @FXML
-    private MenuItem role_staff_btn;
+	@FXML
+	private ComboBox role_dropdown;
+    //@FXML
+    //private MenuButton create_role_btn;
+    //@FXML
+    //private MenuItem role_admin_btn;
+    //@FXML
+    //private MenuItem role_staff_btn;
+	//@FXML
+    //private MenuItem role_supervisor_btn;
     @FXML
     private TextField create_fn_tf;
     @FXML
@@ -51,6 +55,8 @@ public class Controller {
     private TextField login_user_tf;
     @FXML
     private TextField login_pass_tf;
+	@FXML
+	private JOptionPane optionPane;
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException {
@@ -65,6 +71,8 @@ public class Controller {
                 case "staff":
                 case "Admin":
                 case "admin":
+				case "Supervisor":
+				case "supervisor":
                 default:
                 try {
                         home_controller controller = new home_controller();
@@ -96,6 +104,14 @@ public class Controller {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+			
+			role_dropdown = new ComboBox<>();
+			role_dropdown.getItems().addAll(
+				"Staff",
+				"Supervisor",
+				"Admin"
+			);
+			role_dropdown.setPromptText("Role");
         }
 
         if (e.getSource() == create_submit_btn) { // same ^
@@ -107,6 +123,25 @@ public class Controller {
             stage.show();
 
             // retrieve inputs
+			
+			String fname = create_fn_tf.getText();
+            String lname = create_ln_tf.getText();
+            String email = create_email_tf.getText();
+            String uname = create_user_tf.getText();
+            String role = role_dropdown.getValue();
+
+
+            // check if the data are empty
+            if(verifyFields())
+            {
+            // check if the username already exists
+                if(!postgresql.checkUsername(uname)){
+                    postgresql.createUser(fname,lname,email,uname,role);
+                }
+				else
+					JOptionPane.showMessageDialog(null, "This Username is Already Taken, Choose Another One", "Username Failed", 2);
+            }
+			
             System.out.print(create_fn_tf.getText()); // once submit button is pressed, getText from create_fn_tf (first name textfield) -> print
         }
 
@@ -119,4 +154,26 @@ public class Controller {
             stage.show();
         }
     }
+	
+	// create a function to verify the empty fields
+    public boolean verifyFields()
+    {
+        String fname = create_fn_tf.getText();
+        String lname = create_ln_tf.getText();
+        String email = create_email_tf.getText();
+        String uname = create_user_tf.getText();
+
+        // check empty fields
+        if(fname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
+                || email.trim().equals("") || role_dropdown.SelectedIndex < 0) {
+            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty","Empty Fields",2);
+            return false;
+        }
+
+        // if everything is ok
+        else{
+            return true;
+        }
+    }
+	
 }

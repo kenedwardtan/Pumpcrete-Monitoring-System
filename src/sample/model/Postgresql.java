@@ -1,6 +1,7 @@
 package sample.model;
 
 import java.sql.*;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,7 +13,7 @@ public class Postgresql {
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
-       String query = "SELECT password,role FROM users WHERE username = ?";
+		String query = "SELECT password,role FROM users WHERE username = ?";
 
         try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement pst = con.prepareStatement(query)) {
@@ -45,6 +46,84 @@ public class Postgresql {
         }
         return null;
     }
+	
+	//Once all information are verified, adds new user to the database.
+	public static void createUser (String fname, String lname, String uname, String email, String role){
+		
+		String url = "jdbc:postgresql:Pumpcrete";
 
+        String query = "INSERT INTO `users`(`first_name`, `last_name`, `username`, `password`, `email`, `role`) VALUES (?,?,?,?,?,?)";
+		
+		Random r = new Random();
+		String u_password = "password" + Integer.toString(r.nextInt(9999)+1);
 
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, uname);
+            ps.setString(4, password);
+            ps.setString(5, email);
+            ps.setString(6, role);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex){
+			Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+	}
+
+	
+	
+	//checks if there are the same existing username found in the db 
+	public boolean checkUsername(String uname){
+
+        ResultSet rs;
+        boolean username_exist = false;
+
+        String query = "SELECT * FROM `users` WHERE `username` = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                username_exist = true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return username_exist;
+    }
+	
+	public void editUser (int u_id, String fname, String lname, String uname, String email, String role){
+        boolean username_exist = false;
+
+        String query = "UPDATE `users` SET `first_name` = ?, `last_name` = ?, `uname` = ?, `email` = ?, `role` = ? WHERE `u_id` = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, uname);
+            ps.setString(4, email);
+            ps.setString(5, role);
+
+            ps.executeUpdate();
+
+		} catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+	}
 }
