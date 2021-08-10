@@ -91,15 +91,9 @@ public class Controller {
                     stage.setScene(scene);
                     stage.show();
 				    break;
+                case "Password did not match.":
                 default:
                     try {
-                           // home_controller controller = new home_controller();
-                           // FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                           // loader.setController(controller);
-                           // home_controller display =  loader.getController();
-                           // display.setRole(role);
-                           // display.setUsername(username);
-
                             stage = (Stage) login_btn.getScene().getWindow(); // get Scene (screen) associated with the login button
                             loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
                             root = loader.load();
@@ -170,6 +164,14 @@ public class Controller {
             stage.setScene(scene);
             stage.show();
         }
+
+/*      Profile button - idea how to display?
+        if (e.getSource() == profile_btn) { // if (buttonpressedis == login button)
+            String username = profile_username_label.gettext();
+            User user = postgresql.getUser(username);
+
+           }
+ */
     }
 	
 	// create a function to verify the empty fields
@@ -192,5 +194,6 @@ public class Controller {
             return true;
         }
     }
+
 	
 }

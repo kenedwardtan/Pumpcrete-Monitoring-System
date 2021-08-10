@@ -5,6 +5,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
+
 public class Postgresql {
     public static String username = "postgres";
     public static String password = "swengt3y2";
@@ -33,6 +36,47 @@ public class Postgresql {
                 }
                 else{
                     System.out.println("Password did not match.");
+                    return ("Password did not match.");
+                }
+
+            }
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
+        return null;
+    }
+
+    public static User getUser(String u_username)
+    {
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "SELECT * FROM users WHERE username = ?";
+
+        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            pst.setString(1, u_username);
+            User u_result = new User();
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
+                u_result.username = result.getString("username");
+                u_result.email = result.getString("email");
+                u_result.first_name = result.getString("first_name");
+                u_result.last_name= result.getString("last_name");
+                u_result.password = result.getString("password");
+                u_result.role = result.getString("role");
+
+
+                if(u_username.contentEquals(u_result.username)){
+                    System.out.println("Loading of Info Successful.");
+                    return u_result;
+                }
+                else{
+                    System.out.println("Loading of Info Failed.");
                     return null;
                 }
 
@@ -46,6 +90,37 @@ public class Postgresql {
         }
         return null;
     }
+
+    //To limit access to editing account details
+    public static String getRole(String u_username)
+    {
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "SELECT password,role FROM users WHERE username = ?";
+
+        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, u_username);
+
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                String role_Res = result.getString("role");
+                return role_Res;
+            }
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
+        return null;
+    }
+
+
+
 	
 	//Once all information are verified, adds new user to the database.
 	public static void createUser (String fname, String lname, String uname, String email, String role){
