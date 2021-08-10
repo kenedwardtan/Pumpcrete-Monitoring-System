@@ -25,14 +25,6 @@ public class Controller {
     private Button create_btn;
 	@FXML
 	private JComboBox role_dropdown;
-    //@FXML
-    //private MenuButton create_role_btn;
-    //@FXML
-    //private MenuItem role_admin_btn;
-    //@FXML
-    //private MenuItem role_staff_btn;
-	//@FXML
-    //private MenuItem role_supervisor_btn;
     @FXML
     private TextField create_fn_tf;
     @FXML
@@ -42,15 +34,23 @@ public class Controller {
     @FXML
     private TextField create_user_tf;
     @FXML
-    private TextField create_pass_tf;
-    @FXML
     private Button create_submit_btn;
     @FXML
     private Button create_cancel_btn;
     @FXML
+    private Button settings_save_btn;
+    @FXML
+    private Button settings_cancel_btn;
+    @FXML
+    private Button settings_btn;
+    @FXML
     private TextField login_user_tf;
     @FXML
     private TextField login_pass_tf;
+    @FXML
+    private TextField settings_oPass_tf;
+    @FXML
+    private TextField settings_nPass_tf;
 	@FXML
 	private JOptionPane optionPane;
 
@@ -63,38 +63,57 @@ public class Controller {
             String password = login_pass_tf.getText();
             String role = postgresql.loginUser(username,password);
 
-            switch(role){
-                case "Staff": //is there a separate homepage for staff and admin?
+            switch(role) {
+                case "Staff":
                 case "staff":
+                    stage = (Stage) create_btn.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
                 case "Admin":
                 case "admin":
+                    stage = (Stage) create_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
 				case "Supervisor":
 				case "supervisor":
+                    stage = (Stage) create_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeSuperv.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+				    break;
                 default:
-                try {
-                       // home_controller controller = new home_controller();
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
-                       // loader.setController(controller);
-                       // home_controller display =  loader.getController();
-                       // display.setRole(role);
-                       // display.setUsername(username);
+                    try {
+                           // home_controller controller = new home_controller();
+                           // FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                           // loader.setController(controller);
+                           // home_controller display =  loader.getController();
+                           // display.setRole(role);
+                           // display.setUsername(username);
 
-                        root = loader.load();
-                        stage = (Stage) login_btn.getScene().getWindow(); // get Scene (screen) associated with the login button
-                        scene = new Scene(root); // set new Scene (screen) as the indicated javafx file (home.fxml)
-                        stage.setScene(scene); // place Scene (screen) which is home.fxml as the Scene of the Stage (the empty 1280x988 window)
-                        stage.show(); // then show the Scene (screen) which is home.fxml
-
+                            stage = (Stage) login_btn.getScene().getWindow(); // get Scene (screen) associated with the login button
+                            loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                            root = loader.load();
+                            scene = new Scene(root); // set new Scene (screen) as the indicated javafx file (homeAdmin.fxml)
+                            stage.setScene(scene); // place Scene (screen) which is homeAdmin.fxml as the Scene of the Stage (the empty 1280x988 window)
+                            stage.show(); // then show the Scene (screen) which is homeAdmin.fxml
                     } catch (IOException ex) {
                         Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,null, ex);
                     }
+                    break;
             }
-
-
-
         }
 
-        if (e.getSource() == create_btn) { // same ^
+        if (e.getSource() == create_btn) {
             stage = (Stage) create_btn.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("create.fxml"));
             root = loader.load();
@@ -105,28 +124,26 @@ public class Controller {
             role_dropdown = new JComboBox(roles);
         }
 
-        if (e.getSource() == create_submit_btn) { // same ^
+        if (e.getSource() == create_submit_btn) {
             stage = (Stage) create_submit_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
 
             // retrieve inputs
-			
 			String fname = create_fn_tf.getText();
             String lname = create_ln_tf.getText();
             String email = create_email_tf.getText();
             String uname = create_user_tf.getText();
             String role = roles[role_dropdown.getSelectedIndex()];
 
-
             // check if the data are empty
-            if(verifyFields())
+            if (verifyFields())
             {
             // check if the username already exists
-                if(!postgresql.checkUsername(uname)){
+                if (!postgresql.checkUsername(uname)) {
                     postgresql.createUser(fname,lname,email,uname,role);
                 }
 				else
@@ -136,9 +153,18 @@ public class Controller {
             System.out.print(create_fn_tf.getText()); // once submit button is pressed, getText from create_fn_tf (first name textfield) -> print
         }
 
-        if (e.getSource() == create_cancel_btn) { // same ^
+        if (e.getSource() == create_cancel_btn) {
             stage = (Stage) create_cancel_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == settings_btn) {
+            stage = (Stage) create_cancel_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
