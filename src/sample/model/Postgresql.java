@@ -91,6 +91,41 @@ public class Postgresql {
         return null;
     }
 
+
+    public static ArrayList<User> getAllStaff()
+    {
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "SELECT * FROM users WHERE role = 'staff'";
+
+        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            ArrayList<User> u_result = new ArrayList<User>();
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
+                User u = new User();
+                u.username = result.getString("username");
+                u.email = result.getString("email");
+                u.first_name = result.getString("first_name");
+                u.last_name= result.getString("last_name");
+                u.password = result.getString("password");
+                u.role = result.getString("role");
+
+                u_result.add(u);
+            }
+
+            return u_result;
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
+        return null;
+    }
+
     //To limit access to editing account details
     public static String getRole(String u_username)
     {

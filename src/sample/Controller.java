@@ -165,12 +165,20 @@ public class Controller {
             stage.show();
         }
 
-/*      Profile button - idea how to display?
+/*      //Profile button - idea how to display?
         if (e.getSource() == profile_btn) { // if (buttonpressedis == login button)
             String username = profile_username_label.gettext();
             User user = postgresql.getUser(username);
 
            }
+
+
+
+        //How to display arraylist of Staff
+        ArrayList<User> users = postgres.getAllStaff()
+
+
+
  */
     }
 	
