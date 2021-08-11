@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 
 
+
 public class Postgresql {
     public static String username = "postgres";
     public static String password = "swengt3y2";
@@ -45,9 +46,9 @@ public class Postgresql {
 
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
+            return ("Invalid Login");
         }
-        return null;
+        return ("Invalid Login");
     }
 
     public static User getUser(String u_username)
@@ -123,7 +124,6 @@ public class Postgresql {
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
-        return null;
     }
 
     //To limit access to editing account details
