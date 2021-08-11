@@ -18,6 +18,7 @@ public class Controller {
     private Stage stage;
     private Parent root;
     private Scene scene;
+    private FXMLLoader loader;
     public Postgresql postgresql;
     @FXML
     private Button login_btn;
@@ -62,12 +63,13 @@ public class Controller {
             String username = login_user_tf.getText();
             String password = login_pass_tf.getText();
             String role = postgresql.loginUser(username,password);
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
             switch(role) {
                 case "Staff":
                 case "staff":
-                    stage = (Stage) create_btn.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    stage = (Stage) login_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -75,8 +77,8 @@ public class Controller {
                     break;
                 case "Admin":
                 case "admin":
-                    stage = (Stage) create_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    stage = (Stage) login_btn.getScene().getWindow();
+                    FXMLLoader  loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -84,7 +86,8 @@ public class Controller {
                     break;
 				case "Supervisor":
 				case "supervisor":
-                    stage = (Stage) create_btn.getScene().getWindow();
+//
+                    stage = (Stage) login_btn.getScene().getWindow();
                     loader = new FXMLLoader(getClass().getResource("homeSuperv.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
@@ -92,17 +95,14 @@ public class Controller {
                     stage.show();
 				    break;
                 case "Password did not match.":
+                    errorAlert.setHeaderText("Input not valid");
+                    errorAlert.setContentText("Password did not match.");
+                    errorAlert.showAndWait();
+                    break;
                 default:
-                    try {
-                            stage = (Stage) login_btn.getScene().getWindow(); // get Scene (screen) associated with the login button
-                            loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                            root = loader.load();
-                            scene = new Scene(root); // set new Scene (screen) as the indicated javafx file (homeAdmin.fxml)
-                            stage.setScene(scene); // place Scene (screen) which is homeAdmin.fxml as the Scene of the Stage (the empty 1280x988 window)
-                            stage.show(); // then show the Scene (screen) which is homeAdmin.fxml
-                    } catch (IOException ex) {
-                        Logger.getLogger(Controller.class.getName()).log(Level.SEVERE,null, ex);
-                    }
+                    errorAlert.setHeaderText("Input not valid");
+                    errorAlert.setContentText("Invalid Role.");
+                    errorAlert.showAndWait();
                     break;
             }
         }
