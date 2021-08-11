@@ -13,6 +13,9 @@ public class Postgresql {
     public static String username = "postgres";
     public static String password = "swengt3y2";
 
+    public Postgresql(){
+    }
+
     public static String loginUser(String u_username, String u_password)
     {
         String url = "jdbc:postgresql:Pumpcrete";
@@ -156,16 +159,16 @@ public class Postgresql {
 
 
 
-	
-	//Once all information are verified, adds new user to the database.
-	public static void createUser (String fname, String lname, String uname, String email, String role){
-		
-		String url = "jdbc:postgresql:Pumpcrete";
 
-        String query = "INSERT INTO `users`(`first_name`, `last_name`, `username`, `password`, `email`, `role`) VALUES (?,?,?,?,?,?)";
-		
-		Random r = new Random();
-		String u_password = "password" + Integer.toString(r.nextInt(9999)+1);
+    //Once all information are verified, adds new user to the database.
+    public static void createUser (String fname, String lname, String email, String uname, String role){
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)";
+
+        Random r = new Random();
+        String u_password = "password" + Integer.toString(r.nextInt(9999)+1);
 
         try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement ps = connection.prepareStatement(query)) {
@@ -173,16 +176,17 @@ public class Postgresql {
             ps.setString(1, fname);
             ps.setString(2, lname);
             ps.setString(3, uname);
-            ps.setString(4, password);
+            ps.setString(4, u_password);
             ps.setString(5, email);
             ps.setString(6, role);
 
             ps.executeUpdate();
 
+            System.out.println("Insert Successful!");
         } catch (SQLException ex){
-			Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
-	}
+    }
 
 	
 	
@@ -192,14 +196,14 @@ public class Postgresql {
         ResultSet rs;
         boolean username_exist = false;
 
-        String query = "SELECT * FROM `users` WHERE `username` = ?";
+        String query = "SELECT * FROM users WHERE username = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
         try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setString(1, username);
+            ps.setString(1, uname);
             rs = ps.executeQuery();
 
             if(rs.next())
@@ -210,14 +214,18 @@ public class Postgresql {
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if(username_exist)
+            System.out.println("Username is not unique!");
+        else
+            System.out.println("Username is unique!");
 
         return username_exist;
     }
 	
-	public void editUser (int u_id, String fname, String lname, String uname, String email, String role){
+	public void editUser (String fname, String lname, String uname, String email, String role){
         boolean username_exist = false;
 
-        String query = "UPDATE `users` SET `first_name` = ?, `last_name` = ?, `uname` = ?, `email` = ?, `role` = ? WHERE `u_id` = ?";
+        String query = "UPDATE users SET first_name = ?, last_name = ?, uname = ?, email = ?, role = ? WHERE u_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 

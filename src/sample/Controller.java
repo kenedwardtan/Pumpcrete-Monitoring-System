@@ -50,6 +50,24 @@ public class Controller {
     @FXML
     private Button create_cancel_btn;
     @FXML
+    private Button edit_btn;
+
+    @FXML
+    private TextField edit_fn_tf;
+    @FXML
+    private TextField edit_ln_tf;
+    @FXML
+    private TextField edit_email_tf;
+    @FXML
+    private TextField edit_user_tf;
+    @FXML
+    private Button edit_submit_btn;
+    @FXML
+    private Button edit_cancel_btn;
+    @FXML
+    private ChoiceBox<String> edit_role;
+
+    @FXML
     private Button settings_save_btn;
     @FXML
     private Button settings_cancel_btn;
@@ -80,6 +98,8 @@ public class Controller {
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException {
+
+        postgresql = new Postgresql();
         String[] roles = {"Role", "Staff", "Supervisor", "Admin"};
 
         if (e.getSource() == login_btn) { // if (buttonpressedis == login button)
@@ -138,11 +158,6 @@ public class Controller {
             stage.setScene(scene);
             stage.show();
 
-            role_dropdown = new ChoiceBox<>();
-
-            role_dropdown.getItems().addAll(roles);
-            role_dropdown.getItems().add("Select Role");
-            role_dropdown.setValue("Select Role");
         }
 
         if (e.getSource() == create_submit_btn) {
@@ -175,8 +190,6 @@ public class Controller {
                         stage.setScene(scene);
                         stage.show();
                     }
-                    else
-                        optionPane.showMessageDialog(null, "Email format is wrong, please try again", "Email Failed", 2);
                 }
 				else
 					optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
@@ -201,6 +214,33 @@ public class Controller {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+        }
+
+        if (e.getSource() == edit_btn) {
+            //change screen here code here
+
+            String fname = edit_fn_tf.getText();
+            String lname = edit_ln_tf.getText();
+            String email = edit_email_tf.getText();
+            String uname = edit_user_tf.getText();
+            String role = edit_role.getValue();
+            if (!postgresql.checkUsername(uname)) {
+
+                //checks the format of the email
+                if(EmailVerification()){
+                    //creates the user and inserts into database
+                    postgresql.editUser(fname,lname,email,uname,role);
+
+                    stage = (Stage) create_submit_btn.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            }
+            else
+                optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
         }
 
 /*      //Profile button - idea how to display?
@@ -237,6 +277,7 @@ public class Controller {
 
         // if everything is ok
         else{
+            System.out.println("All fields are field!");
             return true;
         }
     }
@@ -253,6 +294,7 @@ public class Controller {
         Matcher matcher = pattern.matcher(email);
 
         if (matcher.matches()){
+            System.out.println("Email format is correct.");
             return true;
         }
         else{
