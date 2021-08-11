@@ -24,8 +24,8 @@ public class Controller {
     private Button login_btn;
     @FXML
     private Button create_btn;
-	@FXML
-	private JComboBox role_dropdown;
+    @FXML
+    private ChoiceBox<String> role_dropdown;
     @FXML
     private TextField create_fn_tf;
     @FXML
@@ -115,30 +115,39 @@ public class Controller {
             stage.setScene(scene);
             stage.show();
 
-            role_dropdown = new JComboBox(roles);
+            role_dropdown = new ChoiceBox<>();
+
+            role_dropdown.getItems().addAll(roles);
+            role_dropdown.getItems().add("Select Role");
+            role_dropdown.setValue("Select Role");
         }
 
         if (e.getSource() == create_submit_btn) {
-            stage = (Stage) create_submit_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
 
-            // retrieve inputs
-			String fname = create_fn_tf.getText();
-            String lname = create_ln_tf.getText();
-            String email = create_email_tf.getText();
-            String uname = create_user_tf.getText();
-            String role = roles[role_dropdown.getSelectedIndex()];
+
+
 
             // check if the data are empty
             if (verifyFields())
             {
-            // check if the username already exists
+                // retrieve inputs
+                String fname = create_fn_tf.getText();
+                String lname = create_ln_tf.getText();
+                String email = create_email_tf.getText();
+                String uname = create_user_tf.getText();
+                String role = role_dropdown.getValue();
+
+                // check if the username already exists
                 if (!postgresql.checkUsername(uname)) {
+                    //creates the user and inserts into database
                     postgresql.createUser(fname,lname,email,uname,role);
+
+                    stage = (Stage) create_submit_btn.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                 }
 				else
 					optionPane.showMessageDialog(null, "This Username is Already Taken, Choose Another One", "Username Failed", 2);
@@ -192,7 +201,7 @@ public class Controller {
 
         // check empty fields
         if(fname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
-                || email.trim().equals("") || role_dropdown.getSelectedIndex() <= 0) {
+                || email.trim().equals("") || role_dropdown.getValue() == "Select Role") {
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty","Empty Fields",2);
             return false;
         }

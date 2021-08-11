@@ -12,6 +12,15 @@
             <Image url="@resources/img/home/staff/home.png" />
          </image>
       </ImageView>
-      <Button fx:id="settings_btn" layoutX="45.0" layoutY="858.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="183.0" />
+      <Button fx:id="settings_btn" layoutX="27.0" layoutY="842.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="profile_btn" layoutX="27.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="dashboard_btn" layoutX="27.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="reports_btn" layoutX="27.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="clients_btn" layoutX="27.0" layoutY="398.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="inventory_btn" layoutX="27.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="receivables_btn" layoutX="27.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="billings_btn" layoutX="27.0" layoutY="626.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="memos_btn" layoutX="27.0" layoutY="701.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="logout_btn" layoutX="27.0" layoutY="895.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
     </children>
 </AnchorPane>

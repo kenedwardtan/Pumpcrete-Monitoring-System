@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="988.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="988.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <ImageView fitHeight="988.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@resources/img/home/admin/home.png" />
          </image>
       </ImageView>
-      <Button fx:id="create_btn" layoutX="47.0" layoutY="741.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="183.0" />
-
-
+      <Button fx:id="create_btn" layoutX="27.0" layoutY="687.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="edit_btn" layoutX="27.0" layoutY="758.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="profile_btn" layoutX="27.0" layoutY="93.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="dashboard_btn" layoutX="27.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="reports_btn" layoutX="27.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="clients_btn" layoutX="27.0" layoutY="316.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="inventory_btn" layoutX="27.0" layoutY="392.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="receivables_btn" layoutX="27.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="billings_btn" layoutX="27.0" layoutY="544.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="memos_btn" layoutX="27.0" layoutY="615.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="logout_btn" layoutX="27.0" layoutY="895.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
+      <Button fx:id="settings_btn" layoutX="27.0" layoutY="842.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
     </children>
 </AnchorPane>
