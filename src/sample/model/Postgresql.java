@@ -46,9 +46,9 @@ public class Postgresql {
 
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
-            return ("Invalid Login");
+            return ("Invalid DB Connection");
         }
-        return ("Invalid Login");
+        return ("Invalid");
     }
 
     public static User getUser(String u_username)
