@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Controller {
     private Stage stage;
     private Parent root;
@@ -139,18 +142,24 @@ public class Controller {
 
                 // check if the username already exists
                 if (!postgresql.checkUsername(uname)) {
-                    //creates the user and inserts into database
-                    postgresql.createUser(fname,lname,email,uname,role);
 
-                    stage = (Stage) create_submit_btn.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    //checks the format of the email
+                    if(EmailVerification()){
+                        //creates the user and inserts into database
+                        postgresql.createUser(fname,lname,email,uname,role);
+
+                        stage = (Stage) create_submit_btn.getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                    else
+                        optionPane.showMessageDialog(null, "Email format is wrong, please try again", "Email Failed", 2);
                 }
 				else
-					optionPane.showMessageDialog(null, "This Username is Already Taken, Choose Another One", "Username Failed", 2);
+					optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
             }
 			
             System.out.print(create_fn_tf.getText()); // once submit button is pressed, getText from create_fn_tf (first name textfield) -> print
@@ -210,6 +219,28 @@ public class Controller {
         else{
             return true;
         }
+    }
+
+    //verify email format
+    public boolean EmailVerification(){
+        String regex = "^(.+)@(.+)$";
+        String email = create_email_tf.getText();
+
+        //initialize the Pattern object
+        Pattern pattern = Pattern.compile(regex);
+
+        //searching for occurrences of regex
+        Matcher matcher = pattern.matcher(email);
+
+        if (matcher.matches()){
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!","Invalid Email",2);
+            return false;
+        }
+
+
     }
 
 	
