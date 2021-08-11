@@ -32,6 +32,14 @@ public class Controller {
     @FXML
     private TextField create_fn_tf;
     @FXML
+    private TextArea profile_fn_ta;
+    @FXML
+    private TextArea profile_ln_ta;
+    @FXML
+    private TextArea profile_email_ta;
+    @FXML
+    private TextArea profile_user_ta;
+    @FXML
     private TextField create_ln_tf;
     @FXML
     private TextField create_email_tf;
@@ -47,6 +55,18 @@ public class Controller {
     private Button settings_cancel_btn;
     @FXML
     private Button settings_btn;
+    @FXML
+    private Button profile_btn;
+    @FXML
+    private Button dashboard_btn;
+    @FXML
+    private Button reports_btn;
+    @FXML
+    private Button clients_btn;
+    @FXML
+    private Button memos_btn;
+    @FXML
+    private Button logout_btn;
     @FXML
     private TextField login_user_tf;
     @FXML
