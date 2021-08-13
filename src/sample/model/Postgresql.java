@@ -1,5 +1,7 @@
 package sample.model;
 
+import javafx.scene.control.Alert;
+
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -169,37 +171,36 @@ public class Postgresql {
     //Once all information are verified, adds new user to the database.
     public static void createUser (Connection connection, String fname, String lname, String email, String uname, String role) {
 
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        String query1 = "INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)";
-
         Random r = new Random();
         String u_password = "password" + Integer.toString(r.nextInt(9999) + 1);
 
         String DBRole = "";
         String DBPassword = "'" + u_password +"'";
-        //I had to make the role titles in the db diff bc 'admin' is reserved :/
+
+        String query1 = "";
+        String query2 = "INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)";
         switch (role)
         {
-            case "staff": DBRole = "staff_role"; break;
-            case "supervisor": DBRole = "supervisor_role"; break;
-            case "admin": DBRole = "admin_role"; break;
+            case "Staff":
+            case "staff":     query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant staff_role to " +uname+";"; break;
+            case "Supervisor":
+            case "supervisor":query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant supervisor_role to " +uname+";"; break;
+            case "Admin":
+            case "admin":     query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant admin_role to " +uname+";"; break;
+            default:
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setHeaderText("ERROR: Invalid Role");
+                errorAlert.setContentText("role is null");
+                errorAlert.showAndWait();
         }
 
             try {
                 //This will ad user as postgres user
-                PreparedStatement p = connection.prepareStatement("CREATE USER ? with password ?;\n" +
-                        "Grant ? to ?");
-                p.setString(1, uname);
-                p.setString(2, DBPassword);
-                p.setString(3, DBRole);
-                p.setString(4, uname);
-
-                p.executeQuery();
-                System.out.println(p);
+                PreparedStatement p = connection.prepareStatement(query1);
+                p.execute();
 
                 //This will keep user info in the 'users' table
-                PreparedStatement ps = connection.prepareStatement(query1);
+                PreparedStatement ps = connection.prepareStatement(query2);
                 ps.setString(1, fname);
                 ps.setString(2, lname);
                 ps.setString(3, uname);

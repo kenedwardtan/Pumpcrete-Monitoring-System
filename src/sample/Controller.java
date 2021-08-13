@@ -115,6 +115,7 @@ public class Controller {
             {
                 String role = postgresql.getRole(con);
                 switch(role) {
+                    case "Staff":
                     case "staff":
                         System.out.println("Staff role");
                         stage = (Stage) login_btn.getScene().getWindow();
@@ -124,6 +125,7 @@ public class Controller {
                         stage.setScene(scene);
                         stage.show();
                         break;
+                    case "Admin":
                     case "admin":
                         stage = (Stage) login_btn.getScene().getWindow();
                         FXMLLoader  loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
@@ -132,6 +134,8 @@ public class Controller {
                         stage.setScene(scene);
                         stage.show();
                         break;
+
+                    case "Supervisor":
                     case "supervisor":
                         stage = (Stage) login_btn.getScene().getWindow();
                         loader = new FXMLLoader(getClass().getResource("homeSuperv.fxml"));
@@ -160,9 +164,9 @@ public class Controller {
             postgresql.endConnection(con);
 
 
-            //Check if user is still there, should print No connected user
-            String getUser = postgresql.getCurrUser(con);
-            System.out.println(getUser);
+//            //Check if user is still there, should print No connected user
+//            String getUser = postgresql.getCurrUser(con);
+//            System.out.println(getUser);
 
             //put the login form here again hehe
             stage = (Stage) logout_btn.getScene().getWindow();
