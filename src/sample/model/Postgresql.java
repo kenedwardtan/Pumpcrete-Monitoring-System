@@ -10,55 +10,61 @@ import java.util.logging.Logger;
 
 
 public class Postgresql {
-    public static String username = "postgres";
-    public static String password = "swengt3y2";
 
     public Postgresql(){
     }
 
-    public static String loginUser(String u_username, String u_password)
+    public static Connection loginUser(String u_username, String u_password)
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
-		String query = "SELECT password,role FROM users WHERE username = ?";
+        try
+           {
+               Connection con = DriverManager.getConnection(url, u_username,u_password);
+                return con;
+        } catch (SQLException ex) {
 
-        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement pst = con.prepareStatement(query)) {
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
 
-            pst.setString(1, u_username);
+            return null;
 
-            ResultSet result = pst.executeQuery();
+        }
+    }
+
+
+    public static String getCurrUser(Connection con)
+    {
+        String query = "SELECT current_user";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ResultSet result = ps.executeQuery();
+
             while (result.next()) {
-               String pass_Res = result.getString("password");
-               String role_Res = result.getString("role");
-
-               //Prints the password from the query
-               System.out.println("Password Found: " + pass_Res);
-                if(pass_Res.contentEquals(u_password)){
-                    System.out.println("Login Successful.");
-                   return role_Res;
-                }
-                else{
-                    System.out.println("Password did not match.");
-                    return ("Password did not match.");
-                }
-
+                String user = result.getString("current_user");
+                return user;
             }
 
         } catch (SQLException ex) {
 
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
-            return ("Invalid DB Connection");
+            return "No connected user";
         }
-        return ("Invalid");
+        return null;
     }
+
+    public static void endConnection(Connection con) throws SQLException {
+        con.close();
+    }
+
 
     public static User getUser(String u_username)
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
-        String query = "SELECT * FROM users WHERE username = ?";
+        String query = "SELECT current_user";
 
         try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement pst = con.prepareStatement(query)) {
@@ -130,16 +136,16 @@ public class Postgresql {
     }
 
     //To limit access to editing account details
-    public static String getRole(String u_username)
+    public static String getRole(Connection con)
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
-        String query = "SELECT password,role FROM users WHERE username = ?";
+        String query = "SELECT role FROM users WHERE username = ?";
 
-        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = con.prepareStatement(query)) {
-
-            ps.setString(1, u_username);
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            String user = getCurrUser(con);
+            ps.setString(1, user);
 
             ResultSet result = ps.executeQuery();
 
@@ -161,34 +167,58 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static void createUser (String fname, String lname, String email, String uname, String role){
+    public static void createUser (Connection connection, String fname, String lname, String email, String uname, String role) {
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        String query = "INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)";
+        String query1 = "INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)";
 
         Random r = new Random();
-        String u_password = "password" + Integer.toString(r.nextInt(9999)+1);
+        String u_password = "password" + Integer.toString(r.nextInt(9999) + 1);
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setString(3, uname);
-            ps.setString(4, u_password);
-            ps.setString(5, email);
-            ps.setString(6, role);
-
-            ps.executeUpdate();
-
-            System.out.println("Insert Successful!");
-        } catch (SQLException ex){
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        String DBRole = "";
+        String DBPassword = "'" + u_password +"'";
+        //I had to make the role titles in the db diff bc 'admin' is reserved :/
+        switch (role)
+        {
+            case "staff": DBRole = "staff_role"; break;
+            case "supervisor": DBRole = "supervisor_role"; break;
+            case "admin": DBRole = "admin_role"; break;
         }
+
+            try {
+                //This will ad user as postgres user
+                PreparedStatement p = connection.prepareStatement("CREATE USER ? with password ?;\n" +
+                        "Grant ? to ?");
+                p.setString(1, uname);
+                p.setString(2, DBPassword);
+                p.setString(3, DBRole);
+                p.setString(4, uname);
+
+                p.executeQuery();
+                System.out.println(p);
+
+                //This will keep user info in the 'users' table
+                PreparedStatement ps = connection.prepareStatement(query1);
+                ps.setString(1, fname);
+                ps.setString(2, lname);
+                ps.setString(3, uname);
+                ps.setString(4, u_password);
+                ps.setString(5, email);
+                ps.setString(6, role);
+
+                ps.executeUpdate();
+
+                System.out.println("Insert Successful!");
+                ps.close();
+                p.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+
     }
 
-	
+
 	
 	//checks if there are the same existing username found in the db 
 	public boolean checkUsername(String uname){

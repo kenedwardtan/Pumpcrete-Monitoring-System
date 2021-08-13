@@ -6,11 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.model.Postgresql;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +26,7 @@ public class Controller {
     private Scene scene;
     private FXMLLoader loader;
     public Postgresql postgresql;
+    public static Connection con;
     @FXML
     private Button login_btn;
     @FXML
@@ -97,57 +101,76 @@ public class Controller {
 	private JOptionPane optionPane;
 
     @FXML
-    private void handleAction(ActionEvent e) throws IOException {
+    private void handleAction(ActionEvent e) throws IOException, SQLException {
 
         postgresql = new Postgresql();
-        String[] roles = {"Role", "Staff", "Supervisor", "Admin"};
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
         if (e.getSource() == login_btn) { // if (buttonpressedis == login button)
             String username = login_user_tf.getText();
             String password = login_pass_tf.getText();
-            String role = postgresql.loginUser(username,password);
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            con =  postgresql.loginUser(username,password);
 
-            switch(role) {
-                case "Staff":
-                case "staff":
-                    stage = (Stage) login_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-                case "Admin":
-                case "admin":
-                    stage = (Stage) login_btn.getScene().getWindow();
-                    FXMLLoader  loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-				case "Supervisor":
-				case "supervisor":
-//
-                    stage = (Stage) login_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeSuperv.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-				    break;
-                case "Password did not match.":
-                    errorAlert.setHeaderText("Input not valid");
-                    errorAlert.setContentText("Password did not match.");
-                    errorAlert.showAndWait();
-                    break;
-                default:
-                    errorAlert.setHeaderText("Input not valid");
-                    errorAlert.setContentText("Invalid Role.");
-                    errorAlert.showAndWait();
-                    break;
+            if (con != null)
+            {
+                String role = postgresql.getRole(con);
+                switch(role) {
+                    case "staff":
+                        System.out.println("Staff role");
+                        stage = (Stage) login_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        break;
+                    case "admin":
+                        stage = (Stage) login_btn.getScene().getWindow();
+                        FXMLLoader  loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        break;
+                    case "supervisor":
+                        stage = (Stage) login_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeSuperv.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        break;
+                    default:
+                        errorAlert.setHeaderText("Input not valid");
+                        errorAlert.setContentText("Invalid Role.");
+                        errorAlert.showAndWait();
+                        break;
+                }
+
             }
+            else
+                System.out.println("Connection Failed \n Wrong Username/Password");
+
+
+
+
+
+        }
+        if (e.getSource() == logout_btn) {
+            postgresql.endConnection(con);
+
+
+            //Check if user is still there, should print No connected user
+            String getUser = postgresql.getCurrUser(con);
+            System.out.println(getUser);
+
+            //put the login form here again hehe
+            stage = (Stage) logout_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("login.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
 
         if (e.getSource() == create_btn) {
@@ -181,7 +204,7 @@ public class Controller {
                     //checks the format of the email
                     if(EmailVerification()){
                         //creates the user and inserts into database
-                        postgresql.createUser(fname,lname,email,uname,role);
+                        postgresql.createUser(con, fname,lname,email,uname,role);
 
                         stage = (Stage) create_submit_btn.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
