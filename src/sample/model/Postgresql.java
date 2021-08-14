@@ -160,9 +160,9 @@ public class Postgresql {
 
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
+            return "";
         }
-        return null;
+        return "";
     }
 
 
@@ -275,4 +275,183 @@ public class Postgresql {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
 	}
+
+    public void deleteUser (int u_id){
+        boolean username_exist = false;
+
+        String query = "DELETE FROM users WHERE  u_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, u_id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    //Once all information are verified, adds new user to the database.
+    public static void createClient (String position){
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "INSERT INTO client(position) VALUES (?)";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, position);
+
+            ps.executeUpdate();
+
+            System.out.println("Insert Successful!");
+        } catch (SQLException ex){
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void editClient (int c_id, String position){
+
+        String query = "UPDATE client SET position = ? WHERE client_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, position);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteClient (int c_id){
+
+        String query = "DELETE FROM client WHERE client_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, c_id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    public Client getClient (int c_id){
+        String query = "SELECT * FROM client WHERE client_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            Client c = new Client();
+
+            ps.setInt(1, c_id);
+            ResultSet results = ps.executeQuery();
+
+            c.position = results.getString("position");
+
+            query = "SELECT * FROM contact_details WHERE contact_id = ?";
+
+            ps.setInt(1, c_id);
+            ResultSet result = ps.executeQuery();
+
+            c.fname = results.getString("first_name");
+            c.lname = results.getString("last_name");
+            c.cpnum = results.getInt("cellphone_num");
+            c.email = results.getString("email");
+            c.address = results.getString("c_address");
+            c.landline = results.getInt(";landline_num");
+
+            return c;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+
+
+    //Once all information are verified, adds new user to the database.
+    public static void createContact (String fname, String lname, int cpnum, String email, String address, int landline){
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "INSERT INTO contact_details(first_name, last_name, landline_num, cellphone_num, email, c_address) VALUES (?,?,?,?,?,?)";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setInt(3, landline);
+            ps.setInt(4, cpnum);
+            ps.setString(5, email);
+            ps.setString(6, address);
+
+            ps.executeUpdate();
+
+            System.out.println("Insert Successful!");
+        } catch (SQLException ex){
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void editContact(int u_id, String fname, String lname, int cpnum, String email, String address, int landline){
+
+        String query = "UPDATE contact_details SET first_name = ?, last_name = ?, landline_num = ?, cellphone_num = ?, email = ?, c_address = ? WHERE contact_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setInt(3, landline);
+            ps.setInt(4, cpnum);
+            ps.setString(5, email);
+            ps.setString(6, address);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleteContact (int c_id){
+
+        String query = "DELETE FROM contact_details WHERE contact_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, c_id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
