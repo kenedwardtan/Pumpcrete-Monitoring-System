@@ -3,6 +3,10 @@ package sample.model;
 import javafx.scene.control.Alert;
 
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,6 +113,39 @@ public class Postgresql {
         String url = "jdbc:postgresql:Pumpcrete";
 
         String query = "SELECT * FROM users WHERE role = 'staff'";
+
+        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            ArrayList<User> u_result = new ArrayList<User>();
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
+                User u = new User();
+                u.username = result.getString("username");
+                u.email = result.getString("email");
+                u.first_name = result.getString("first_name");
+                u.last_name= result.getString("last_name");
+                u.password = result.getString("password");
+                u.role = result.getString("role");
+
+                u_result.add(u);
+            }
+
+            return u_result;
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
+    }
+
+    public static ArrayList<User> getAllUsers()
+    {
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        String query = "SELECT * FROM users";
 
         try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement pst = con.prepareStatement(query)) {
@@ -447,6 +484,147 @@ public class Postgresql {
              PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setInt(1, c_id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+
+    public void addBilling (String client_name, String project_name, String project_add, Date date_used,
+                            int PSC_id, String concrete_struct, int floor, float quantity, float unit_price,
+                            float total, float grand_total){
+
+        String query = "INSERT INTO billings(date_doc, client_name, project_name, project_add, date_used, PSC_id, concrete_struct, " +
+                "floor, quantity, unit_price, total, grand_total, posted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        LocalDate now = LocalDate.now();
+        Date date = Date.valueOf(now);
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setDate(1, date);
+            ps.setString(2, client_name);
+            ps.setString(3, project_name);
+            ps.setString(4, project_add);
+            ps.setDate(5, date_used);
+            ps.setInt(6, PSC_id);
+            ps.setString(7, concrete_struct);
+            ps.setInt(8, floor);
+            ps.setFloat(9, quantity);
+            ps.setFloat(10, unit_price);
+            ps.setFloat(11, total);
+            ps.setFloat(12, grand_total);
+            ps.setBoolean(13, false);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Billing getBilling(int billing_id) {
+        String query = "SELECT * FROM billings WHERE billing_id = ?";
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        Billing b = new Billing();
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ResultSet results = ps.executeQuery();
+
+            b.client_name = results.getString("client_name");
+            b.project_name = results.getString("project_name");
+            b.project_add = results.getString("project_add");
+            b.date_used = results.getDate("date_used");
+            b.PSC_id = results.getInt("PSC_id");
+            b.concrete_struct = results.getString("concrete_struct");
+            b.floor = results.getInt("floor");
+            b.quantity = results.getFloat("quantity");
+            b.unit_price = results.getFloat("unit_price");
+            b.total = results.getFloat("total");
+            b.grand_total = results.getFloat("grand_total");
+            b.posted = results.getBoolean("posted");
+
+            if (b.posted){
+                b.checked_by = results.getString("checked_by");
+                b.approved_by = results.getString("approved_by");
+                b.posted_by = results.getString("posted_by");
+                b.received_by = results.getString("received_by");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return b;
+    }
+
+    public ArrayList<Billing> getAllBillings() {
+        String query = "SELECT * FROM billings";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+        ArrayList<Billing> billings = new ArrayList<Billing>();
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ResultSet results = ps.executeQuery();
+
+            while (results.next()){
+
+                Billing b = new Billing();
+
+                b.client_name = results.getString("client_name");
+                b.project_name = results.getString("project_name");
+                b.project_add = results.getString("project_add");
+                b.date_used = results.getDate("date_used");
+                b.PSC_id = results.getInt("PSC_id");
+                b.concrete_struct = results.getString("concrete_struct");
+                b.floor = results.getInt("floor");
+                b.quantity = results.getFloat("quantity");
+                b.unit_price = results.getFloat("unit_price");
+                b.total = results.getFloat("total");
+                b.grand_total = results.getFloat("grand_total");
+                b.posted = results.getBoolean("posted");
+
+                if (b.posted){
+                    b.checked_by = results.getString("checked_by");
+                    b.approved_by = results.getString("approved_by");
+                    b.posted_by = results.getString("posted_by");
+                    b.received_by = results.getString("received_by");
+                }
+
+                billings.add(b);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return billings;
+    }
+
+    public void postBilling (String checked_by, String approved_by, String posted_by, String received_by){
+
+        String query = "UPDATE billings SET posted = ?, checked_by = ?, approved_by = ?, posted_by = ?, received_by = ? WHERE billing_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setBoolean(1, true);
+            ps.setString(2, checked_by);
+            ps.setString(3, approved_by);
+            ps.setString(4, posted_by);
+            ps.setString(5, received_by);
 
             ps.executeUpdate();
 

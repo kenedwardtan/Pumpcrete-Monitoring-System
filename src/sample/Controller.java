@@ -150,7 +150,7 @@ public class Controller {
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-
+        home_name_txt = new Text();
         //login
         if (e.getSource() == login_btn) {
             String username = login_user_tf.getText();
