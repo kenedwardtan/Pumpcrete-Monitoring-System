@@ -3,18 +3,23 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.model.Postgresql;
+import sample.model.User;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,13 +92,8 @@ public class Controller {
     //employees (admin)
     @FXML
     private Button employees_btn;
-    @FXML
-    private Button employees_back_btn;
-    @FXML
-    private TableView employees_tb;
+
     //employees - create
-    @FXML
-    private Button employees_create_btn;
     @FXML
     private TextField create_fn_tf;
     @FXML
@@ -125,7 +125,6 @@ public class Controller {
     private Button edit_cancel_btn;
     @FXML
     private ChoiceBox<String> edit_role_dd;
-
     //settings
     @FXML
     private Button settings_btn;
@@ -159,7 +158,7 @@ public class Controller {
 
             if (con != null) {
                 String role = postgresql.getRole(con);
-                switch(role) {
+                switch (role) {
                     case "Staff":
                     case "staff":
                         System.out.println("Staff role");
@@ -175,7 +174,7 @@ public class Controller {
                     case "admin":
                         home_name_txt.setText(username);
                         stage = (Stage) login_btn.getScene().getWindow();
-                        FXMLLoader  loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
@@ -197,9 +196,91 @@ public class Controller {
                         errorAlert.showAndWait();
                         break;
                 }
-            }
-            else
+            } else
                 System.out.println("Connection Failed \n Wrong Username/Password");
+        }
+        //employees (admin)
+        if (e.getSource() == employees_btn) {
+            stage = (Stage) employees_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == create_submit_btn) {
+            // check if the data are empty
+            if (verifyFields()) {
+                // retrieve inputs
+                String fname = create_fn_tf.getText();
+                String lname = create_ln_tf.getText();
+                String email = create_email_tf.getText();
+                String uname = create_user_tf.getText();
+                String role = create_role_dd.getValue();
+
+                // check if the username already exists
+                if (!postgresql.checkUsername(uname)) {
+
+                    //checks the format of the email
+                    if (EmailVerification()) {
+                        //creates the user and inserts into database
+                        postgresql.createUser(con, fname, lname, email, uname, role);
+                        //clear fields
+
+                        stage = (Stage) create_submit_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                } else
+                    optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
+            }
+            System.out.print(create_fn_tf.getText());
+        }
+
+        if (e.getSource() == create_cancel_btn) {
+            //clear fields
+            stage = (Stage) create_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+
+        //edit account
+        if (e.getSource() == employees_edit_btn) {
+            stage = (Stage) employees_edit_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("adminEmployeesEdit.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+            String fname = edit_fn_tf.getText();
+            String lname = edit_ln_tf.getText();
+            String email = edit_email_tf.getText();
+            String uname = edit_user_tf.getText();
+            String role = edit_role_dd.getValue();
+            if (!postgresql.checkUsername(uname)) {
+                //checks the format of the email
+                if (EmailVerification()) {
+                    //creates the user and inserts into database
+                    postgresql.editUser(fname, lname, email, uname, role);
+
+                    stage = (Stage) create_submit_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            } else
+                optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
         }
 
         //home
@@ -253,104 +334,10 @@ public class Controller {
             stage.show();
         }
 
-        //employees (admin)
-        if (e.getSource() == employees_btn) {
-            stage = (Stage) employees_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-            //create account
-            if (e.getSource() == employees_create_btn) {
-                stage = (Stage) employees_create_btn.getScene().getWindow();
-                loader = new FXMLLoader(getClass().getResource("adminEmployeesCreate.fxml"));
-                root = loader.load();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-
-                if (e.getSource() == create_submit_btn) {
-                    // check if the data are empty
-                    if (verifyFields()) {
-                        // retrieve inputs
-                        String fname = create_fn_tf.getText();
-                        String lname = create_ln_tf.getText();
-                        String email = create_email_tf.getText();
-                        String uname = create_user_tf.getText();
-                        String role = create_role_dd.getValue();
-
-                        // check if the username already exists
-                        if (!postgresql.checkUsername(uname)) {
-
-                            //checks the format of the email
-                            if (EmailVerification()) {
-                                //creates the user and inserts into database
-                                postgresql.createUser(con, fname,lname,email,uname,role);
-                                //clear fields
-
-                                stage = (Stage) create_submit_btn.getScene().getWindow();
-                                loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                                root = loader.load();
-                                scene = new Scene(root);
-                                stage.setScene(scene);
-                                stage.show();
-                            }
-                        }
-                        else
-                            optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
-                    }
-                    System.out.print(create_fn_tf.getText());
-                }
-
-                if (e.getSource() == create_cancel_btn) {
-                    //clear fields
-                    stage = (Stage) create_cancel_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-            }
-
-            //edit account
-            if (e.getSource() == employees_edit_btn) {
-                stage = (Stage) employees_edit_btn.getScene().getWindow();
-                loader = new FXMLLoader(getClass().getResource("adminEmployeesEdit.fxml"));
-                root = loader.load();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-
-                String fname = edit_fn_tf.getText();
-                String lname = edit_ln_tf.getText();
-                String email = edit_email_tf.getText();
-                String uname = edit_user_tf.getText();
-                String role = edit_role_dd.getValue();
-                if (!postgresql.checkUsername(uname)) {
-                    //checks the format of the email
-                    if(EmailVerification()) {
-                        //creates the user and inserts into database
-                        postgresql.editUser(fname,lname,email,uname,role);
-
-                        stage = (Stage) create_submit_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                        root = loader.load();
-                        scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    }
-                }
-                else
-                    optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
-            }
-        }
 
         //settings
         if (e.getSource() == settings_btn) {
-            stage = (Stage) create_cancel_btn.getScene().getWindow();
+            stage = (Stage) settings_btn.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
             root = loader.load();
             scene = new Scene(root);
@@ -375,9 +362,8 @@ public class Controller {
             stage.show();
         }
     }
-	
-	// create a function to verify the empty fields
-    public boolean verifyFields() {
+
+    public boolean verifyFields () {
 
         String fname = create_fn_tf.getText();
         String lname = create_ln_tf.getText();
@@ -385,21 +371,21 @@ public class Controller {
         String uname = create_user_tf.getText();
 
         // check empty fields
-        if(fname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
+        if (fname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
                 || email.trim().equals("") || create_role_dd.getValue() == "Select Role") {
-            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty","Empty Fields",2);
+            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
 
         // if everything is ok
-        else{
+        else {
             System.out.println("All fields are field!");
             return true;
         }
     }
 
     //verify email format
-    public boolean EmailVerification() {
+    public boolean EmailVerification () {
         String regex = "^(.+)@(.+)$";
         String email = create_email_tf.getText();
 
@@ -409,15 +395,16 @@ public class Controller {
         //searching for occurrences of regex
         Matcher matcher = pattern.matcher(email);
 
-        if (matcher.matches()){
+        if (matcher.matches()) {
             System.out.println("Email format is correct.");
             return true;
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!","Invalid Email",2);
+        } else {
+            JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!", "Invalid Email", 2);
             return false;
         }
 
 
     }
+
+
 }

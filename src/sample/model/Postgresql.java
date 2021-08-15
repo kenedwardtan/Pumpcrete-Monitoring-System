@@ -1,5 +1,7 @@
 package sample.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 import java.sql.*;
@@ -76,18 +78,19 @@ public class Postgresql {
              PreparedStatement pst = con.prepareStatement(query)) {
 
             pst.setString(1, u_username);
-            User u_result = new User();
+            User u_result;
             ResultSet result = pst.executeQuery();
             while (result.next()) {
-                u_result.username = result.getString("username");
-                u_result.email = result.getString("email");
-                u_result.first_name = result.getString("first_name");
-                u_result.last_name= result.getString("last_name");
-                u_result.password = result.getString("password");
-                u_result.role = result.getString("role");
+                String username = result.getString("username");
+                String email = result.getString("email");
+                String first_name = result.getString("first_name");
+                String last_name= result.getString("last_name");
+                String password = result.getString("password");
+                String role = result.getString("role");
 
+                u_result= new User(username,email,first_name,last_name,password,role);
 
-                if(u_username.contentEquals(u_result.username)){
+                if(u_username.contentEquals(u_result.getUsername())){
                     System.out.println("Loading of Info Successful.");
                     return u_result;
                 }
@@ -120,14 +123,14 @@ public class Postgresql {
             ArrayList<User> u_result = new ArrayList<User>();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
-                User u = new User();
-                u.username = result.getString("username");
-                u.email = result.getString("email");
-                u.first_name = result.getString("first_name");
-                u.last_name= result.getString("last_name");
-                u.password = result.getString("password");
-                u.role = result.getString("role");
+                String username = result.getString("username");
+                String email = result.getString("email");
+                String first_name = result.getString("first_name");
+                String last_name= result.getString("last_name");
+                String password = result.getString("password");
+                String role = result.getString("role");
 
+                User u = new User(username,email,first_name,last_name,password,role);
                 u_result.add(u);
             }
 
@@ -141,7 +144,7 @@ public class Postgresql {
         }
     }
 
-    public static ArrayList<User> getAllUsers()
+    public static ObservableList<User> getAllUsers()
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -150,17 +153,18 @@ public class Postgresql {
         try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement pst = con.prepareStatement(query)) {
 
-            ArrayList<User> u_result = new ArrayList<User>();
+            ObservableList<User> u_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
-                User u = new User();
-                u.username = result.getString("username");
-                u.email = result.getString("email");
-                u.first_name = result.getString("first_name");
-                u.last_name= result.getString("last_name");
-                u.password = result.getString("password");
-                u.role = result.getString("role");
 
+                String username = result.getString("username");
+                String email = result.getString("email");
+                String first_name = result.getString("first_name");
+                String last_name= result.getString("last_name");
+                String password = result.getString("password");
+                String role = result.getString("role");
+
+                User u = new User(username,email,first_name,last_name,password,role);
                 u_result.add(u);
             }
 
