@@ -283,8 +283,8 @@ public class Postgresql {
     }
 
 
-	
-	//checks if there are the same existing username found in the db 
+
+	//checks if there are the same existing username found in the db
 	public boolean checkUsername(String uname){
 
         ResultSet rs;
@@ -315,7 +315,7 @@ public class Postgresql {
 
         return username_exist;
     }
-	
+
 	public void editUser (String fname, String lname, String uname, String email, String role){
         boolean username_exist = false;
 
@@ -560,44 +560,56 @@ public class Postgresql {
         String query = "SELECT * FROM billings WHERE billing_id = ?";
         String url = "jdbc:postgresql:Pumpcrete";
 
-        Billing b = new Billing();
+        Billing b;
 
         try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement ps = connection.prepareStatement(query)) {
 
             ResultSet results = ps.executeQuery();
 
-            b.client_name = results.getString("client_name");
-            b.project_name = results.getString("project_name");
-            b.project_add = results.getString("project_add");
-            b.date_used = results.getDate("date_used");
-            b.PSC_id = results.getInt("PSC_id");
-            b.concrete_struct = results.getString("concrete_struct");
-            b.floor = results.getInt("floor");
-            b.quantity = results.getFloat("quantity");
-            b.unit_price = results.getFloat("unit_price");
-            b.total = results.getFloat("total");
-            b.grand_total = results.getFloat("grand_total");
-            b.posted = results.getBoolean("posted");
+            int client_id = results.getInt("client_id");
+            String project_name = results.getString("project_name");
+            String project_add = results.getString("project_add");
+            Date date_used = results.getDate("date_used");
+            int PSC_id = results.getInt("PSC_id");
+            String concrete_struct = results.getString("concrete_struct");
+            int floor = results.getInt("floor");
+            float quantity = results.getFloat("quantity");
+            float unit_price = results.getFloat("unit_price");
+            float total = results.getFloat("total");
+            float grand_total = results.getFloat("grand_total");
+            boolean posted = results.getBoolean("posted");
 
-            if (b.posted){
-                b.checked_by = results.getString("checked_by");
-                b.approved_by = results.getString("approved_by");
-                b.posted_by = results.getString("posted_by");
-                b.received_by = results.getString("received_by");
+            if (posted){
+                String checked_by = results.getString("checked_by");
+                String approved_by = results.getString("approved_by");
+                String posted_by = results.getString("posted_by");
+                String received_by = results.getString("received_by");
+
+                b = new Billing(client_id, project_name, project_add,
+                        date_used.toLocalDate(), PSC_id, concrete_struct,
+                        floor, quantity, unit_price, total, grand_total, posted,
+                        checked_by, approved_by, posted_by, received_by);
             }
+            else{
+                b = new Billing(client_id, project_name, project_add,
+                        date_used.toLocalDate(), PSC_id, concrete_struct,
+                        floor, quantity, unit_price, total, grand_total, posted);
+            }
+
+            return b;
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return b;
+        return null;
     }
 
-    public ArrayList<Billing> getAllBillings() {
+    public ObservableList<Billing> getAllBillings() {
         String query = "SELECT * FROM billings";
 
         String url = "jdbc:postgresql:Pumpcrete";
-        ArrayList<Billing> billings = new ArrayList<Billing>();
+        ObservableList<Billing> billings = FXCollections.observableArrayList();
 
         try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement ps = connection.prepareStatement(query)) {
@@ -605,27 +617,36 @@ public class Postgresql {
             ResultSet results = ps.executeQuery();
 
             while (results.next()){
+                Billing b;
 
-                Billing b = new Billing();
+                int client_id = results.getInt("client_id");
+                String project_name = results.getString("project_name");
+                String project_add = results.getString("project_add");
+                Date date_used = results.getDate("date_used");
+                int PSC_id = results.getInt("PSC_id");
+                String concrete_struct = results.getString("concrete_struct");
+                int floor = results.getInt("floor");
+                float quantity = results.getFloat("quantity");
+                float unit_price = results.getFloat("unit_price");
+                float total = results.getFloat("total");
+                float grand_total = results.getFloat("grand_total");
+                boolean posted = results.getBoolean("posted");
 
-                b.client_name = results.getString("client_name");
-                b.project_name = results.getString("project_name");
-                b.project_add = results.getString("project_add");
-                b.date_used = results.getDate("date_used");
-                b.PSC_id = results.getInt("PSC_id");
-                b.concrete_struct = results.getString("concrete_struct");
-                b.floor = results.getInt("floor");
-                b.quantity = results.getFloat("quantity");
-                b.unit_price = results.getFloat("unit_price");
-                b.total = results.getFloat("total");
-                b.grand_total = results.getFloat("grand_total");
-                b.posted = results.getBoolean("posted");
+                if (posted){
+                    String checked_by = results.getString("checked_by");
+                    String approved_by = results.getString("approved_by");
+                    String posted_by = results.getString("posted_by");
+                    String received_by = results.getString("received_by");
 
-                if (b.posted){
-                    b.checked_by = results.getString("checked_by");
-                    b.approved_by = results.getString("approved_by");
-                    b.posted_by = results.getString("posted_by");
-                    b.received_by = results.getString("received_by");
+                    b = new Billing(client_id, project_name, project_add,
+                            date_used.toLocalDate(), PSC_id, concrete_struct,
+                            floor, quantity, unit_price, total, grand_total, posted,
+                            checked_by, approved_by, posted_by, received_by);
+                }
+                else{
+                    b = new Billing(client_id, project_name, project_add,
+                            date_used.toLocalDate(), PSC_id, concrete_struct,
+                            floor, quantity, unit_price, total, grand_total, posted);
                 }
 
                 billings.add(b);
@@ -637,13 +658,13 @@ public class Postgresql {
         return billings;
     }
 
-    public void postBilling (String checked_by, String approved_by, String posted_by, String received_by){
+    public void postBilling (String checked_by, String approved_by, String posted_by, String received_by) {
 
         String query = "UPDATE billings SET posted = ?, checked_by = ?, approved_by = ?, posted_by = ?, received_by = ? WHERE billing_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+        try (Connection connection = DriverManager.getConnection(url, "postgres", "swengt3y2");
              PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setBoolean(1, true);
@@ -658,5 +679,4 @@ public class Postgresql {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }
