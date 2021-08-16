@@ -58,25 +58,22 @@ public class Postgresql {
 
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
-            return "No connected user";
+            return "";
         }
-        return null;
+        return "";
     }
 
     public static void endConnection(Connection con) throws SQLException {
         con.close();
     }
 
-
-    public static User getUser(String u_username)
+    //Getting info of current user
+    public static User getUser(Connection connection)
     {
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        String query = "SELECT current_user";
-
-        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement pst = con.prepareStatement(query)) {
-
+        String query = "SELECT * FROM users WHERE username = ?";
+        try {
+           String u_username = getCurrUser(connection);
+            PreparedStatement pst = connection.prepareStatement(query);
             pst.setString(1, u_username);
             User u_result;
             ResultSet result = pst.executeQuery();
@@ -144,15 +141,14 @@ public class Postgresql {
         }
     }
 
-    public static ObservableList<User> getAllUsers()
+    public static ObservableList<User> getAllUsers(Connection con)
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
         String query = "SELECT * FROM users";
 
-        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement pst = con.prepareStatement(query)) {
-
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
             ObservableList<User> u_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
@@ -206,7 +202,32 @@ public class Postgresql {
         return "";
     }
 
+    public static void editPassword (Connection connection,String old, String npw){
 
+        String DBPassword = "'"+npw+"'";
+        String url = "jdbc:postgresql:Pumpcrete";
+        String u_username = getCurrUser(connection);
+        try (Connection con = DriverManager.getConnection(url, u_username,old)){
+            String query = "ALTER USER "+u_username+" WITH PASSWORD "+DBPassword;
+                PreparedStatement p = connection.prepareStatement(query);
+                p.execute();
+
+                String query2 = "UPDATE users SET password = ? WHERE username = ?";
+                PreparedStatement ps = connection.prepareStatement(query2);
+                ps.setString(1, DBPassword);
+                ps.setString(2, u_username);
+                ps.executeUpdate();
+
+                con.close();
+                p.close();
+                ps.close();
+        } catch (SQLException throwables) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Edit Password Failed");
+            errorAlert.setContentText("Wrong password.");
+            errorAlert.showAndWait();
+        }
+    }
 
 
     //Once all information are verified, adds new user to the database.
@@ -223,17 +244,18 @@ public class Postgresql {
         switch (role)
         {
             case "Staff":
-            case "staff":     query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant staff_role to " +uname+";"; break;
+            case "staff":      DBRole = "staff_role"; break;
             case "Supervisor":
-            case "supervisor":query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant supervisor_role to " +uname+";"; break;
+            case "supervisor": DBRole = "supervisor_role"; break;
             case "Admin":
-            case "admin":     query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant admin_role to " +uname+";"; break;
+            case "admin":      DBRole = "admin_role"; break;
             default:
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("ERROR: Invalid Role");
                 errorAlert.setContentText("role is null");
                 errorAlert.showAndWait();
         }
+        query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant "+DBRole+" to " +uname+";";
 
             try {
                 //This will ad user as postgres user
