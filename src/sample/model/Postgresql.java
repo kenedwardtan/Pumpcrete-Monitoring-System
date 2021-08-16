@@ -232,7 +232,7 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static void createUser (Connection connection, String fname, String lname, String email, String uname, String role) {
+    public static String createUser (Connection connection, String fname, String lname, String email, String uname, String role) {
 
         Random r = new Random();
         String u_password = "password" + Integer.toString(r.nextInt(9999) + 1);
@@ -277,48 +277,15 @@ public class Postgresql {
                 System.out.println("Insert Successful!");
                 ps.close();
                 p.close();
+
             } catch (SQLException ex) {
                 Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
-
+        return u_password;
     }
 
-
-
-	//checks if there are the same existing username found in the db
-	public boolean checkUsername(String uname){
-
-        ResultSet rs;
-        boolean username_exist = false;
-
-        String query = "SELECT * FROM users WHERE username = ?";
-
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setString(1, uname);
-            rs = ps.executeQuery();
-
-            if(rs.next())
-            {
-                username_exist = true;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(username_exist)
-            System.out.println("Username is not unique!");
-        else
-            System.out.println("Username is unique!");
-
-        return username_exist;
-    }
 
 	public void editUser (String fname, String lname, String uname, String email, String role){
-        boolean username_exist = false;
 
         String query = "UPDATE users SET first_name = ?, last_name = ?, uname = ?, email = ?, role = ? WHERE u_id = ?";
 
@@ -722,5 +689,57 @@ public class Postgresql {
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String resetPassword(int u_id ) {
+        Random r = new Random();
+        String password = "password" + (r.nextInt(9999)+1);
+
+        String query = "UPDATE users SET password = ? WHERE u_id = ?";
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres", "swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, password);
+            ps.setInt(2, u_id);
+
+            ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return password;
+    }
+
+    //checks if there are the same existing username found in the db
+    public boolean checkUsername(String uname){
+
+        ResultSet rs;
+        boolean username_exist = false;
+
+        String query = "SELECT * FROM users WHERE username = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, uname);
+            rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                username_exist = true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(username_exist)
+            System.out.println("Username is not unique!");
+        else
+            System.out.println("Username is unique!");
+
+        return username_exist;
     }
 }

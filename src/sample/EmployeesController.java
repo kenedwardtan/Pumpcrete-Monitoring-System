@@ -52,7 +52,7 @@ public class EmployeesController extends Controller implements Initializable {
     private JOptionPane optionPane;
 
     @Override
-    public void initialize(URL location, ResourceBundle resourcews) {
+    public void initialize(URL location, ResourceBundle resources) {
         employees_tb.setItems(postgresql.getAllUsers());
 
         usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));

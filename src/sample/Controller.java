@@ -108,6 +108,7 @@ public class Controller {
     private Button create_submit_btn;
     @FXML
     private Button create_cancel_btn;
+
     //employees - edit
     @FXML
     private Button employees_edit_btn;
@@ -214,11 +215,13 @@ public class Controller {
                     //checks the format of the email
                     if (EmailVerification()) {
                         //creates the user and inserts into database
-                        postgresql.createUser(con, fname, lname, email, uname, role);
+                        String passsword = postgresql.createUser(con, fname, lname, email, uname, role);
+                        String message ="Username: " + uname +"\nPassword: " + passsword;
+                        optionPane.showMessageDialog(null, message, "User Created!", 1);
                         //clear fields
 
                         stage = (Stage) create_submit_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
@@ -440,8 +443,6 @@ public class Controller {
             JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!", "Invalid Email", 2);
             return false;
         }
-
-
     }
 
 
