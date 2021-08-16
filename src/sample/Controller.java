@@ -129,9 +129,9 @@ public class Controller {
 
     // settings - pass
     @FXML
-    private TextField settings_oPass_tf;
+    private PasswordField settings_oPass_tf;
     @FXML
-    private TextField settings_nPass_tf;
+    private PasswordField settings_nPass_tf;
     @FXML
     private Button settings_save_btn;
     @FXML

@@ -18,7 +18,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="postgresql-42.2.23" level="application" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/My Documents/Downloads/postgresql-42.2.23.jar!/" />
@@ -36,10 +36,19 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/My Documents/Downloads/postgresql-42.2.23.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../My Documents/Downloads/postgresql-42.2.23.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/Temp/postgresql-42.2.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

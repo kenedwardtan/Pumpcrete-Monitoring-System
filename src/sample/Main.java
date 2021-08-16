@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("Pumpcrete Monitoring System");
-        primaryStage.setScene(new Scene(root, 1280, 988, Color.web("#F6F6F6")));
+        primaryStage.setScene(new Scene(root, 891, 688, Color.web("#F6F6F6")));
         primaryStage.show();
     }
 
