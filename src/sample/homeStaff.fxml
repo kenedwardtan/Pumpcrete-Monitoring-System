@@ -4,8 +4,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="988.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="988.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.StaffHomeController">
    <children>
       <ImageView fitHeight="988.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -25,5 +28,10 @@
       <Button fx:id="home_master_btn" layoutX="321.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="152.0" prefWidth="286.0" text="Button" />
       <Button fx:id="home_transactions_btn" layoutX="633.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="152.0" prefWidth="286.0" text="Button" />
       <Button fx:id="home_reports_btn" layoutX="944.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="152.0" prefWidth="286.0" text="Button" />
-    </children>
+      <Text fx:id="home_name_txt" fill="#1b1a1a" layoutX="467.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="name">
+         <font>
+            <Font name="CeraPro-Bold" size="49.0" />
+         </font>
+      </Text>
+   </children>
 </AnchorPane>

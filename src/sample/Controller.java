@@ -125,9 +125,7 @@ public class Controller {
     private Button edit_cancel_btn;
     @FXML
     private ChoiceBox<String> edit_role_dd;
-    //settings
-    @FXML
-    private Button settings_btn;
+
     // settings - pass
     @FXML
     private TextField settings_oPass_tf;
@@ -138,10 +136,6 @@ public class Controller {
     @FXML
     private Button settings_cancel_btn;
 
-    //logout
-    @FXML
-    private Button logout_btn;
-
 	@FXML
 	private JOptionPane optionPane;
 
@@ -149,20 +143,20 @@ public class Controller {
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        home_name_txt = new Text();
+
         //login
         if (e.getSource() == login_btn) {
-            String username = login_user_tf.getText();
+            String username = "";
+            username = login_user_tf.getText();
             String password = login_pass_tf.getText();
             con = postgresql.loginUser(username, password);
 
             if (con != null) {
+                System.out.println("Successful Login");
                 String role = postgresql.getRole(con);
                 switch (role) {
                     case "Staff":
                     case "staff":
-                        System.out.println("Staff role");
-                        home_name_txt.setText(username);
                         stage = (Stage) login_btn.getScene().getWindow();
                         loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
                         root = loader.load();
@@ -172,7 +166,6 @@ public class Controller {
                         break;
                     case "Admin":
                     case "admin":
-                        home_name_txt.setText(username);
                         stage = (Stage) login_btn.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
                         root = loader.load();
@@ -182,7 +175,6 @@ public class Controller {
                         break;
                     case "Supervisor":
                     case "supervisor":
-                        home_name_txt.setText(username);
                         stage = (Stage) login_btn.getScene().getWindow();
                         loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
                         root = loader.load();
@@ -197,16 +189,12 @@ public class Controller {
                         break;
                 }
             } else
-                System.out.println("Connection Failed \n Wrong Username/Password");
-        }
-        //employees (admin)
-        if (e.getSource() == employees_btn) {
-            stage = (Stage) employees_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            {
+                errorAlert.setHeaderText("Login Failed");
+                errorAlert.setContentText("Wrong Username/Password");
+                errorAlert.showAndWait();
+            }
+
         }
 
         if (e.getSource() == create_submit_btn) {
@@ -292,17 +280,90 @@ public class Controller {
 
         }
 
-        //profile
-        /*
-        if (e.getSource() == profile_btn) {
-            String username = profile_username_label.gettext();
-            User user = postgresql.getUser(username);
+        //redirect back to homepage
+        if(e.getSource() == settings_cancel_btn) {
+                String role = postgresql.getRole(con);
+                switch (role) {
+                    case "Staff":
+                    case "staff":
+                        stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        break;
+                    case "Admin":
+                    case "admin":
+                        stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        break;
+                    case "Supervisor":
+                    case "supervisor":
+                        stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        break;
+                    default:
+                        errorAlert.setHeaderText("Input not valid");
+                        errorAlert.setContentText("Invalid Role.");
+                        errorAlert.showAndWait();
+                        break;
+                }
 
-           }
+        }
 
-        //How to display arraylist of Staff
-        ArrayList<User> users = postgres.getAllStaff()
-        */
+        if(e.getSource() == settings_save_btn) {
+            String oldpw = settings_oPass_tf.getText();
+            String newpw = settings_nPass_tf.getText();
+
+                postgresql.editPassword(con, oldpw, newpw);
+            String role = postgresql.getRole(con);
+            switch (role) {
+                case "Staff":
+                case "staff":
+                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
+                case "Admin":
+                case "admin":
+                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
+                case "Supervisor":
+                case "supervisor":
+                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
+                default:
+                    errorAlert.setHeaderText("Input not valid");
+                    errorAlert.setContentText("Invalid Role.");
+                    errorAlert.showAndWait();
+                    break;
+            }
+
+
+        }
+
 
         //dashboard
 
@@ -335,32 +396,7 @@ public class Controller {
         }
 
 
-        //settings
-        if (e.getSource() == settings_btn) {
-            stage = (Stage) settings_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
 
-        //logout
-        if (e.getSource() == logout_btn) {
-            postgresql.endConnection(con);
-
-//            //Check if user is still there, should print No connected user
-//            String getUser = postgresql.getCurrUser(con);
-//            System.out.println(getUser);
-
-            //put the login form here again hehe
-            stage = (Stage) logout_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("login.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
     }
 
     public boolean verifyFields () {
