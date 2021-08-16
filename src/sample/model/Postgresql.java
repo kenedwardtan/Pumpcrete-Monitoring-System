@@ -141,14 +141,14 @@ public class Postgresql {
         }
     }
 
-    public static ObservableList<User> getAllUsers(Connection con)
+    public static ObservableList<User> getAllUsers()
     {
         String url = "jdbc:postgresql:Pumpcrete";
 
         String query = "SELECT * FROM users";
 
-        try {
-            PreparedStatement pst = con.prepareStatement(query);
+        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
+            PreparedStatement pst = con.prepareStatement(query)){
             ObservableList<User> u_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
@@ -658,4 +658,5 @@ public class Postgresql {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }
