@@ -207,6 +207,7 @@ public class Controller {
                 String uname = create_user_tf.getText();
                 String role = create_role_dd.getValue();
 
+
                 // check if the username already exists
                 if (!postgresql.checkUsername(uname)) {
 
@@ -405,10 +406,11 @@ public class Controller {
         String lname = create_ln_tf.getText();
         String email = create_email_tf.getText();
         String uname = create_user_tf.getText();
+        String role = create_role_dd.getValue();
 
         // check empty fields
         if (fname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
-                || email.trim().equals("") || create_role_dd.getValue() == "Select Role") {
+                || email.trim().equals("") || role.trim().equals("Select Role")) {
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
