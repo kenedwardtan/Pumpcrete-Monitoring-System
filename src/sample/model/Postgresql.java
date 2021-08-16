@@ -1,5 +1,6 @@
 package sample.model;
 
+import javafx.beans.binding.ObjectExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -423,26 +424,69 @@ public class Postgresql {
 
         try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
              PreparedStatement ps = connection.prepareStatement(query)) {
-            Client c = new Client();
 
             ps.setInt(1, c_id);
             ResultSet results = ps.executeQuery();
 
-            c.position = results.getString("position");
+            String position = results.getString("position");
 
             query = "SELECT * FROM contact_details WHERE contact_id = ?";
 
             ps.setInt(1, c_id);
             ResultSet result = ps.executeQuery();
 
-            c.fname = results.getString("first_name");
-            c.lname = results.getString("last_name");
-            c.cpnum = results.getInt("cellphone_num");
-            c.email = results.getString("email");
-            c.address = results.getString("c_address");
-            c.landline = results.getInt(";landline_num");
+            String fname = results.getString("first_name");
+            String lname = results.getString("last_name");
+            int cpnum = results.getInt("cellphone_num");
+            String email = results.getString("email");
+            String address = results.getString("c_address");
+            int landline = results.getInt("landline_num");
 
+            Client c = new Client(position, fname, lname, cpnum, email, address, landline);
             return c;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public ObservableList<Client> getAllClients(){
+        String query = "SELECT * FROM clients";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+        ObservableList<Billing> billings = FXCollections.observableArrayList();
+
+        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ObservableList<Client> Clients = FXCollections.observableArrayList();
+
+            ResultSet results = ps.executeQuery();
+            ArrayList<String> positions = new ArrayList<String>();
+
+            while (results.next()) {
+                positions.add(results.getString("position"));
+            }
+
+            query = "SELECT * FROM contact_details";
+
+            results = ps.executeQuery();
+            Client c;
+            int i = 0;
+            while (results.next()) {
+                String fname = results.getString("first_name");
+                String lname = results.getString("last_name");
+                int cpnum = results.getInt("cellphone_num");
+                String email = results.getString("email");
+                String address = results.getString("c_address");
+                int landline = results.getInt("landline_num");
+
+                c = new Client(positions.get(i++), fname, lname, cpnum, email, address, landline);
+                Clients.add(c);
+            }
+
+            return  Clients;
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
