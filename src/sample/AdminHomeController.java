@@ -68,6 +68,15 @@ public class AdminHomeController extends Controller implements Initializable {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
+        if (e.getSource() == profile_btn) {
+            stage = (Stage) profile_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("profile.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
         if (e.getSource() == dashboard_btn) {
             stage = (Stage) dashboard_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
@@ -144,6 +153,7 @@ public class AdminHomeController extends Controller implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
             root = loader.load();
             scene = new Scene(root);
+            //scene.getStylesheets().add("/sample/resources/css/views.css");
             stage.setScene(scene);
             stage.show();
         }

@@ -49,6 +49,66 @@ public class Controller {
     @FXML
     private TextArea profile_user_ta;
 
+    //clients - create
+    @FXML
+    private DatePicker clients_date;
+    @FXML
+    private TextField clients_fn_tf;
+    @FXML
+    private TextField clients_ln_tf;
+    @FXML
+    private TextField clients_email_tf;
+    @FXML
+    private TextField clients_landline_tf;
+    @FXML
+    private TextField clients_cellphone_tf;
+    @FXML
+    private TextField clients_address_tf;
+    @FXML
+    private Button clients_submit_btn;
+    @FXML
+    private Button clients_cancel_btn;
+
+    //clients - edit
+    @FXML
+    private DatePicker edit_clients_date;
+    @FXML
+    private TextArea edit_clients_fn_tf;
+    @FXML
+    private TextArea edit_clients_ln_tf;
+    @FXML
+    private TextArea edit_clients_email_tf;
+    @FXML
+    private TextArea edit_clients_landline_tf;
+    @FXML
+    private TextArea edit_clients_cellphone_tf;
+    @FXML
+    private TextArea edit_clients_address_tf;
+    @FXML
+    private Button edit_clients_submit_btn;
+    @FXML
+    private Button edit_clients_cancel_btn;
+
+    //billings - create
+    @FXML
+    private DatePicker billings_date;
+    @FXML
+    private TextField billings_cn_tf;
+    @FXML
+    private Button billings_submit_btn;
+    @FXML
+    private Button billings_cancel_btn;
+
+    //billings - edit
+    @FXML
+    private DatePicker edit_billings_date;
+    @FXML
+    private TextArea edit_billings_cn_tf;
+    @FXML
+    private Button edit_billings_submit_btn;
+    @FXML
+    private Button edit_billings_cancel_btn;
+
     //employees - create
     @FXML
     private TextField create_fn_tf;
@@ -69,19 +129,21 @@ public class Controller {
     @FXML
     private Button employees_edit_btn;
     @FXML
-    private TextField edit_fn_tf;
+    private TextArea edit_fn_tf;
     @FXML
-    private TextField edit_ln_tf;
+    private TextArea edit_ln_tf;
     @FXML
-    private TextField edit_email_tf;
+    private TextArea edit_email_tf;
     @FXML
-    private TextField edit_user_tf;
+    private TextArea edit_user_tf;
     @FXML
     private Button edit_submit_btn;
     @FXML
     private Button edit_cancel_btn;
     @FXML
     private ChoiceBox<String> edit_role_dd;
+    @FXML
+    private Button edit_generate_btn;
 
     // settings
     @FXML
@@ -150,6 +212,46 @@ public class Controller {
                 errorAlert.setContentText("Wrong Username/Password");
                 errorAlert.showAndWait();
             }
+        }
+
+        //clients
+        if (e.getSource() == edit_clients_submit_btn) {
+            stage = (Stage) edit_clients_submit_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == edit_clients_cancel_btn) {
+            //clear fields
+            stage = (Stage) edit_clients_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        //billings
+        if (e.getSource() == edit_billings_submit_btn) {
+            stage = (Stage) edit_billings_submit_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == edit_billings_cancel_btn) {
+            //clear fields
+            stage = (Stage) edit_billings_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
 
         //employees

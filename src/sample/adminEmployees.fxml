@@ -10,22 +10,30 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EmployeesController">
     <children>
-        <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="688.0" fitWidth="892.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@resources/img/home/admin/employees.png" />
          </image>
       </ImageView>
-      <TableView fx:id="employees_tb" layoutX="87.0" layoutY="233.0" prefHeight="386.0" prefWidth="718.0">
+      <TableView fx:id="employees_tb" layoutX="86.0" layoutY="209.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="386.0" prefWidth="718.0">
         <columns>
-          <TableColumn fx:id="usernameColumn" prefWidth="75.0" text="Username" />
-          <TableColumn fx:id="emailColumn" prefWidth="75.0" text="Email" />
-            <TableColumn fx:id="firstNameColumn" prefWidth="75.0" text="First Name" />
-            <TableColumn fx:id="lastNameColumn" prefWidth="75.0" text="Last Name" />
-            <TableColumn fx:id="roleColumn" prefWidth="75.0" text="Role" />
+          <TableColumn fx:id="usernameColumn" prefWidth="123.33334350585938" text="Username" />
+            <TableColumn fx:id="firstNameColumn" prefWidth="126.6666259765625" text="First Name" />
+            <TableColumn fx:id="middleNameColumn" prefWidth="118.33331298828125" text="Middle Name" />
+            <TableColumn fx:id="lastNameColumn" minWidth="0.0" prefWidth="143.00003051757812" text="Last Name" />
+          <TableColumn fx:id="emailColumn" prefWidth="101.0" sortable="false" text="Email" />
+            <TableColumn fx:id="roleColumn" prefWidth="102.0" text="Role" />
         </columns>
       </TableView>
       <Button fx:id="employees_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button" />
-      <Button fx:id="employees_create_btn" layoutX="84.0" layoutY="183.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="163.0" text="Button" />
-      <TextField layoutX="662.0" layoutY="186.0" prefHeight="29.0" prefWidth="141.0" promptText="Search" />
+      <Button fx:id="employees_create_btn" layoutX="85.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="163.0" text="Button" />
+      <TextField layoutX="662.0" layoutY="162.0" prefHeight="29.0" prefWidth="141.0" promptText="Search" />
+      <ImageView fx:id="employees_2img" fitHeight="26.0" fitWidth="220.0" layoutX="385.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@resources/img/home/admin/employeesButtons.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="employees_remove_btn" layoutX="385.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="20.0" prefWidth="65.0" text="Button" visible="false" />
+      <Button fx:id="employees_edit_btn" layoutX="461.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false" />
    </children>
 </AnchorPane>
