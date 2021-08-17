@@ -7,30 +7,30 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="988.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AdminHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AdminHomeController">
    <children>
-      <ImageView fitHeight="988.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@resources/img/home/admin/home.png" />
          </image>
       </ImageView>
-      <Button fx:id="employees_btn" layoutX="19.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="profile_btn" layoutX="19.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="dashboard_btn" layoutX="19.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="reports_btn" layoutX="20.0" layoutY="261.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="clients_btn" layoutX="18.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="inventory_btn" layoutX="21.0" layoutY="419.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="receivables_btn" layoutX="23.0" layoutY="492.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="billings_btn" layoutX="24.0" layoutY="569.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="memos_btn" layoutX="21.0" layoutY="637.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="logout_btn" layoutX="21.0" layoutY="895.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="settings_btn" layoutX="20.0" layoutY="842.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="229.0" />
-      <Button fx:id="home_master_btn" layoutX="321.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="152.0" prefWidth="286.0" text="Button" />
-      <Button fx:id="home_transactions_btn" layoutX="633.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="152.0" prefWidth="286.0" text="Button" />
-      <Button fx:id="home_reports_btn" layoutX="944.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="152.0" prefWidth="286.0" text="Button" />
-      <Text fx:id="home_name_txt" fill="#1b1a1a" layoutX="467.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="name">
+      <Button fx:id="employees_btn" layoutX="-2.0" layoutY="494.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="profile_btn" layoutX="-2.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="dashboard_btn" layoutX="-2.0" layoutY="131.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="reports_btn" layoutX="-2.0" layoutY="181.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="clients_btn" layoutX="-3.0" layoutY="238.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="inventory_btn" layoutX="-2.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="receivables_btn" layoutX="-2.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="billings_btn" layoutX="-2.0" layoutY="393.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="memos_btn" layoutX="-3.0" layoutY="444.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0" />
+      <Button fx:id="logout_btn" layoutX="-5.0" layoutY="629.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="19.0" prefWidth="190.0" />
+      <Button fx:id="settings_btn" layoutX="-3.0" layoutY="593.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="20.0" prefWidth="190.0" />
+      <Button fx:id="dashboard_master_btn" layoutX="224.0" layoutY="95.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="107.0" prefWidth="199.0" text="Button" />
+      <Button fx:id="dashboard_transactions_btn" layoutX="441.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="107.0" prefWidth="199.0" text="Button" />
+      <Button fx:id="dashboard_reports_btn" layoutX="657.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="107.0" prefWidth="199.0" text="Button" />
+      <Text fx:id="dashboard_name_txt" fill="#1b1a1a" layoutX="325.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
-            <Font name="CeraPro-Bold" size="49.0" />
+            <Font name="CeraPro-Bold" size="35.0" />
          </font>
       </Text>
     </children>

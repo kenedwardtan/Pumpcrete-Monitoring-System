@@ -30,26 +30,40 @@ public class StaffHomeController extends Controller implements Initializable {
     public Postgresql postgresql;
     public static Connection con;
 
+    //dashboard
+    @FXML
+    private Text dashboard_name_txt;
+    @FXML
+    private Button dashboard_master_btn;
+    @FXML
+    private Button dashboard_transactions_btn;
+    @FXML
+    private Button dashboard_reports_btn;
 
     @FXML
-    private Text home_name_txt;
+    private Button profile_btn;
     @FXML
-    private Button home_master_btn;
+    private Button dashboard_btn;
     @FXML
-    private Button home_transactions_btn;
+    private Button reports_btn;
     @FXML
-    private Button home_reports_btn;
-    //settings
+    private Button clients_btn;
+    @FXML
+    private Button inventory_btn;
+    @FXML
+    private Button receivables_btn;
+    @FXML
+    private Button billings_btn;
+    @FXML
+    private Button memos_btn;
     @FXML
     private Button settings_btn;
-    //logout
     @FXML
     private Button logout_btn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        home_name_txt.setText(postgresql.getCurrUser(Controller.con));
-
+        dashboard_name_txt.setText(postgresql.getCurrUser(Controller.con));
     }
 
     @FXML
@@ -57,8 +71,77 @@ public class StaffHomeController extends Controller implements Initializable {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
+        if (e.getSource() == dashboard_btn) {
+            stage = (Stage) dashboard_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        //dashboard cards
+        if (e.getSource() == dashboard_master_btn) {
 
-        //settings
+        } else if (e.getSource() == dashboard_transactions_btn) {
+
+        } else if (e.getSource() == dashboard_reports_btn) {
+
+        }
+
+        if (e.getSource() == reports_btn) {
+            stage = (Stage) reports_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("reports.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == clients_btn) {
+            stage = (Stage) clients_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == inventory_btn) {
+            stage = (Stage) inventory_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == receivables_btn) {
+            stage = (Stage) receivables_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("receivables.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == billings_btn) {
+            stage = (Stage) billings_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == memos_btn) {
+            stage = (Stage) memos_btn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("memos.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
         if (e.getSource() == settings_btn) {
             stage = (Stage) settings_btn.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
@@ -68,9 +151,12 @@ public class StaffHomeController extends Controller implements Initializable {
             stage.show();
         }
 
-        //logout
         if (e.getSource() == logout_btn) {
             postgresql.endConnection(Controller.con);
+
+//            //Check if user is still there, should print No connected user
+//            String getUser = postgresql.getCurrUser(con);
+//            System.out.println(getUser);
 
             //put the login form here again hehe
             stage = (Stage) logout_btn.getScene().getWindow();
@@ -80,8 +166,6 @@ public class StaffHomeController extends Controller implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-
-
     }
 }
 

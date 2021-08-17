@@ -22,6 +22,11 @@
             <Font name="Work Sans Regular" size="13.0" />
          </font>
       </TextField>
+      <TextField fx:id="create_mn_tf" alignment="CENTER" layoutX="340.0" layoutY="222.0" onAction="#handleAction" prefHeight="47.0" prefWidth="209.0" promptText="Middle Name">
+         <font>
+            <Font name="Work Sans Regular" size="13.0" />
+         </font>
+      </TextField>
       <TextField fx:id="create_ln_tf" alignment="CENTER" layoutX="568.0" layoutY="223.0" onAction="#handleAction" prefHeight="47.0" prefWidth="209.0" promptText="Last Name">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
@@ -32,13 +37,11 @@
             <Font name="Work Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <TextField fx:id="create_user_tf" alignment="TOP_LEFT" layoutX="112.0" layoutY="392.0" onAction="#handleAction" prefHeight="47.0" prefWidth="329.0" promptText="Username">
+      <TextField fx:id="create_user_tf" alignment="CENTER" layoutX="112.0" layoutY="392.0" onAction="#handleAction" prefHeight="47.0" prefWidth="329.0" promptText="Username">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <Button fx:id="create_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Submit" />
-      <Button fx:id="create_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel" />
       <ChoiceBox fx:id="create_role_dd" layoutX="455.0" layoutY="392.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="324.0" value="Select Role">
          <items>
             <FXCollections fx:factory="observableArrayList">
@@ -48,10 +51,7 @@
             </FXCollections>
          </items>
       </ChoiceBox>
-      <TextField fx:id="create_mn_tf" alignment="CENTER" layoutX="340.0" layoutY="222.0" onAction="#handleAction" prefHeight="47.0" prefWidth="209.0" promptText="Middle Name">
-         <font>
-            <Font name="Work Sans Regular" size="13.0" />
-         </font>
-      </TextField>
+      <Button fx:id="create_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save" />
+      <Button fx:id="create_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel" />
    </children>
 </AnchorPane>

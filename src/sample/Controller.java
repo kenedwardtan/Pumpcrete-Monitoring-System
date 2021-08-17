@@ -39,19 +39,7 @@ public class Controller {
     @FXML
     private PasswordField login_pass_tf;
 
-    //home
-    @FXML
-    private Text home_name_txt;
-    @FXML
-    private Button home_master_btn;
-    @FXML
-    private Button home_transactions_btn;
-    @FXML
-    private Button home_reports_btn;
-
     //profile
-    @FXML
-    private Button profile_btn;
     @FXML
     private TextArea profile_fn_ta;
     @FXML
@@ -60,38 +48,6 @@ public class Controller {
     private TextArea profile_email_ta;
     @FXML
     private TextArea profile_user_ta;
-
-    //dashboard
-    @FXML
-    private Button dashboard_btn;
-
-    //reports
-    @FXML
-    private Button reports_btn;
-
-    //clients
-    @FXML
-    private Button clients_btn;
-
-    //inventory
-    @FXML
-    private Button inventory_btn;
-
-    //receivables
-    @FXML
-    private Button receivables_btn;
-
-    //billings
-    @FXML
-    private Button billings_btn;
-
-    //credit memos
-    @FXML
-    private Button memos_btn;
-
-    //employees (admin)
-    @FXML
-    private Button employees_btn;
 
     //employees - create
     @FXML
@@ -127,7 +83,7 @@ public class Controller {
     @FXML
     private ChoiceBox<String> edit_role_dd;
 
-    // settings - pass
+    // settings
     @FXML
     private PasswordField settings_oPass_tf;
     @FXML
@@ -189,15 +145,14 @@ public class Controller {
                         errorAlert.showAndWait();
                         break;
                 }
-            } else
-            {
+            } else {
                 errorAlert.setHeaderText("Login Failed");
                 errorAlert.setContentText("Wrong Username/Password");
                 errorAlert.showAndWait();
             }
-
         }
 
+        //employees
         if (e.getSource() == create_submit_btn) {
             // check if the data are empty
             if (verifyFields()) {
@@ -243,8 +198,6 @@ public class Controller {
             stage.show();
         }
 
-
-        //edit account
         if (e.getSource() == employees_edit_btn) {
             stage = (Stage) employees_edit_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("adminEmployeesEdit.fxml"));
@@ -275,60 +228,8 @@ public class Controller {
                 optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
         }
 
-        //home
-        if (e.getSource() == home_master_btn) {
-
-        } else if (e.getSource() == home_transactions_btn) {
-
-        } else if (e.getSource() == home_reports_btn) {
-
-        }
-
-        //redirect back to homepage
-        if(e.getSource() == settings_cancel_btn) {
-                String role = postgresql.getRole(con);
-                switch (role) {
-                    case "Staff":
-                    case "staff":
-                        stage = (Stage) settings_cancel_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
-                        root = loader.load();
-                        scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        break;
-                    case "Admin":
-                    case "admin":
-                        stage = (Stage) settings_cancel_btn.getScene().getWindow();
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                        root = loader.load();
-                        scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        break;
-                    case "Supervisor":
-                    case "supervisor":
-                        stage = (Stage) settings_cancel_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
-                        root = loader.load();
-                        scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                        break;
-                    default:
-                        errorAlert.setHeaderText("Input not valid");
-                        errorAlert.setContentText("Invalid Role.");
-                        errorAlert.showAndWait();
-                        break;
-                }
-
-        }
-
-        if(e.getSource() == settings_save_btn) {
-            String oldpw = settings_oPass_tf.getText();
-            String newpw = settings_nPass_tf.getText();
-
-                postgresql.editPassword(con, oldpw, newpw);
+        //settings
+        if (e.getSource() == settings_cancel_btn) {
             String role = postgresql.getRole(con);
             switch (role) {
                 case "Staff":
@@ -365,46 +266,52 @@ public class Controller {
                     break;
             }
 
-
         }
 
+        if(e.getSource() == settings_save_btn) {
+            String oldpw = settings_oPass_tf.getText();
+            String newpw = settings_nPass_tf.getText();
 
-        //dashboard
-
-        //reports
-
-        //clients
-
-        //inventory
-
-        //receivables
-
-        //billings
-        if (e.getSource() == billings_btn) {
-            stage = (Stage) billings_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            postgresql.editPassword(con, oldpw, newpw);
+            String role = postgresql.getRole(con);
+            switch (role) {
+                case "Staff":
+                case "staff":
+                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
+                case "Admin":
+                case "admin":
+                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
+                case "Supervisor":
+                case "supervisor":
+                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    break;
+                default:
+                    errorAlert.setHeaderText("Input not valid");
+                    errorAlert.setContentText("Invalid Role.");
+                    errorAlert.showAndWait();
+                    break;
+            }
         }
-
-        //credit memos
-        if (e.getSource() == memos_btn) {
-            stage = (Stage) memos_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("memos.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-
-
-
     }
 
     public boolean verifyFields () {
-
         String fname = create_fn_tf.getText();
         String lname = create_ln_tf.getText();
         String email = create_email_tf.getText();
@@ -444,6 +351,4 @@ public class Controller {
             return false;
         }
     }
-
-
 }

@@ -44,6 +44,8 @@ public class EmployeesController extends Controller implements Initializable {
     private TableColumn<User, String> roleColumn;
 
     @FXML
+    private Button employees_delete_btn;
+    @FXML
     private Button employees_create_btn;
     @FXML
     private Button employees_back_btn;
@@ -60,7 +62,6 @@ public class EmployeesController extends Controller implements Initializable {
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("first_name"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("last_name"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
-
     }
 
     @FXML
@@ -68,9 +69,12 @@ public class EmployeesController extends Controller implements Initializable {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
-
+        //delete selected rows
+        if (e.getSource() == employees_delete_btn) {
+            employees_tb.getItems().removeAll(employees_tb.getSelectionModel().getSelectedItem());
+            //*code to delete from db as well*
+        }
         //create account
-
         if (e.getSource() == employees_create_btn) {
             stage = (Stage) employees_create_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("adminEmployeesCreate.fxml"));
@@ -78,9 +82,9 @@ public class EmployeesController extends Controller implements Initializable {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
         }
-        if (e.getSource() == employees_back_btn){
+        //back to dashboard
+        if (e.getSource() == employees_back_btn) {
             stage = (Stage) employees_back_btn.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
             root = loader.load();
@@ -88,7 +92,6 @@ public class EmployeesController extends Controller implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
-
     }
 }
 
