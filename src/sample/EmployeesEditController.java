@@ -52,6 +52,7 @@ public class EmployeesEditController extends Controller implements Initializable
     private Button edit_generate_btn;
     @FXML
     private JOptionPane optionPane;
+    private String oldUname;
 
     private static ObservableList<User> u;
 
@@ -69,6 +70,7 @@ public class EmployeesEditController extends Controller implements Initializable
         edit_ln_tf.setText(u.get(0).first_name.get());
         edit_email_tf.setText(u.get(0).email.get());
         edit_user_tf.setText(u.get(0).username.get());
+        this.oldUname = u.get(0).username.get();
         edit_role_dd.setValue(u.get(0).role.get());
 
     }
@@ -80,19 +82,19 @@ public class EmployeesEditController extends Controller implements Initializable
         con = Controller.con;
 
         if (e.getSource() == edit_submit_btn) {
-            String fname = edit_fn_tf.getText();
-            String lname = edit_ln_tf.getText();
-            String mname = edit_mn_tf.getText();
-            String email = edit_email_tf.getText();
-            String uname = edit_user_tf.getText();
-            String role = edit_role_dd.getValue();
+            String fname = edit_fn_tf.getText().trim();
+            String lname = edit_ln_tf.getText().trim();
+            String mname = edit_mn_tf.getText().trim();
+            String email = edit_email_tf.getText().trim();
+            String uname = edit_user_tf.getText().trim();
+            String role = edit_role_dd.getValue().trim();
 
             if (verifyEditFields()) {
-                if (!postgresql.checkUsername(con, uname)) {
+                if (!postgresql.checkUsername(con, uname) || uname.equals(this.oldUname)) {
                     //checks the format of the email
                     if (EmailVerification()) {
                         //creates the user and inserts into database
-                        postgresql.editUser(con, fname.trim(), mname.trim(), lname.trim(), email.trim(), uname.trim(), role.trim());
+                        postgresql.editUser(con, uname, fname, mname, lname, email, role);
 
                         stage = (Stage) edit_submit_btn.getScene().getWindow();
                         loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));

@@ -33,6 +33,10 @@ public class User {
               return first_name.get();
        }
 
+       public String getMiddle_name() {
+              return middle_name.get();
+       }
+
        public String getLast_name() {
               return last_name.get();
        }

@@ -281,7 +281,7 @@ public class Postgresql {
 
     public void editUser (Connection con, String uname, String fname, String mname, String lname, String email, String role){
 
-        String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ? WHERE uname = ?";
+        String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ? WHERE username = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
