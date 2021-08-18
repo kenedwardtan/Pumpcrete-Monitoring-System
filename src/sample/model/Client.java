@@ -3,35 +3,33 @@ package sample.model;
 import javafx.beans.property.*;
 
 public class Client {
+    public SimpleIntegerProperty id;
     public SimpleStringProperty position;
-    public SimpleStringProperty fname;
-    public SimpleStringProperty lname;
+    public SimpleStringProperty name;
     public SimpleIntegerProperty cpnum;
     public SimpleStringProperty email;
     public SimpleStringProperty address;
     public SimpleIntegerProperty landline;
+    public SimpleStringProperty latest_date;
 
-    public Client(String position, String fname, String lname, int cpnum, String email, String address, int landline){
+    public Client(int id, String position, String name,int cpnum, String email, String address, int landline, String date){
+        this.id = new SimpleIntegerProperty(id);
         this.position = new SimpleStringProperty(position);
-        this.fname = new SimpleStringProperty(fname);
-        this.lname = new SimpleStringProperty(lname);
+        this.name = new SimpleStringProperty(name);
         this.cpnum = new SimpleIntegerProperty(cpnum);
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
         this.landline = new SimpleIntegerProperty(landline);
+        this.latest_date = new SimpleStringProperty(date);
     }
 
     public String getPosition() {
         return position.get();
     }
 
-    public String getFname() {
-        return fname.get();
-    }
+    public String getName() {return name.get();}
 
-    public String getLname() {
-        return lname.get();
-    }
+    public int getID() { return  id.get();}
 
     public int getCpnum() {
         return cpnum.get();
@@ -48,4 +46,7 @@ public class Client {
     public int getLandline() {
         return landline.get();
     }
+
+
+    public String getLatestDocDate(){return latest_date.get();}
 }

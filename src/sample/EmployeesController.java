@@ -64,7 +64,7 @@ public class EmployeesController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        employees_tb.setItems(postgresql.getAllUsers());
+        employees_tb.setItems(postgresql.getAllUsers(Controller.con));
 
         usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));

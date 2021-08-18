@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sample.model.Billing;
 import sample.model.Postgresql;
 import sample.model.User;
 
@@ -20,9 +21,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class BillingsController extends Controller implements Initializable {
     private Stage stage;
@@ -35,13 +36,12 @@ public class BillingsController extends Controller implements Initializable {
     @FXML
     private TableView billings_tb;
     @FXML
-    private TableColumn<User, String> billNumColumn;
+    private TableColumn<Billing, Integer> billNumColumn;
     @FXML
-    private TableColumn<User, String> dateColumn;
+    private TableColumn<Billing, String> dateColumn;
     @FXML
-    private TableColumn<User, String> clientNameColumn;
-    @FXML
-    private TableColumn<User, String> emailColumn;
+    private TableColumn<Billing, String> clientNameColumn;
+
 
     @FXML
     private Button billings_remove_btn;
@@ -60,14 +60,17 @@ public class BillingsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        billings_tb.setItems(postgresql.getAllUsers());
 
-        billNumColumn.setCellValueFactory(new PropertyValueFactory<User, String>("bill_num"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-        clientNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("client_name"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<User, String>("date"));
+        postgresql.getAllBillings(Controller.con);
+           // billings_tb.setItems(postgresql.getAllBillings(Controller.con));
+//
+//            billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Integer>("bill_num"));
+//            clientNameColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("client_name"));
+//            dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("date"));
+//
+//            billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
     }
 
     @FXML
@@ -91,7 +94,7 @@ public class BillingsController extends Controller implements Initializable {
             //*code to delete from db as well*
         }
 
-        //add client
+        //add billing
         if (e.getSource() == billings_create_btn) {
             stage = (Stage) billings_create_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("billingsCreate.fxml"));

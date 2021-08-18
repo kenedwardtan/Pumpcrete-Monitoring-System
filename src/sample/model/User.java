@@ -6,6 +6,7 @@ public class User {
        public SimpleStringProperty username;
        public SimpleStringProperty email;
        public SimpleStringProperty first_name;
+       //public SimpleStringProperty middle_name;
        public SimpleStringProperty last_name;
        public SimpleStringProperty password;
        public SimpleStringProperty role;

@@ -18,8 +18,7 @@
         <TableView fx:id="clients_tb" layoutX="87.0" layoutY="209.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="349.0" prefWidth="718.0">
             <columns>
                 <TableColumn fx:id="IDColumn" prefWidth="103.0" text="ID" />
-                <TableColumn fx:id="firstNameColumn" prefWidth="153.0" text="First Name" />
-                <TableColumn fx:id="lastNameColumn" minWidth="0.0" prefWidth="151.0" text="Last Name" />
+                <TableColumn fx:id="nameColumn" prefWidth="153.0" text="Name" />
                 <TableColumn fx:id="dateColumn" prefWidth="145.0" text="Date of Document" />
                 <TableColumn fx:id="emailColumn" prefWidth="165.0" sortable="false" text="Email" />
             </columns>
@@ -27,8 +26,7 @@
       <TableView fx:id="clients_details_tb" layoutX="87.0" layoutY="575.0" prefHeight="53.0" prefWidth="718.0">
          <columns>
             <TableColumn fx:id="IDColumn1" prefWidth="56.0" text="ID" />
-            <TableColumn fx:id="firstNameColumn1" prefWidth="111.0" text="First Name" />
-            <TableColumn fx:id="lastNameColumn1" minWidth="0.0" prefWidth="106.0" text="Last Name" />
+            <TableColumn fx:id="nameColumn1" prefWidth="111.0" text="First Name" />
             <TableColumn fx:id="dateColumn1" prefWidth="112.0" text="Date of Document" />
             <TableColumn fx:id="positionColumn1" prefWidth="67.0" text="Position" />
             <TableColumn fx:id="addressColumn1" minWidth="2.0" prefWidth="68.0" text="Address" />

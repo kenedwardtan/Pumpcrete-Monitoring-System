@@ -37,12 +37,12 @@
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
         </TextArea>
-        <TextArea fx:id="edit_user_tf" layoutX="112.0" layoutY="392.0" prefHeight="47.0" prefWidth="329.0">
+        <TextArea fx:id="edit_user_tf" layoutX="112.0" layoutY="392.0" prefHeight="47.0" prefWidth="280.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
         </TextArea>
-        <ChoiceBox fx:id="edit_role_dd" layoutX="455.0" layoutY="392.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="324.0" value="Select Role">
+        <ChoiceBox fx:id="edit_role_dd" layoutX="405.0" layoutY="391.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="181.0" value="Select Role">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Admin" />
@@ -53,5 +53,6 @@
         </ChoiceBox>
         <Button fx:id="edit_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save" />
         <Button fx:id="edit_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel" />
+      <Button fx:id="edit_generate_btn" layoutX="597.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleAction" prefHeight="51.0" prefWidth="182.0" text="Generate Password" />
     </children>
 </AnchorPane>

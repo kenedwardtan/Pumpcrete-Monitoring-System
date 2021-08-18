@@ -29,7 +29,7 @@ public class Postgresql {
 
         try
            {
-               Connection con = DriverManager.getConnection(url, u_username,u_password);
+               Connection con = DriverManager.getConnection(url,u_username, u_password);
                 return con;
         } catch (SQLException ex) {
 
@@ -142,14 +142,11 @@ public class Postgresql {
         }
     }
 
-    public static ObservableList<User> getAllUsers()
+    public static ObservableList<User> getAllUsers(Connection con)
     {
-        String url = "jdbc:postgresql:Pumpcrete";
-
         String query = "SELECT * FROM users";
-
-        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
-            PreparedStatement pst = con.prepareStatement(query)){
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
             ObservableList<User> u_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
@@ -175,11 +172,9 @@ public class Postgresql {
         }
     }
 
-    //To limit access to editing account details
+
     public static String getRole(Connection con)
     {
-        String url = "jdbc:postgresql:Pumpcrete";
-
         String query = "SELECT role FROM users WHERE username = ?";
 
         try {
@@ -365,15 +360,12 @@ public class Postgresql {
         }
     }
 
-    public void deleteClient (int c_id){
+    public void deleteClient (Connection connection, int c_id){
 
         String query = "DELETE FROM client WHERE client_id = ?";
 
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, c_id);
 
             ps.executeUpdate();
@@ -384,81 +376,74 @@ public class Postgresql {
     }
 
 
-    public Client getClient (int c_id){
+    public ObservableList<Client> getClient (Connection connection, int c_id){
+
         String query = "SELECT * FROM client WHERE client_id = ?";
+        ObservableList<Client> c_result = FXCollections.observableArrayList();
 
-        String url = "jdbc:postgresql:Pumpcrete";
+        try {
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setInt(1, c_id);
+                ResultSet results = ps.executeQuery();
 
-            ps.setInt(1, c_id);
-            ResultSet results = ps.executeQuery();
 
-            String position = results.getString("position");
+                query = "SELECT * FROM contact_details WHERE contact_id = ?";
+                System.out.println(query);
+                ps.setInt(1, c_id);
+                ResultSet result = ps.executeQuery();
 
-            query = "SELECT * FROM contact_details WHERE contact_id = ?";
+                int id = result.getInt("client_id");
+                String name = result.getString("client_name");
+                String position = result.getString("client_position");
+                int cpnum = result.getInt("client_cellphone");
+                int landline = result.getInt("client_landline");
+                String email = result.getString("client_email");
+                String address = result.getString("client_address");
+                String date = result.getString("latest_doc_date");
 
-            ps.setInt(1, c_id);
-            ResultSet result = ps.executeQuery();
+                Client c = new Client(id, position, name, cpnum, email, address, landline, date);
+                c_result.add(c);
+                return c_result;
+            } catch (SQLException ex) {
 
-            String fname = results.getString("first_name");
-            String lname = results.getString("last_name");
-            int cpnum = results.getInt("cellphone_num");
-            String email = results.getString("email");
-            String address = results.getString("c_address");
-            int landline = results.getInt("landline_num");
-
-            Client c = new Client(position, fname, lname, cpnum, email, address, landline);
-            return c;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+                Logger lgr = Logger.getLogger(Postgresql.class.getName());
+                lgr.log(Level.SEVERE, ex.getMessage(), ex);
+                return null;
+            }
     }
 
-    public ObservableList<Client> getAllClients(){
-        String query = "SELECT * FROM clients";
 
-        String url = "jdbc:postgresql:Pumpcrete";
-        ObservableList<Billing> billings = FXCollections.observableArrayList();
+    public static ObservableList<Client> getAllClients(Connection con)
+    {
+        String query = "SELECT * FROM client";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            ObservableList<Client> c_result = FXCollections.observableArrayList();
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+                int id = result.getInt("client_id");
+                String name = result.getString("client_name");
+                String position = result.getString("client_position");
+                int cpnum = result.getInt("client_cellphone");
+                int landline = result.getInt("client_landline");
+                String email = result.getString("client_email");
+                String address = result.getString("client_address");
+                String date = result.getString("latest_doc_date");
 
-            ObservableList<Client> Clients = FXCollections.observableArrayList();
-
-            ResultSet results = ps.executeQuery();
-            ArrayList<String> positions = new ArrayList<String>();
-
-            while (results.next()) {
-                positions.add(results.getString("position"));
+                Client c = new Client(id, position, name, cpnum, email, address, landline, date);
+                c_result.add(c);
             }
 
-            query = "SELECT * FROM contact_details";
-
-            results = ps.executeQuery();
-            Client c;
-            int i = 0;
-            while (results.next()) {
-                String fname = results.getString("first_name");
-                String lname = results.getString("last_name");
-                int cpnum = results.getInt("cellphone_num");
-                String email = results.getString("email");
-                String address = results.getString("c_address");
-                int landline = results.getInt("landline_num");
-
-                c = new Client(positions.get(i++), fname, lname, cpnum, email, address, landline);
-                Clients.add(c);
-            }
-
-            return  Clients;
+            return c_result;
 
         } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
         }
-        return null;
     }
 
 
@@ -567,104 +552,93 @@ public class Postgresql {
         }
     }
 
-    public Billing getBilling(int billing_id) {
-        String query = "SELECT * FROM billings WHERE billing_id = ?";
-        String url = "jdbc:postgresql:Pumpcrete";
+//    public Billing getBilling(Connection conecttion, int billing_id) {
+//        String query = "SELECT * FROM billings WHERE billing_id = ?";
+//        String url = "jdbc:postgresql:Pumpcrete";
+//
+//        Billing b;
+//
+//        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+//             PreparedStatement ps = connection.prepareStatement(query)) {
+//
+//            ResultSet results = ps.executeQuery();
+//
+//            int id = results.getInt("bill_no");
+//            int client_id = results.getInt("client_id");
+//            String project_name = results.getString("project_name");
+//            String project_add = results.getString("project_add");
+//            Date date_used = results.getDate("date_used");
+//            int PSC_id = results.getInt("PSC_id");
+//            String concrete_struct = results.getString("concrete_struct");
+//            int floor = results.getInt("floor");
+//            float quantity = results.getFloat("quantity");
+//            float unit_price = results.getFloat("unit_price");
+//            float total = results.getFloat("total");
+//            float grand_total = results.getFloat("grand_total");
+//            boolean posted = results.getBoolean("posted");
+//
+//            if (posted){
+//                String checked_by = results.getString("checked_by");
+//                String approved_by = results.getString("approved_by");
+//                String posted_by = results.getString("posted_by");
+//                String received_by = results.getString("received_by");
+//
+//                b = new Billing(client_id, project_name, project_add,
+//                        date_used.toLocalDate(), PSC_id, concrete_struct,
+//                        floor, quantity, unit_price, total, grand_total, posted,
+//                        checked_by, approved_by, posted_by, received_by, id);
+//            }
+//            else{
+//                b = new Billing(client_id, project_name, project_add,
+//                        date_used.toLocalDate(), PSC_id, concrete_struct,
+//                        floor, quantity, unit_price, total, grand_total, posted,id);
+//            }
+//
+//            return b;
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return null;
+//    }
 
-        Billing b;
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ResultSet results = ps.executeQuery();
-
-            int client_id = results.getInt("client_id");
-            String project_name = results.getString("project_name");
-            String project_add = results.getString("project_add");
-            Date date_used = results.getDate("date_used");
-            int PSC_id = results.getInt("PSC_id");
-            String concrete_struct = results.getString("concrete_struct");
-            int floor = results.getInt("floor");
-            float quantity = results.getFloat("quantity");
-            float unit_price = results.getFloat("unit_price");
-            float total = results.getFloat("total");
-            float grand_total = results.getFloat("grand_total");
-            boolean posted = results.getBoolean("posted");
-
-            if (posted){
-                String checked_by = results.getString("checked_by");
-                String approved_by = results.getString("approved_by");
-                String posted_by = results.getString("posted_by");
-                String received_by = results.getString("received_by");
-
-                b = new Billing(client_id, project_name, project_add,
-                        date_used.toLocalDate(), PSC_id, concrete_struct,
-                        floor, quantity, unit_price, total, grand_total, posted,
-                        checked_by, approved_by, posted_by, received_by);
-            }
-            else{
-                b = new Billing(client_id, project_name, project_add,
-                        date_used.toLocalDate(), PSC_id, concrete_struct,
-                        floor, quantity, unit_price, total, grand_total, posted);
-            }
-
-            return b;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public ObservableList<Billing> getAllBillings() {
+    public ObservableList<Billing> getAllBillings(Connection con) {
         String query = "SELECT * FROM billings";
 
-        String url = "jdbc:postgresql:Pumpcrete";
         ObservableList<Billing> billings = FXCollections.observableArrayList();
-
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
+        Billing b ;
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
             ResultSet results = ps.executeQuery();
 
             while (results.next()){
-                Billing b;
-
+               // int id = results.getInt("bill_no");
                 int client_id = results.getInt("client_id");
                 String project_name = results.getString("project_name");
                 String project_add = results.getString("project_add");
-                Date date_used = results.getDate("date_used");
-                int PSC_id = results.getInt("PSC_id");
-                String concrete_struct = results.getString("concrete_struct");
-                int floor = results.getInt("floor");
-                float quantity = results.getFloat("quantity");
-                float unit_price = results.getFloat("unit_price");
-                float total = results.getFloat("total");
-                float grand_total = results.getFloat("grand_total");
-                boolean posted = results.getBoolean("posted");
+                //Date date_doc = results.getDate("date_doc");
+                //Date date_used = results.getDate("date_used");
+//                int PSC_id = results.getInt("PSC_id");
+//                String concrete_struct = results.getString("concrete_struct");
+//                int floor = results.getInt("floor");
+//                float quantity = results.getFloat("quantity");
+//                float unit_price = results.getFloat("unit_price");
+//                float total = results.getFloat("total");
+//                float grand_total = results.getFloat("grand_total");
+//                boolean posted = results.getBoolean("posted");
+//                String checked_by = results.getString("checked_by");
+//                String approved_by = results.getString("approved_by");
+//                String posted_by = results.getString("posted_by");
+//                String received_by = results.getString("received_by");
 
-                if (posted){
-                    String checked_by = results.getString("checked_by");
-                    String approved_by = results.getString("approved_by");
-                    String posted_by = results.getString("posted_by");
-                    String received_by = results.getString("received_by");
-
-                    b = new Billing(client_id, project_name, project_add,
-                            date_used.toLocalDate(), PSC_id, concrete_struct,
-                            floor, quantity, unit_price, total, grand_total, posted,
-                            checked_by, approved_by, posted_by, received_by);
-                }
-                else{
-                    b = new Billing(client_id, project_name, project_add,
-                            date_used.toLocalDate(), PSC_id, concrete_struct,
-                            floor, quantity, unit_price, total, grand_total, posted);
-                }
-
+                b = new Billing(client_id, project_name, project_add);
                 billings.add(b);
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            return billings;
         }
         return billings;
     }
