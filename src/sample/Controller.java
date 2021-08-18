@@ -310,7 +310,7 @@ public class Controller {
                     if (EmailVerification(email)) {
                         //creates the user and inserts into database
                         String passsword = postgresql.createUser(con, fname.trim(), mname.trim(), lname.trim(), email.trim(), uname.trim(), role.trim());
-                        String message ="Username: " + uname +"\nPassword: " + passsword;
+                        String message ="Username: " + uname.trim() +"\nPassword: " + passsword.trim();
                         optionPane.showMessageDialog(null, message, "User Created!", 1);
                         //clear fields
 
@@ -483,7 +483,7 @@ public class Controller {
         Pattern pattern = Pattern.compile(regex);
 
         //searching for occurrences of regex
-        Matcher matcher = pattern.matcher(email);
+        Matcher matcher = pattern.matcher(email.trim());
 
         if (matcher.matches()) {
             System.out.println("Email format is correct.");
