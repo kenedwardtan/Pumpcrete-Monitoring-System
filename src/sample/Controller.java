@@ -14,7 +14,9 @@ import sample.model.Postgresql;
 import sample.model.User;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -57,6 +59,8 @@ public class Controller {
     @FXML
     private TextField clients_ln_tf;
     @FXML
+    private TextField clients_position_tf;
+    @FXML
     private TextField clients_email_tf;
     @FXML
     private TextField clients_landline_tf;
@@ -90,6 +94,7 @@ public class Controller {
     private Button edit_clients_cancel_btn;
 
     //billings - create
+
     @FXML
     private DatePicker billings_date;
     @FXML
@@ -113,6 +118,8 @@ public class Controller {
     @FXML
     private TextField create_fn_tf;
     @FXML
+    private TextField create_mn_tf;
+    @FXML
     private TextField create_ln_tf;
     @FXML
     private TextField create_email_tf;
@@ -128,22 +135,6 @@ public class Controller {
     //employees - edit
     @FXML
     private Button employees_edit_btn;
-    @FXML
-    private TextArea edit_fn_tf;
-    @FXML
-    private TextArea edit_ln_tf;
-    @FXML
-    private TextArea edit_email_tf;
-    @FXML
-    private TextArea edit_user_tf;
-    @FXML
-    private Button edit_submit_btn;
-    @FXML
-    private Button edit_cancel_btn;
-    @FXML
-    private ChoiceBox<String> edit_role_dd;
-    @FXML
-    private Button edit_generate_btn;
 
     // settings
     @FXML
@@ -157,6 +148,7 @@ public class Controller {
 
 	@FXML
 	private JOptionPane optionPane;
+
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
@@ -214,8 +206,52 @@ public class Controller {
             }
         }
 
+
         //clients
+        if (e.getSource() == clients_submit_btn) {
+
+            if (verifyCreateClient()) {
+                // retrieve inputs
+                String fname = clients_fn_tf.getText();
+                String lname = clients_ln_tf.getText();
+                String position = clients_position_tf.getText();
+                String address = clients_address_tf.getText();
+                String email = clients_email_tf.getText();
+                int landline = Integer.parseInt(clients_landline_tf.getText());
+                int cellphone = Integer.parseInt(clients_cellphone_tf.getText());
+
+
+                // check if the username already exists
+                String fullname =  fname.trim() + " " + lname.trim();
+                if (!postgresql.checkName(con, fullname)) {
+
+                    //checks the format of the email
+                    if (EmailVerification(email)) {
+                        if (verifyClientNumbers()) {
+                            //creates the user and inserts into database
+                            postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline, cellphone, email.trim());
+                            String message = "Name: " + fullname;
+                            optionPane.showMessageDialog(null, message, "Client Created!", 1);
+                            //clear fields
+
+                            stage = (Stage) clients_submit_btn.getScene().getWindow();
+                            loader = new FXMLLoader(getClass().getResource("clientsCreate.fxml"));
+                            root = loader.load();
+                            scene = new Scene(root);
+                            stage.setScene(scene);
+                            stage.show();
+                        }
+                        else
+                            optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
+                    }
+                } else
+                    optionPane.showMessageDialog(null, "Client name already exists!", "Client name error", 2);
+            }
+
+        }
+
         if (e.getSource() == edit_clients_submit_btn) {
+
             stage = (Stage) edit_clients_submit_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("clients.fxml"));
             root = loader.load();
@@ -257,22 +293,23 @@ public class Controller {
         //employees
         if (e.getSource() == create_submit_btn) {
             // check if the data are empty
-            if (verifyFields()) {
+            if (verifyCreateFields()) {
                 // retrieve inputs
                 String fname = create_fn_tf.getText();
                 String lname = create_ln_tf.getText();
+                String mname = create_mn_tf.getText();
                 String email = create_email_tf.getText();
                 String uname = create_user_tf.getText();
                 String role = create_role_dd.getValue();
 
 
                 // check if the username already exists
-                if (!postgresql.checkUsername(uname)) {
+                if (!postgresql.checkUsername(con, uname)) {
 
                     //checks the format of the email
-                    if (EmailVerification()) {
+                    if (EmailVerification(email)) {
                         //creates the user and inserts into database
-                        String passsword = postgresql.createUser(con, fname, lname, email, uname, role);
+                        String passsword = postgresql.createUser(con, fname.trim(), mname.trim(), lname.trim(), email.trim(), uname.trim(), role.trim());
                         String message ="Username: " + uname +"\nPassword: " + passsword;
                         optionPane.showMessageDialog(null, message, "User Created!", 1);
                         //clear fields
@@ -298,36 +335,6 @@ public class Controller {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
-
-        if (e.getSource() == employees_edit_btn) {
-            stage = (Stage) employees_edit_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("adminEmployeesEdit.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-            String fname = edit_fn_tf.getText();
-            String lname = edit_ln_tf.getText();
-            String email = edit_email_tf.getText();
-            String uname = edit_user_tf.getText();
-            String role = edit_role_dd.getValue();
-            if (!postgresql.checkUsername(uname)) {
-                //checks the format of the email
-                if (EmailVerification()) {
-                    //creates the user and inserts into database
-                    postgresql.editUser(fname, lname, email, uname, role);
-
-                    stage = (Stage) create_submit_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-            } else
-                optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
         }
 
         //settings
@@ -412,16 +419,50 @@ public class Controller {
             }
         }
     }
+    public boolean verifyCreateClient () {
+        String fname = clients_fn_tf.getText();
+        String lname = clients_ln_tf.getText();
+        String position = clients_position_tf.getText();
+        String email = clients_email_tf.getText();
+        String address = clients_address_tf.getText();
+        String landline = clients_landline_tf.getText();
+        String cpnum = clients_cellphone_tf.getText();
+        // check empty fields
+        if (fname.trim().equals("") || position.trim().equals("") || lname.trim().equals("") || email.trim().equals("")
+                || address.trim().equals("") || landline.trim().equals("") || cpnum.trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
+            return false;
+        }
 
-    public boolean verifyFields () {
+        // if everything is ok
+        else {
+            System.out.println("All fields are field!");
+            return true;
+        }
+    }
+
+    public boolean verifyClientNumbers () {
+        if (clients_landline_tf.getText().matches("\\d{8}") && clients_cellphone_tf.getText().matches("\\d{8}|\\d{11}")){
+
+            System.out.println("Its Valid Number");
+            return true;
+        }else {
+
+            System.out.println("Invalid Input..!");
+            return false;
+        }
+    }
+
+    public boolean verifyCreateFields () {
         String fname = create_fn_tf.getText();
         String lname = create_ln_tf.getText();
+        String mname = create_mn_tf.getText();
         String email = create_email_tf.getText();
         String uname = create_user_tf.getText();
         String role = create_role_dd.getValue();
 
         // check empty fields
-        if (fname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
+        if (fname.trim().equals("") || mname.trim().equals("") || lname.trim().equals("") || uname.trim().equals("")
                 || email.trim().equals("") || role.trim().equals("Select Role")) {
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
@@ -435,9 +476,8 @@ public class Controller {
     }
 
     //verify email format
-    public boolean EmailVerification () {
-        String regex = "^(.+)@(.+)$";
-        String email = create_email_tf.getText();
+    public boolean EmailVerification (String email) {
+        String regex = "^(.+)@(.+).com$";
 
         //initialize the Pattern object
         Pattern pattern = Pattern.compile(regex);
@@ -449,7 +489,7 @@ public class Controller {
             System.out.println("Email format is correct.");
             return true;
         } else {
-            JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!", "Invalid Email", 2);
+            JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!\n(e.g. name@brand.com)", "Invalid Email", 2);
             return false;
         }
     }

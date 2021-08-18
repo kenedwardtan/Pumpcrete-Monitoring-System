@@ -69,33 +69,30 @@ public class Postgresql {
     }
 
     //Getting info of current user
-    public static User getUser(Connection connection)
+    public ObservableList<User> getUser(Connection connection, String uname)
     {
+        System.out.println(" Inside get user!");
         String query = "SELECT * FROM users WHERE username = ?";
         try {
-           String u_username = getCurrUser(connection);
+            System.out.println("Query executed!");
             PreparedStatement pst = connection.prepareStatement(query);
-            pst.setString(1, u_username);
-            User u_result;
+            pst.setString(1, uname);
+            ObservableList<User> u_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
+                System.out.println("result found!");
                 String username = result.getString("username");
                 String email = result.getString("email");
                 String first_name = result.getString("first_name");
+                String middle_name = result.getString("middle_name");
                 String last_name= result.getString("last_name");
                 String password = result.getString("password");
                 String role = result.getString("role");
 
-                u_result= new User(username,email,first_name,last_name,password,role);
+                User u = new User(username,email,first_name, middle_name, last_name,password,role);
+                u_result.add(u);
 
-                if(u_username.contentEquals(u_result.getUsername())){
-                    System.out.println("Loading of Info Successful.");
-                    return u_result;
-                }
-                else{
-                    System.out.println("Loading of Info Failed.");
-                    return null;
-                }
+                return u_result;
 
             }
 
@@ -124,11 +121,12 @@ public class Postgresql {
                 String username = result.getString("username");
                 String email = result.getString("email");
                 String first_name = result.getString("first_name");
+                String middle_name = result.getString("middle_name");
                 String last_name= result.getString("last_name");
                 String password = result.getString("password");
                 String role = result.getString("role");
 
-                User u = new User(username,email,first_name,last_name,password,role);
+                User u = new User(username,email,first_name, middle_name, last_name,password,role);
                 u_result.add(u);
             }
 
@@ -154,11 +152,12 @@ public class Postgresql {
                 String username = result.getString("username");
                 String email = result.getString("email");
                 String first_name = result.getString("first_name");
+                String middle_name = result.getString("middle_name");
                 String last_name= result.getString("last_name");
                 String password = result.getString("password");
                 String role = result.getString("role");
 
-                User u = new User(username,email,first_name,last_name,password,role);
+                User u = new User(username,email,first_name, middle_name, last_name,password,role);
                 u_result.add(u);
             }
 
@@ -227,7 +226,7 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static String createUser (Connection connection, String fname, String lname, String email, String uname, String role) {
+    public static String createUser (Connection connection, String fname, String mname, String lname, String email, String uname, String role) {
 
         Random r = new Random();
         String u_password = "password" + Integer.toString(r.nextInt(9999) + 1);
@@ -280,41 +279,45 @@ public class Postgresql {
     }
 
 
-	public void editUser (String fname, String lname, String uname, String email, String role){
+    public void editUser (Connection con, String uname, String fname, String mname, String lname, String email, String role){
 
-        String query = "UPDATE users SET first_name = ?, last_name = ?, uname = ?, email = ?, role = ? WHERE u_id = ?";
+        String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ? WHERE uname = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
 
             ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setString(3, uname);
+            ps.setString(2, mname);
+            ps.setString(3, lname);
             ps.setString(4, email);
             ps.setString(5, role);
+            ps.setString(6, uname);
 
             ps.executeUpdate();
+
+            System.out.println("Edit success!");
 
 		} catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
 	}
 
-    public void deleteUser (int u_id){
-        boolean username_exist = false;
+    public void deleteUser (Connection connection, String uname){
 
-        String query = "DELETE FROM users WHERE  u_id = ?";
+        String query = "DELETE FROM users WHERE username = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setInt(1, u_id);
+            ps.setString(1, uname);
 
             ps.executeUpdate();
+
+            System.out.println("User deleted!");
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
@@ -323,16 +326,23 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static void createClient (String position){
+    public static void createClient (Connection connection, String name, String position,
+                                     String address, int landline, int cpnum, String email){
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        String query = "INSERT INTO client(position) VALUES (?)";
+        String query = "INSERT INTO client(client_name, client_position, client_address," +
+                "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?)";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try{
+            PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1, position);
+            ps.setString(1, name);
+            ps.setString(2, position);
+            ps.setString(3, address);
+            ps.setInt(4, landline);
+            ps.setInt(5, cpnum);
+            ps.setString(6, email);
 
             ps.executeUpdate();
 
@@ -342,14 +352,15 @@ public class Postgresql {
         }
     }
 
-    public void editClient (int c_id, String position){
+    public void editClient (Connection connection, int c_id, String name, String position,
+                            String address, int landline, int cpnum, String email){
 
         String query = "UPDATE client SET position = ? WHERE client_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try{
+            PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, position);
 
@@ -363,6 +374,8 @@ public class Postgresql {
     public void deleteClient (Connection connection, int c_id){
 
         String query = "DELETE FROM client WHERE client_id = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -449,21 +462,16 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static void createContact (String fname, String lname, int cpnum, String email, String address, int landline){
+    public static void createContact (Connection connection, String fname, String lname, int cpnum, String email, String address, int landline){
 
         String url = "jdbc:postgresql:Pumpcrete";
 
         String query = "INSERT INTO contact_details(first_name, last_name, landline_num, cellphone_num, email, c_address) VALUES (?,?,?,?,?,?)";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setInt(3, landline);
-            ps.setInt(4, cpnum);
-            ps.setString(5, email);
-            ps.setString(6, address);
+
 
             ps.executeUpdate();
 
@@ -473,14 +481,14 @@ public class Postgresql {
         }
     }
 
-    public void editContact(int u_id, String fname, String lname, int cpnum, String email, String address, int landline){
+    public void editContact(Connection connection, int u_id, String fname, String lname, int cpnum, String email, String address, int landline){
 
         String query = "UPDATE contact_details SET first_name = ?, last_name = ?, landline_num = ?, cellphone_num = ?, email = ?, c_address = ? WHERE contact_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, fname);
             ps.setString(2, lname);
@@ -496,7 +504,7 @@ public class Postgresql {
         }
     }
 
-    public void deleteContact (int c_id){
+    public void deleteContact (int c_id) {
 
         String query = "DELETE FROM contact_details WHERE contact_id = ?";
 
@@ -516,9 +524,9 @@ public class Postgresql {
 
 
 
-    public void addBilling (String client_name, String project_name, String project_add, Date date_used,
-                            int PSC_id, String concrete_struct, int floor, float quantity, float unit_price,
-                            float total, float grand_total){
+    public void addBilling (Connection connection, String client_name, String project_name, String project_add,
+                            Date date_used, int PSC_id, String concrete_struct, int floor, float quantity,
+                            float unit_price, float total, float grand_total){
 
         String query = "INSERT INTO billings(date_doc, client_name, project_name, project_add, date_used, PSC_id, concrete_struct, " +
                 "floor, quantity, unit_price, total, grand_total, posted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -528,8 +536,8 @@ public class Postgresql {
         LocalDate now = LocalDate.now();
         Date date = Date.valueOf(now);
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setDate(1, date);
             ps.setString(2, client_name);
@@ -643,14 +651,14 @@ public class Postgresql {
         return billings;
     }
 
-    public void postBilling (String checked_by, String approved_by, String posted_by, String received_by) {
+    public void postBilling (Connection connection, String checked_by, String approved_by, String posted_by, String received_by) {
 
         String query = "UPDATE billings SET posted = ?, checked_by = ?, approved_by = ?, posted_by = ?, received_by = ? WHERE billing_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres", "swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setBoolean(1, true);
             ps.setString(2, checked_by);
@@ -665,18 +673,18 @@ public class Postgresql {
         }
     }
 
-    public String resetPassword(int u_id ) {
+    public String resetPassword(Connection connection, String uname) {
         Random r = new Random();
         String password = "password" + (r.nextInt(9999)+1);
 
-        String query = "UPDATE users SET password = ? WHERE u_id = ?";
+        String query = "UPDATE users SET password = ? WHERE username = ?";
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres", "swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, password);
-            ps.setInt(2, u_id);
+            ps.setString(2, uname);
 
             ps.executeUpdate();
         } catch (SQLException throwables) {
@@ -686,7 +694,7 @@ public class Postgresql {
     }
 
     //checks if there are the same existing username found in the db
-    public boolean checkUsername(String uname){
+    public boolean checkUsername(Connection connection, String uname){
 
         ResultSet rs;
         boolean username_exist = false;
@@ -695,10 +703,10 @@ public class Postgresql {
 
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1, uname);
+            ps.setString(1, uname.trim());
             rs = ps.executeQuery();
 
             if(rs.next())
@@ -716,4 +724,31 @@ public class Postgresql {
 
         return username_exist;
     }
+
+    public boolean checkName(Connection connection, String name){
+        ResultSet rs;
+        boolean name_exist = false;
+
+        String query = "SELECT * FROM client WHERE client_name = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                name_exist = true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return name_exist;
+    }
 }
+

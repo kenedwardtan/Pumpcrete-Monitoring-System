@@ -6,15 +6,16 @@ public class User {
        public SimpleStringProperty username;
        public SimpleStringProperty email;
        public SimpleStringProperty first_name;
-       //public SimpleStringProperty middle_name;
+       public SimpleStringProperty middle_name;
        public SimpleStringProperty last_name;
        public SimpleStringProperty password;
        public SimpleStringProperty role;
 
-       public User(String username, String email, String first_name, String last_name, String password, String role){
+       public User(String username, String email, String first_name, String middle_name, String last_name, String password, String role){
               this.username = new SimpleStringProperty(username);
               this.email = new SimpleStringProperty(email);
               this.first_name = new SimpleStringProperty(first_name);
+              this.middle_name = new SimpleStringProperty(middle_name);
               this.last_name = new SimpleStringProperty(last_name);
               this.password = new SimpleStringProperty(password);
               this.role = new SimpleStringProperty(role);

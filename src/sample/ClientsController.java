@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Client;
 import sample.model.Postgresql;
+import sample.model.User;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -36,6 +37,10 @@ public class ClientsController extends Controller implements Initializable {
     public Postgresql postgresql;
     public static Connection con;
     public int selectedID =0;
+
+    @FXML
+    private Button clients_create_btn;
+
     @FXML
     private TableView clients_tb;
     @FXML
@@ -69,8 +74,6 @@ public class ClientsController extends Controller implements Initializable {
     @FXML
     private Button clients_remove_btn;
     @FXML
-    private Button clients_create_btn;
-    @FXML
     private Button clients_back_btn;
     @FXML
     private Button clients_edit_btn;
@@ -97,6 +100,16 @@ public class ClientsController extends Controller implements Initializable {
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        //create
+        if (e.getSource() == clients_create_btn) {
+            //clear fields
+            stage = (Stage) clients_create_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("clientsCreate.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
 
         //edit
         if (e.getSource() == clients_edit_btn) {
@@ -110,27 +123,33 @@ public class ClientsController extends Controller implements Initializable {
 
         //delete selected rows
         if (e.getSource() == clients_remove_btn) {
+            ObservableList<Client> c = FXCollections.observableArrayList();
+            c = clients_tb.getSelectionModel().getSelectedItems();
+            int i = 0;
+            while (i < c.size()) {
+                postgresql.deleteClient(Controller.con, c.get(i++).id.get());
+            }
+
             clients_tb.getItems().removeAll(clients_tb.getSelectionModel().getSelectedItems());
-            //*code to delete from db as well*
-            //postgresql.deleteClient(Controller.con, selectedID);
+
         }
 
-        //add client
-        if (e.getSource() == clients_create_btn) {
-            stage = (Stage) clients_create_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("clientsCreate.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
 
         //back to dashboard
         if (e.getSource() == clients_back_btn) {
             //switch roles?
             //temp
             stage = (Stage) clients_back_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+            switch(postgresql.getRole(Controller.con)){
+                case"admin":
+                case "Admin":
+                    loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    break;
+                default:
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    break;
+            }
+
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);

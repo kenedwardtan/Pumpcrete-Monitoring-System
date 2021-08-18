@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 import sample.model.Postgresql;
 import sample.model.User;
 
+import javax.jws.soap.SOAPBinding;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +34,7 @@ public class EmployeesController extends Controller implements Initializable {
     private FXMLLoader loader;
     public Postgresql postgresql;
     public static Connection con;
+    public static String editUser;
 
     @FXML
     private TableView employees_tb;
@@ -83,6 +87,10 @@ public class EmployeesController extends Controller implements Initializable {
 
         //edit
         if (e.getSource() == employees_edit_btn) {
+            ObservableList<User> u = FXCollections.observableArrayList();
+            u = employees_tb.getSelectionModel().getSelectedItems();
+            editUser = u.get(0).username.get();
+
             stage = (Stage) employees_edit_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("adminEmployeesEdit.fxml"));
             root = loader.load();
@@ -93,8 +101,17 @@ public class EmployeesController extends Controller implements Initializable {
 
         //delete selected rows
         if (e.getSource() == employees_remove_btn) {
+            ObservableList<User> u = FXCollections.observableArrayList();
+            u = employees_tb.getSelectionModel().getSelectedItems();
+            int i = 0;
+            while (i < u.size()) {
+                postgresql.deleteUser(Controller.con, u.get(i++).username.get());
+            }
+
             employees_tb.getItems().removeAll(employees_tb.getSelectionModel().getSelectedItems());
-            //*code to delete from db as well*
+
+
+
         }
 
         //create account
@@ -138,6 +155,10 @@ public class EmployeesController extends Controller implements Initializable {
                 employees_edit_btn.setVisible(false);
             }
         });
+    }
+
+    public static String getEditUser(){
+        return editUser;
     }
 }
 
