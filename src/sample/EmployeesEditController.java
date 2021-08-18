@@ -73,6 +73,7 @@ public class EmployeesEditController extends Controller implements Initializable
 
     }
 
+    @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -104,24 +105,26 @@ public class EmployeesEditController extends Controller implements Initializable
                     optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
             }
         }
-            if(e.getSource() == edit_cancel_btn){
-                stage = (Stage) edit_submit_btn.getScene().getWindow();
-                loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
-                root = loader.load();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            }
-            if(e.getSource() == edit_generate_btn){
-                postgresql.resetPassword(con, this.u.get(0).username.get());
-                stage = (Stage) edit_submit_btn.getScene().getWindow();
-                loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
-                root = loader.load();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            }
 
+        if (e.getSource() == edit_cancel_btn) {
+            System.out.print("hi");
+            stage = (Stage) edit_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == edit_generate_btn ) {
+            postgresql.resetPassword(con, this.u.get(0).username.get());
+            stage = (Stage) edit_generate_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public boolean verifyEditFields() {

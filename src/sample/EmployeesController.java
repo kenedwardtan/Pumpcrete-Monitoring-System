@@ -109,9 +109,6 @@ public class EmployeesController extends Controller implements Initializable {
             }
 
             employees_tb.getItems().removeAll(employees_tb.getSelectionModel().getSelectedItems());
-
-
-
         }
 
         //create account
