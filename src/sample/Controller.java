@@ -73,14 +73,17 @@ public class Controller {
     @FXML
     private Button clients_cancel_btn;
 
-
-
     //billings - create
-
     @FXML
-    private DatePicker billings_date;
+    private ChoiceBox billings_client;
     @FXML
-    private TextField billings_cn_tf;
+    private TextField billings_psc_tf;
+    @FXML
+    private TextField billings_padd_tf;
+    @FXML
+    private TextField billings_pname_tf;
+    @FXML
+    private TextField billings_total_tf;
     @FXML
     private Button billings_submit_btn;
     @FXML
@@ -88,9 +91,15 @@ public class Controller {
 
     //billings - edit
     @FXML
-    private DatePicker edit_billings_date;
+    private ChoiceBox edit_billings_client;
     @FXML
-    private TextArea edit_billings_cn_tf;
+    private TextField edit_billings_psc_tf;
+    @FXML
+    private TextField edit_billings_padd_tf;
+    @FXML
+    private TextField edit_billings_pname_tf;
+    @FXML
+    private TextField edit_billings_total_tf;
     @FXML
     private Button edit_billings_submit_btn;
     @FXML
@@ -130,7 +139,6 @@ public class Controller {
 
 	@FXML
 	private JOptionPane optionPane;
-
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
@@ -191,7 +199,6 @@ public class Controller {
 
         //clients
         if (e.getSource() == clients_submit_btn) {
-
             if (verifyCreateClient()) {
                 // retrieve inputs
                 String fname = clients_fn_tf.getText();
@@ -214,7 +221,7 @@ public class Controller {
                             //clear fields
 
                             stage = (Stage) clients_submit_btn.getScene().getWindow();
-                            loader = new FXMLLoader(getClass().getResource("clientsCreate.fxml"));
+                            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
                             root = loader.load();
                             scene = new Scene(root);
                             stage.setScene(scene);
@@ -224,10 +231,17 @@ public class Controller {
                             optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
                     }
             }
-
         }
 
-
+        if (e.getSource() == clients_cancel_btn) {
+            //clear fields code here
+            stage = (Stage) clients_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
 
         //billings
         if (e.getSource() == edit_billings_submit_btn) {
@@ -242,6 +256,25 @@ public class Controller {
         if (e.getSource() == edit_billings_cancel_btn) {
             //clear fields
             stage = (Stage) edit_billings_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == billings_submit_btn) {
+            stage = (Stage) billings_submit_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        if (e.getSource() == billings_cancel_btn) {
+            //clear fields
+            stage = (Stage) billings_cancel_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("billings.fxml"));
             root = loader.load();
             scene = new Scene(root);
@@ -287,7 +320,7 @@ public class Controller {
         }
 
         if (e.getSource() == create_cancel_btn) {
-            //clear fields
+            //clear fields code here
             stage = (Stage) create_cancel_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
             root = loader.load();
@@ -378,6 +411,7 @@ public class Controller {
             }
         }
     }
+
     public boolean verifyCreateClient () {
         String fname = clients_fn_tf.getText();
         String lname = clients_ln_tf.getText();
@@ -402,10 +436,9 @@ public class Controller {
 
     public boolean verifyClientNumbers () {
         if (clients_landline_tf.getText().matches("\\d{8}") && clients_cellphone_tf.getText().matches("\\d{8}|\\d{11}")){
-
             System.out.println("Its Valid Number");
             return true;
-        }else {
+        } else {
 
             System.out.println("Invalid Input..!");
             return false;
