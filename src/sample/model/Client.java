@@ -8,21 +8,25 @@ public class Client {
     public SimpleIntegerProperty id;
     public SimpleStringProperty position;
     public SimpleStringProperty name;
-    public BigInteger cpnum;
+    public SimpleLongProperty cpnum;
     public SimpleStringProperty email;
     public SimpleStringProperty address;
     public SimpleIntegerProperty landline;
     public SimpleStringProperty latest_date;
 
-    public Client(int id, String position, String name,BigInteger cpnum, String email, String address, int landline, String date){
+    public Client(int id, String position, String name,long cpnum, String email, String address, int landline, String date){
         this.id = new SimpleIntegerProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
-        this.cpnum = cpnum;
+        this.cpnum = new SimpleLongProperty(cpnum);
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
         this.landline = new SimpleIntegerProperty(landline);
-        this.latest_date = new SimpleStringProperty(date);
+        if (date.trim().equals("")) {
+            this.latest_date = new SimpleStringProperty("2000-01-01");
+        }
+        else
+            this.latest_date = new SimpleStringProperty(date);
     }
 
     public String getPosition() {
@@ -33,8 +37,8 @@ public class Client {
 
     public int getID() { return  id.get();}
 
-    public BigInteger getCpnum() {
-        return cpnum;
+    public long getCpnum() {
+        return cpnum.get();
     }
 
     public String getEmail() {

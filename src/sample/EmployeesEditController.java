@@ -31,7 +31,7 @@ public class EmployeesEditController extends Controller implements Initializable
     private FXMLLoader loader;
     public Postgresql postgresql = new Postgresql();
     public static Connection con;
-    public String editUser;
+
     @FXML
     private TextArea edit_fn_tf;
     @FXML
@@ -56,9 +56,6 @@ public class EmployeesEditController extends Controller implements Initializable
 
     private static ObservableList<User> u;
 
-//    public EmployeesEditController(String uname){
-//        this.editUser = uname;
-//    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

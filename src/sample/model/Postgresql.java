@@ -328,12 +328,13 @@ public class Postgresql {
 
     //Once all information are verified, adds new user to the database.
     public static void createClient (Connection connection, String name, String position,
-                                     String address,int landline, BigInteger cpnum, String email){
+                                     String address,int landline, long cpnum, String email){
 
 
         String query = "INSERT INTO client(client_name, client_position, client_address," +
-                "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?)";
+                "client_landline, client_cellphone, client_email, latest_doc_date) VALUES (?,?,?,?,?,?,?)";
 
+        Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -342,8 +343,9 @@ public class Postgresql {
             ps.setString(2, position);
             ps.setString(3, address);
             ps.setInt(4, landline);
-            ps.setInt(5, cpnum);
+            ps.setLong(5, cpnum);
             ps.setString(6, email);
+            ps.setDate(7, date);
 
             ps.executeUpdate();
 
@@ -354,16 +356,25 @@ public class Postgresql {
     }
 
     public void editClient (Connection connection, int c_id, String name, String position,
-                            String address, int landline, int cpnum, String email){
+                            String address, int landline, long cpnum, String email){
 
-        String query = "UPDATE client SET position = ? WHERE client_id = ?";
+        String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ?, latest_doc_date = ? WHERE client_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
+        Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, position);
+            ps.setString(2, name);
+            ps.setInt(3, landline);
+            ps.setLong(4, cpnum);
+            ps.setString(5, email);
+            ps.setString(6,address);
+            ps.setDate(7, date);
+            ps.setInt(8, c_id);
+
 
             ps.executeUpdate();
 
@@ -407,14 +418,17 @@ public class Postgresql {
                 ps.setInt(1, c_id);
                 ResultSet result = ps.executeQuery();
 
+                result.next();
                 int id = result.getInt("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
-                int cpnum = result.getInt("client_cellphone");
+                long cpnum = result.getLong("client_cellphone");
                 int landline = result.getInt("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
                 String date = result.getString("latest_doc_date");
+
+                System.out.println(name + " " + position + " " + address + " " + cpnum + " " + landline);
 
                 Client c = new Client(id, position, name, cpnum, email, address, landline, date);
                 c_result.add(c);
@@ -440,7 +454,7 @@ public class Postgresql {
                 int id = result.getInt("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
-                int cpnum = result.getInt("client_cellphone");
+                long cpnum = result.getLong("client_cellphone");
                 int landline = result.getInt("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
@@ -641,8 +655,8 @@ public class Postgresql {
 //                String posted_by = results.getString("posted_by");
 //                String received_by = results.getString("received_by");
 
-                b = new Billing(client_id, project_name, project_add);
-                billings.add(b);
+//                b = new Billing(client_id, project_name, project_add);
+//                billings.add(b);
             }
 
         } catch (SQLException ex) {

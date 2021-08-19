@@ -37,6 +37,7 @@ public class ClientsController extends Controller implements Initializable {
     public Postgresql postgresql;
     public static Connection con;
     public int selectedID =0;
+    public static int editClient;
 
     @FXML
     private Button clients_create_btn;
@@ -113,6 +114,10 @@ public class ClientsController extends Controller implements Initializable {
 
         //edit
         if (e.getSource() == clients_edit_btn) {
+            ObservableList<Client> c = FXCollections.observableArrayList();
+            c = clients_tb.getSelectionModel().getSelectedItems();
+            editClient = c.get(0).id.get();
+
             stage = (Stage) clients_edit_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("clientsEdit.fxml"));
             root = loader.load();
@@ -195,6 +200,10 @@ public class ClientsController extends Controller implements Initializable {
                 clients_edit_btn.setVisible(false);
             }
         });
+    }
+
+    public static int getEditClient() {
+        return editClient;
     }
 }
 

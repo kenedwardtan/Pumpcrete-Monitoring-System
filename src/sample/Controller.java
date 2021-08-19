@@ -73,25 +73,7 @@ public class Controller {
     @FXML
     private Button clients_cancel_btn;
 
-    //clients - edit
-    @FXML
-    private DatePicker edit_clients_date;
-    @FXML
-    private TextArea edit_clients_fn_tf;
-    @FXML
-    private TextArea edit_clients_ln_tf;
-    @FXML
-    private TextArea edit_clients_email_tf;
-    @FXML
-    private TextArea edit_clients_landline_tf;
-    @FXML
-    private TextArea edit_clients_cellphone_tf;
-    @FXML
-    private TextArea edit_clients_address_tf;
-    @FXML
-    private Button edit_clients_submit_btn;
-    @FXML
-    private Button edit_clients_cancel_btn;
+
 
     //billings - create
 
@@ -218,12 +200,9 @@ public class Controller {
                 String address = clients_address_tf.getText();
                 String email = clients_email_tf.getText();
                 int landline = Integer.parseInt(clients_landline_tf.getText());
-                BigInteger cellphone =  new BigInteger(clients_cellphone_tf.getText());
+                long cellphone =  Long.parseLong(clients_cellphone_tf.getText());
 
-
-                // check if the username already exists
                 String fullname =  fname.trim() + " " + lname.trim();
-                if (!postgresql.checkName(con, fullname)) {
 
                     //checks the format of the email
                     if (EmailVerification(email)) {
@@ -244,31 +223,11 @@ public class Controller {
                         else
                             optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
                     }
-                } else
-                    optionPane.showMessageDialog(null, "Client name already exists!", "Client name error", 2);
             }
 
         }
 
-        if (e.getSource() == edit_clients_submit_btn) {
 
-            stage = (Stage) edit_clients_submit_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
-
-        if (e.getSource() == edit_clients_cancel_btn) {
-            //clear fields
-            stage = (Stage) edit_clients_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
 
         //billings
         if (e.getSource() == edit_billings_submit_btn) {
