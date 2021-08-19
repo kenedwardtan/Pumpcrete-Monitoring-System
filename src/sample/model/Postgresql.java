@@ -673,16 +673,18 @@ public class Postgresql {
         }
     }
 
-    public String resetPassword(Connection connection, String uname) {
+    public String resetPassword(Connection connection, String uname, String old) {
         Random r = new Random();
         String password = "password" + (r.nextInt(9999)+1);
-
-        String query = "UPDATE users SET password = ? WHERE username = ?";
+        String query1 = "ALTER USER "+uname+" WITH PASSWORD "+ "'"+password+"'";
+        String query2 = "UPDATE users SET password = ? WHERE username = ?";
         String url = "jdbc:postgresql:Pumpcrete";
 
         try {
-            PreparedStatement ps = connection.prepareStatement(query);
+            PreparedStatement p = connection.prepareStatement(query1);
+            p.execute();
 
+            PreparedStatement ps = connection.prepareStatement(query2);
             ps.setString(1, password);
             ps.setString(2, uname);
 
@@ -692,6 +694,7 @@ public class Postgresql {
         }
         return password;
     }
+
 
     //checks if there are the same existing username found in the db
     public boolean checkUsername(Connection connection, String uname){

@@ -119,9 +119,10 @@ public class EmployeesEditController extends Controller implements Initializable
         }
 
         if (e.getSource() == edit_generate_btn ) {
-            postgresql.resetPassword(con, this.u.get(0).username.get());
+            String newPW = postgresql.resetPassword(con, this.u.get(0).username.get(), this.u.get(0).password.get());
+            optionPane.showMessageDialog(null, "New Password: "+newPW, "Password Generated", 1);
             stage = (Stage) edit_generate_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+            loader = new FXMLLoader(getClass().getResource("adminEmployeesEdit.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
