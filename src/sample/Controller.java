@@ -218,7 +218,7 @@ public class Controller {
                 String address = clients_address_tf.getText();
                 String email = clients_email_tf.getText();
                 int landline = Integer.parseInt(clients_landline_tf.getText());
-                int cellphone = Integer.parseInt(clients_cellphone_tf.getText());
+                BigInteger cellphone =  new BigInteger(clients_cellphone_tf.getText());
 
 
                 // check if the username already exists

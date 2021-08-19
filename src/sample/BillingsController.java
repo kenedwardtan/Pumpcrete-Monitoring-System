@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -32,13 +33,14 @@ public class BillingsController extends Controller implements Initializable {
     private FXMLLoader loader;
     public Postgresql postgresql;
     public static Connection con;
+    public Controller Controller;
 
     @FXML
     private TableView billings_tb;
     @FXML
     private TableColumn<Billing, Integer> billNumColumn;
     @FXML
-    private TableColumn<Billing, String> dateColumn;
+    private TableColumn<Billing, LocalDate> dateColumn;
     @FXML
     private TableColumn<Billing, String> clientNameColumn;
 
@@ -60,15 +62,16 @@ public class BillingsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        postgresql = new Postgresql();
 
-        postgresql.getAllBillings(Controller.con);
-           // billings_tb.setItems(postgresql.getAllBillings(Controller.con));
-//
-//            billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Integer>("bill_num"));
-//            clientNameColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("client_name"));
-//            dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("date"));
-//
-//            billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        billings_tb.setItems(postgresql.getAllBillings(Controller.con));
+
+        billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Integer>("bill_no"));
+        clientNameColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("client_name"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, LocalDate>("date"));
+
+        billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
     }

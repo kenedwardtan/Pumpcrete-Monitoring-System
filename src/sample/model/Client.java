@@ -2,21 +2,23 @@ package sample.model;
 
 import javafx.beans.property.*;
 
+import java.math.BigInteger;
+
 public class Client {
     public SimpleIntegerProperty id;
     public SimpleStringProperty position;
     public SimpleStringProperty name;
-    public SimpleIntegerProperty cpnum;
+    public BigInteger cpnum;
     public SimpleStringProperty email;
     public SimpleStringProperty address;
     public SimpleIntegerProperty landline;
     public SimpleStringProperty latest_date;
 
-    public Client(int id, String position, String name,int cpnum, String email, String address, int landline, String date){
+    public Client(int id, String position, String name,BigInteger cpnum, String email, String address, int landline, String date){
         this.id = new SimpleIntegerProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
-        this.cpnum = new SimpleIntegerProperty(cpnum);
+        this.cpnum = cpnum;
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
         this.landline = new SimpleIntegerProperty(landline);
@@ -31,8 +33,8 @@ public class Client {
 
     public int getID() { return  id.get();}
 
-    public int getCpnum() {
-        return cpnum.get();
+    public BigInteger getCpnum() {
+        return cpnum;
     }
 
     public String getEmail() {

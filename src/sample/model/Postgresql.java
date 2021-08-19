@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -327,12 +328,12 @@ public class Postgresql {
 
     //Once all information are verified, adds new user to the database.
     public static void createClient (Connection connection, String name, String position,
-                                     String address, int landline, int cpnum, String email){
+                                     String address,int landline, BigInteger cpnum, String email){
 
-        String url = "jdbc:postgresql:Pumpcrete";
 
         String query = "INSERT INTO client(client_name, client_position, client_address," +
                 "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?)";
+
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
