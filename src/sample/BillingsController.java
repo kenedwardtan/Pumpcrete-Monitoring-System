@@ -44,9 +44,8 @@ public class BillingsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Billing, String> clientNameColumn;
 
-
     @FXML
-    private Button billings_remove_btn;
+    private Button billings_unpost_btn;
     @FXML
     private Button billings_create_btn;
     @FXML
@@ -64,7 +63,6 @@ public class BillingsController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
 
-
         billings_tb.setItems(postgresql.getAllBillings(Controller.con));
 
         billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Integer>("bill_no"));
@@ -72,8 +70,6 @@ public class BillingsController extends Controller implements Initializable {
         dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, LocalDate>("date"));
 
         billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-
     }
 
     @FXML
@@ -92,7 +88,7 @@ public class BillingsController extends Controller implements Initializable {
         }
 
         //delete selected rows
-        if (e.getSource() == billings_remove_btn) {
+        if (e.getSource() == billings_unpost_btn) {
             billings_tb.getItems().removeAll(billings_tb.getSelectionModel().getSelectedItems());
             //*code to delete from db as well*
         }
@@ -127,7 +123,7 @@ public class BillingsController extends Controller implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(billings_tb.getSelectionModel().getSelectedItem()); //test
                 billings_2img.setVisible(true);
-                billings_remove_btn.setVisible(true);
+                billings_unpost_btn.setVisible(true);
                 billings_edit_btn.setVisible(true);
             }
         });
@@ -136,7 +132,7 @@ public class BillingsController extends Controller implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(billings_tb.getSelectionModel().getSelectedItem()); //test
                 billings_2img.setVisible(false);
-                billings_remove_btn.setVisible(false);
+                billings_unpost_btn.setVisible(false);
                 billings_edit_btn.setVisible(false);
             }
         });

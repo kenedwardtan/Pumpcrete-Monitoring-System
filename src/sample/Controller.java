@@ -77,6 +77,8 @@ public class Controller {
     @FXML
     private ChoiceBox billings_client;
     @FXML
+    private DatePicker billings_date;
+    @FXML
     private TextField billings_psc_tf;
     @FXML
     private TextField billings_padd_tf;
@@ -92,6 +94,8 @@ public class Controller {
     //billings - edit
     @FXML
     private ChoiceBox edit_billings_client;
+    @FXML
+    private DatePicker edit_billings_date;
     @FXML
     private TextField edit_billings_psc_tf;
     @FXML
