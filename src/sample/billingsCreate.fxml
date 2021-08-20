@@ -16,24 +16,39 @@
                 <Image url="@resources/img/billings/billingsAdd.png" />
             </image>
         </ImageView>
-        <DatePicker fx:id="billings_date" layoutX="351.0" layoutY="172.0" onAction="#handleAction" prefHeight="38.0" prefWidth="188.0" promptText="Date Used" />
-        <TextField fx:id="billings_pname_tf" alignment="CENTER" layoutX="221.0" layoutY="228.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Project Name">
+        <TextField fx:id="billings_pname_tf" alignment="CENTER" layoutX="265.0" layoutY="169.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Project Name">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
       </TextField>
-        <TextField fx:id="billings_psc_tf" alignment="CENTER" layoutX="449.0" layoutY="228.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="PSC">
+      <ChoiceBox fx:id="billings_client" layoutX="492.0" layoutY="169.0" prefHeight="38.0" prefWidth="122.0" />
+        <DatePicker fx:id="billings_date" layoutX="222.0" layoutY="230.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Date Used" />
+        <TextField fx:id="billings_psc_tf" alignment="CENTER" layoutX="449.0" layoutY="230.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="PSC">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
         </TextField>
-      <TextField fx:id="billings_padd_tf" alignment="CENTER" layoutX="222.0" layoutY="287.0" onAction="#handleAction" prefHeight="38.0" prefWidth="446.0" promptText="Project Address">
+      <TextField fx:id="billings_padd_tf" alignment="CENTER" layoutX="222.0" layoutY="289.0" onAction="#handleAction" prefHeight="38.0" prefWidth="446.0" promptText="Project Address">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <ChoiceBox fx:id="billings_client" layoutX="335.0" layoutY="351.0" prefHeight="38.0" prefWidth="220.0" />
-        <TextField fx:id="billings_total_tf" alignment="CENTER" layoutX="358.0" layoutY="408.0" onAction="#handleAction" prefHeight="38.0" prefWidth="178.0" promptText="Grand Total">
+      <TextField fx:id="billings_struct_tf" alignment="CENTER" layoutX="221.0" layoutY="375.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Structure">
+         <font>
+            <Font name="Work Sans Regular" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="billings_flr_tf" alignment="CENTER" layoutX="448.0" layoutY="375.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Floor Level">
+         <font>
+            <Font name="Work Sans Regular" size="13.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="billings_qty_tf" alignment="CENTER" layoutX="220.0" layoutY="422.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Quantity">
+         <font>
+            <Font name="Work Sans Regular" size="13.0" />
+         </font>
+      </TextField>
+        <TextField fx:id="billings_price_tf" alignment="CENTER" layoutX="447.0" layoutY="422.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Unit Price">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>

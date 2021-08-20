@@ -45,8 +45,6 @@ public class BillingsController extends Controller implements Initializable {
     private TableColumn<Billing, Boolean> postedColumn;
 
     @FXML
-    private Button billings_unpost_btn;
-    @FXML
     private Button billings_create_btn;
     @FXML
     private Button billings_back_btn;

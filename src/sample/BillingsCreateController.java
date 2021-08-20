@@ -44,7 +44,15 @@ public class BillingsCreateController extends Controller implements  Initializab
     @FXML
     private TextField billings_pname_tf;
     @FXML
-    private TextField billings_total_tf;
+    private TextField billings_struct_tf;
+    @FXML
+    private TextField billings_flr_tf;
+    @FXML
+    private TextField billings_qty_tf;
+    @FXML
+    private TextField billings_price_tf;
+    @FXML
+    private DatePicker billings_date;
     @FXML
     private Button billings_submit_btn;
     @FXML

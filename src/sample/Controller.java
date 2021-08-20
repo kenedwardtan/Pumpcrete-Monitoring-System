@@ -75,9 +75,7 @@ public class Controller {
 
     //billings - create
     @FXML
-    private ChoiceBox billings_client;
-    @FXML
-    private DatePicker billings_date;
+    private ChoiceBox<String> billings_client;
     @FXML
     private TextField billings_psc_tf;
     @FXML
@@ -85,7 +83,15 @@ public class Controller {
     @FXML
     private TextField billings_pname_tf;
     @FXML
-    private TextField billings_total_tf;
+    private TextField billings_struct_tf;
+    @FXML
+    private TextField billings_flr_tf;
+    @FXML
+    private TextField billings_qty_tf;
+    @FXML
+    private TextField billings_price_tf;
+    @FXML
+    private DatePicker billings_date;
     @FXML
     private Button billings_submit_btn;
     @FXML
@@ -103,7 +109,15 @@ public class Controller {
     @FXML
     private TextField edit_billings_pname_tf;
     @FXML
-    private TextField edit_billings_total_tf;
+    private TextField edit_billings_struct_tf;
+    @FXML
+    private TextField edit_billings_flr_tf;
+    @FXML
+    private TextField edit_billings_qty_tf;
+    @FXML
+    private TextField edit_billings_price_tf;
+    @FXML
+    private DatePicker edit_billings_date;
     @FXML
     private Button edit_billings_submit_btn;
     @FXML
