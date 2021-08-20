@@ -2,7 +2,7 @@ package sample.model;
 
 import javafx.beans.property.*;
 
-import java.math.BigInteger;
+import java.time.LocalDate;
 
 public class Client {
     public SimpleIntegerProperty id;
@@ -12,9 +12,9 @@ public class Client {
     public SimpleStringProperty email;
     public SimpleStringProperty address;
     public SimpleIntegerProperty landline;
-    public SimpleStringProperty latest_date;
+    public LocalDate latest_date;
 
-    public Client(int id, String position, String name,long cpnum, String email, String address, int landline, String date){
+    public Client(int id, String position, String name,long cpnum, String email, String address, int landline,LocalDate date){
         this.id = new SimpleIntegerProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
@@ -22,11 +22,7 @@ public class Client {
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
         this.landline = new SimpleIntegerProperty(landline);
-        if (date.trim().equals("")) {
-            this.latest_date = new SimpleStringProperty("2000-01-01");
-        }
-        else
-            this.latest_date = new SimpleStringProperty(date);
+        this.latest_date =  date;
     }
 
     public String getPosition() {
@@ -53,6 +49,5 @@ public class Client {
         return landline.get();
     }
 
-
-    public String getLatestDocDate(){return latest_date.get();}
+    public LocalDate getLatestDocDate(){return latest_date;}
 }
