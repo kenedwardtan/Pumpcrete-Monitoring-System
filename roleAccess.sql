@@ -22,11 +22,7 @@ GRANT UPDATE on "credit_memo" to staff_role;
 GRANT INSERT on "credit_memo" to staff_role; 
 GRANT SELECT on "credit_memo" to staff_role; 
 GRANT DELETE on "credit_memo" to staff_role; 
---PSC
-GRANT UPDATE on "psc" to staff_role;
-GRANT INSERT on "psc" to staff_role; 
-GRANT SELECT on "psc" to staff_role; 
-GRANT DELETE on "psc" to staff_role; 
+
 
 --UPDATE AND VIEW PASSWORD
 GRANT UPDATE on "users" to supervisor_role;
@@ -43,5 +39,10 @@ GRANT SELECT on "pumpcretes" to supervisor_role;
 --CREDIT MEMOS
 GRANT UPDATE on "credit_memo" to supervisor_role;
 GRANT SELECT on "credit_memo" to supervisor_role; 
+
+--ACCESS TO ID
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO staff_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO supervisor_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO admin_role;
 
 

@@ -23,7 +23,6 @@ public class AdminHomeController extends Controller implements Initializable {
     private Scene scene;
     private FXMLLoader loader;
     public Postgresql postgresql;
-    public static Connection con;
 
     //dashboard
     @FXML

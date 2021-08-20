@@ -3,6 +3,7 @@ package sample.model;
 import javafx.beans.binding.ObjectExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 
 import java.math.BigInteger;
@@ -332,9 +333,9 @@ public class Postgresql {
 
 
         String query = "INSERT INTO client(client_name, client_position, client_address," +
-                "client_landline, client_cellphone, client_email, latest_doc_date) VALUES (?,?,?,?,?,?,?)";
+                "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?)";
 
-        Date date = new Date(20000101);
+        //Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -345,7 +346,7 @@ public class Postgresql {
             ps.setInt(4, landline);
             ps.setLong(5, cpnum);
             ps.setString(6, email);
-            ps.setDate(7, date);
+            //ps.setDate(7, date);
 
             ps.executeUpdate();
 
@@ -358,10 +359,10 @@ public class Postgresql {
     public void editClient (Connection connection, int c_id, String name, String position,
                             String address, int landline, long cpnum, String email){
 
-        String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ?, latest_doc_date = ? WHERE client_id = ?";
+        String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
-        Date date = new Date(20000101);
+        //Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -372,8 +373,7 @@ public class Postgresql {
             ps.setLong(4, cpnum);
             ps.setString(5, email);
             ps.setString(6,address);
-            ps.setDate(7, date);
-            ps.setInt(8, c_id);
+            ps.setInt(7, c_id);
 
 
             ps.executeUpdate();
@@ -410,13 +410,13 @@ public class Postgresql {
 
                 PreparedStatement ps = connection.prepareStatement(query);
                 ps.setInt(1, c_id);
-                ResultSet results = ps.executeQuery();
-
-
-                query = "SELECT * FROM contact_details WHERE contact_id = ?";
-                System.out.println(query);
-                ps.setInt(1, c_id);
                 ResultSet result = ps.executeQuery();
+
+
+//                query = "SELECT * FROM contact_details WHERE contact_id = ?";
+//                System.out.println(query);
+//                ps.setInt(1, c_id);
+//                ResultSet result = ps.executeQuery();
 
                 result.next();
                 int id = result.getInt("client_id");
@@ -426,11 +426,11 @@ public class Postgresql {
                 int landline = result.getInt("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
-                String date = result.getString("latest_doc_date");
+                Date date = result.getDate("latest_doc_date");
 
                 System.out.println(name + " " + position + " " + address + " " + cpnum + " " + landline);
 
-                Client c = new Client(id, position, name, cpnum, email, address, landline, date);
+                Client c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
                 c_result.add(c);
                 return c_result;
             } catch (SQLException ex) {
@@ -444,6 +444,8 @@ public class Postgresql {
 
     public static ObservableList<Client> getAllClients(Connection con)
     {
+        Client c;
+
         String query = "SELECT * FROM client";
         try {
             PreparedStatement pst = con.prepareStatement(query);
@@ -458,9 +460,13 @@ public class Postgresql {
                 int landline = result.getInt("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
-                String date = result.getString("latest_doc_date");
+                if(result.getDate("latest_doc_date") != null) {
+                    Date date = result.getDate("latest_doc_date");
+                    c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                }
+                c = new Client(id, position, name, cpnum, email, address, landline);
 
-                Client c = new Client(id, position, name, cpnum, email, address, landline, date);
+
                 c_result.add(c);
             }
 
@@ -474,99 +480,49 @@ public class Postgresql {
         }
     }
 
-
-
-    //Once all information are verified, adds new user to the database.
-    public static void createContact (Connection connection, String fname, String lname, int cpnum, String email, String address, int landline){
-
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        String query = "INSERT INTO contact_details(first_name, last_name, landline_num, cellphone_num, email, c_address) VALUES (?,?,?,?,?,?)";
-
+    public static ObservableList<String> getAllClientNames(Connection con)
+    {
+        String query = "SELECT client_name,client_id FROM client";
         try {
-            PreparedStatement ps = connection.prepareStatement(query);
+            PreparedStatement pst = con.prepareStatement(query);
+            ObservableList<String> cn_result = FXCollections.observableArrayList();
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
+                String name = result.getString("client_name");
+                cn_result.add(name);
+            }
 
-
-
-            ps.executeUpdate();
-
-            System.out.println("Insert Successful!");
-        } catch (SQLException ex){
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    public void editContact(Connection connection, int u_id, String fname, String lname, int cpnum, String email, String address, int landline){
-
-        String query = "UPDATE contact_details SET first_name = ?, last_name = ?, landline_num = ?, cellphone_num = ?, email = ?, c_address = ? WHERE contact_id = ?";
-
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        try {
-            PreparedStatement ps = connection.prepareStatement(query);
-
-            ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setInt(3, landline);
-            ps.setInt(4, cpnum);
-            ps.setString(5, email);
-            ps.setString(6, address);
-
-            ps.executeUpdate();
+            return cn_result;
 
         } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
-    public void deleteContact (int c_id) {
-
-        String query = "DELETE FROM contact_details WHERE contact_id = ?";
-
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, c_id);
-
-            ps.executeUpdate();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
         }
     }
 
 
 
     public void addBilling (Connection connection, String client_name, String project_name, String project_add,
-                            Date date_used, int PSC_id, String concrete_struct, int floor, float quantity,
-                            float unit_price, float total, float grand_total){
+                            String date, int PSC_id, float total){
 
-        String query = "INSERT INTO billings(date_doc, client_name, project_name, project_add, date_used, PSC_id, concrete_struct, " +
-                "floor, quantity, unit_price, total, grand_total, posted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-        String url = "jdbc:postgresql:Pumpcrete";
-
-        LocalDate now = LocalDate.now();
-        Date date = Date.valueOf(now);
+        String query = "INSERT INTO billings(date_doc, date_used, client_name, project_name, project_add, PSC_id, total, posted,filled_by) VALUES (?,?,?,?,?,?,?,?,?)";
+        String filled_by = getCurrUser(connection);
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setDate(1, date);
-            ps.setString(2, client_name);
-            ps.setString(3, project_name);
-            ps.setString(4, project_add);
-            ps.setDate(5, date_used);
+            ps.setDate(1, Date.valueOf(date));
+            ps.setDate(2, Date.valueOf(date));
+            ps.setString(3, client_name);
+            ps.setString(4, project_name);
+            ps.setString(5, project_add);
+           // ps.setDate(5, date_used);
             ps.setInt(6, PSC_id);
-            ps.setString(7, concrete_struct);
-            ps.setInt(8, floor);
-            ps.setFloat(9, quantity);
-            ps.setFloat(10, unit_price);
-            ps.setFloat(11, total);
-            ps.setFloat(12, grand_total);
-            ps.setBoolean(13, false);
+            ps.setFloat(7, total);
+            ps.setBoolean(8, false);
+            ps.setString(9, filled_by);
 
             ps.executeUpdate();
 
@@ -575,55 +531,41 @@ public class Postgresql {
         }
     }
 
-//    public Billing getBilling(Connection conecttion, int billing_id) {
-//        String query = "SELECT * FROM billings WHERE billing_id = ?";
-//        String url = "jdbc:postgresql:Pumpcrete";
-//
-//        Billing b;
-//
-//        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
-//             PreparedStatement ps = connection.prepareStatement(query)) {
-//
-//            ResultSet results = ps.executeQuery();
-//
-//            int id = results.getInt("bill_no");
-//            int client_id = results.getInt("client_id");
-//            String project_name = results.getString("project_name");
-//            String project_add = results.getString("project_add");
-//            Date date_used = results.getDate("date_used");
-//            int PSC_id = results.getInt("PSC_id");
-//            String concrete_struct = results.getString("concrete_struct");
-//            int floor = results.getInt("floor");
-//            float quantity = results.getFloat("quantity");
-//            float unit_price = results.getFloat("unit_price");
-//            float total = results.getFloat("total");
-//            float grand_total = results.getFloat("grand_total");
-//            boolean posted = results.getBoolean("posted");
-//
-//            if (posted){
-//                String checked_by = results.getString("checked_by");
-//                String approved_by = results.getString("approved_by");
-//                String posted_by = results.getString("posted_by");
-//                String received_by = results.getString("received_by");
-//
-//                b = new Billing(client_id, project_name, project_add,
-//                        date_used.toLocalDate(), PSC_id, concrete_struct,
-//                        floor, quantity, unit_price, total, grand_total, posted,
-//                        checked_by, approved_by, posted_by, received_by, id);
-//            }
-//            else{
-//                b = new Billing(client_id, project_name, project_add,
-//                        date_used.toLocalDate(), PSC_id, concrete_struct,
-//                        floor, quantity, unit_price, total, grand_total, posted,id);
-//            }
-//
-//            return b;
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
+    public Billing getBilling(Connection connection, int billing_id) {
+        String query = "SELECT * from billings WHERE bill_no = ?";
+        //ObservableList<Billing> b_result = FXCollections.observableArrayList();
+
+        try{
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1,billing_id);
+            ResultSet result = ps. executeQuery();
+
+            result.next();
+                int id = result.getInt("bill_no");
+                String client_name = result.getString("client_name");
+                String project_name = result.getString("project_name");
+                String project_add = result.getString("project_add");
+                Date date_doc = result.getDate("date_doc");
+               // Date date_used = result.getDate("date_used");
+                int PSC_id = result.getInt("PSC_id");
+                float total = result.getFloat("total");
+                boolean posted = result.getBoolean("posted");
+                String filled_by = result.getString("filled_by");
+                String posted_by = result.getString("posted_by");
+
+                Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(),  PSC_id,
+                        total, posted, filled_by, posted_by);
+
+                return b;
+
+
+        } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(Postgresql.class.getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        return null;
+        }
+    }
 
 
     public ObservableList<Billing> getAllBillings(Connection con) {
@@ -636,27 +578,21 @@ public class Postgresql {
             ResultSet results = ps.executeQuery();
 
             while (results.next()){
-               // int id = results.getInt("bill_no");
-                int client_id = results.getInt("client_id");
+                int id = results.getInt("bill_no");
+                String client_name = results.getString("client_name");
                 String project_name = results.getString("project_name");
                 String project_add = results.getString("project_add");
-                //Date date_doc = results.getDate("date_doc");
-                //Date date_used = results.getDate("date_used");
-//                int PSC_id = results.getInt("PSC_id");
-//                String concrete_struct = results.getString("concrete_struct");
-//                int floor = results.getInt("floor");
-//                float quantity = results.getFloat("quantity");
-//                float unit_price = results.getFloat("unit_price");
-//                float total = results.getFloat("total");
-//                float grand_total = results.getFloat("grand_total");
-//                boolean posted = results.getBoolean("posted");
-//                String checked_by = results.getString("checked_by");
-//                String approved_by = results.getString("approved_by");
-//                String posted_by = results.getString("posted_by");
-//                String received_by = results.getString("received_by");
+                Date date_doc = results.getDate("date_doc");
+               // Date date_used = results.getDate("date_used");
+                int PSC_id = results.getInt("PSC_id");
+                float total = results.getFloat("total");
+                boolean posted = results.getBoolean("posted");
+                String filled_by = results.getString("filled_by");
+                String posted_by = results.getString("posted_by");
 
-//                b = new Billing(client_id, project_name, project_add);
-//                billings.add(b);
+                b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(),  PSC_id,
+                        total, posted, filled_by, posted_by);
+                billings.add(b);
             }
 
         } catch (SQLException ex) {
@@ -768,5 +704,93 @@ public class Postgresql {
 
         return name_exist;
     }
+
+//Checks if billing psc and client
+    public boolean checkBillingPSC(Connection connection, int id){
+        ResultSet rs;
+        boolean billing_exist = false;
+
+        String query = "SELECT * FROM billings WHERE psc_id = ? ";
+
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if(rs.next())
+            {
+                billing_exist = true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return billing_exist;
+    }
 }
 
+
+
+//    //Once all information are verified, adds new user to the database.
+//    public static void createContact (Connection connection, String fname, String lname, int cpnum, String email, String address, int landline){
+//
+//        String url = "jdbc:postgresql:Pumpcrete";
+//
+//        String query = "INSERT INTO contact_details(first_name, last_name, landline_num, cellphone_num, email, c_address) VALUES (?,?,?,?,?,?)";
+//
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(query);
+//
+//
+//
+//            ps.executeUpdate();
+//
+//            System.out.println("Insert Successful!");
+//        } catch (SQLException ex){
+//            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//        }
+//    }
+//
+//    public void editContact(Connection connection, int u_id, String fname, String lname, int cpnum, String email, String address, int landline){
+//
+//        String query = "UPDATE contact_details SET first_name = ?, last_name = ?, landline_num = ?, cellphone_num = ?, email = ?, c_address = ? WHERE contact_id = ?";
+//
+//        String url = "jdbc:postgresql:Pumpcrete";
+//
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(query);
+//
+//            ps.setString(1, fname);
+//            ps.setString(2, lname);
+//            ps.setInt(3, landline);
+//            ps.setInt(4, cpnum);
+//            ps.setString(5, email);
+//            ps.setString(6, address);
+//
+//            ps.executeUpdate();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+//
+//    public void deleteContact (int c_id) {
+//
+//        String query = "DELETE FROM contact_details WHERE contact_id = ?";
+//
+//        String url = "jdbc:postgresql:Pumpcrete";
+//
+//        try (Connection connection = DriverManager.getConnection(url, "postgres","swengt3y2");
+//             PreparedStatement ps = connection.prepareStatement(query)) {
+//
+//            ps.setInt(1, c_id);
+//
+//            ps.executeUpdate();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }

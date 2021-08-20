@@ -1,5 +1,6 @@
 package sample;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,16 +15,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Billing;
 import sample.model.Postgresql;
-import sample.model.User;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class BillingsController extends Controller implements Initializable {
@@ -43,6 +41,8 @@ public class BillingsController extends Controller implements Initializable {
     private TableColumn<Billing, LocalDate> dateColumn;
     @FXML
     private TableColumn<Billing, String> clientNameColumn;
+    @FXML
+    private TableColumn<Billing, Boolean> postedColumn;
 
     @FXML
     private Button billings_unpost_btn;
@@ -67,8 +67,8 @@ public class BillingsController extends Controller implements Initializable {
 
         billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Integer>("bill_no"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("client_name"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, LocalDate>("date"));
-
+        dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, LocalDate>("date_doc"));
+        postedColumn.setCellValueFactory(new PropertyValueFactory<Billing, Boolean>("posted"));
         billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 

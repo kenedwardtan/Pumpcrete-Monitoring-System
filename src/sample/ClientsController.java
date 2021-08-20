@@ -16,18 +16,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Client;
 import sample.model.Postgresql;
-import sample.model.User;
+
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class ClientsController extends Controller implements Initializable {
     private Stage stage;
@@ -47,7 +45,7 @@ public class ClientsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Client, Integer> IDColumn;
     @FXML
-    private TableColumn<Client, String> dateColumn;
+    private TableColumn<Client, LocalDate> dateColumn;
     @FXML
     private TableColumn<Client, String> nameColumn;
     @FXML
@@ -58,7 +56,7 @@ public class ClientsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Client, Integer> IDColumn1;
     @FXML
-    private TableColumn<Client, String> dateColumn1;
+    private TableColumn<Client, LocalDate> dateColumn1;
     @FXML
     private TableColumn<Client, String> nameColumn1;
     @FXML
@@ -92,7 +90,7 @@ public class ClientsController extends Controller implements Initializable {
         IDColumn.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("latest_date"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
 
         clients_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -180,7 +178,8 @@ public class ClientsController extends Controller implements Initializable {
                 IDColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
                 emailColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
                 nameColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
-                dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("latest_date"));
+                if(c.getLatestDocDate() != null)
+                    dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
                 positionColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
                 landlineColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("landline"));
                 cellphoneColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("cpnum"));

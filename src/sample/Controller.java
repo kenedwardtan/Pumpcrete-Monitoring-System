@@ -267,24 +267,7 @@ public class Controller {
             stage.show();
         }
 
-        if (e.getSource() == billings_submit_btn) {
-            stage = (Stage) billings_submit_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
 
-        if (e.getSource() == billings_cancel_btn) {
-            //clear fields
-            stage = (Stage) billings_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
 
         //employees
         if (e.getSource() == create_submit_btn) {
