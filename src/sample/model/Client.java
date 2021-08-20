@@ -24,6 +24,15 @@ public class Client {
         this.landline = new SimpleIntegerProperty(landline);
         this.latest_date =  date;
     }
+    public Client(int id, String position, String name,long cpnum, String email, String address, int landline){
+        this.id = new SimpleIntegerProperty(id);
+        this.position = new SimpleStringProperty(position);
+        this.name = new SimpleStringProperty(name);
+        this.cpnum = new SimpleLongProperty(cpnum);
+        this.email = new SimpleStringProperty(email);
+        this.address = new SimpleStringProperty(address);
+        this.landline = new SimpleIntegerProperty(landline);
+    }
 
     public String getPosition() {
         return position.get();

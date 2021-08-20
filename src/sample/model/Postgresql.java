@@ -333,9 +333,9 @@ public class Postgresql {
 
 
         String query = "INSERT INTO client(client_name, client_position, client_address," +
-                "client_landline, client_cellphone, client_email, latest_doc_date) VALUES (?,?,?,?,?,?,?)";
+                "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?)";
 
-        Date date = new Date(20000101);
+        //Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -346,7 +346,7 @@ public class Postgresql {
             ps.setInt(4, landline);
             ps.setLong(5, cpnum);
             ps.setString(6, email);
-            ps.setDate(7, date);
+            //ps.setDate(7, date);
 
             ps.executeUpdate();
 
@@ -359,10 +359,10 @@ public class Postgresql {
     public void editClient (Connection connection, int c_id, String name, String position,
                             String address, int landline, long cpnum, String email){
 
-        String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ?, latest_doc_date = ? WHERE client_id = ?";
+        String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
-        Date date = new Date(20000101);
+        //Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -373,8 +373,7 @@ public class Postgresql {
             ps.setLong(4, cpnum);
             ps.setString(5, email);
             ps.setString(6,address);
-            ps.setDate(7, date);
-            ps.setInt(8, c_id);
+            ps.setInt(7, c_id);
 
 
             ps.executeUpdate();
@@ -445,6 +444,8 @@ public class Postgresql {
 
     public static ObservableList<Client> getAllClients(Connection con)
     {
+        Client c;
+
         String query = "SELECT * FROM client";
         try {
             PreparedStatement pst = con.prepareStatement(query);
@@ -459,9 +460,13 @@ public class Postgresql {
                 int landline = result.getInt("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
-                Date date = result.getDate("latest_doc_date");
+                if(result.getDate("latest_doc_date") != null) {
+                    Date date = result.getDate("latest_doc_date");
+                    c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                }
+                c = new Client(id, position, name, cpnum, email, address, landline);
 
-                Client c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+
                 c_result.add(c);
             }
 

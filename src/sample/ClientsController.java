@@ -178,7 +178,8 @@ public class ClientsController extends Controller implements Initializable {
                 IDColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
                 emailColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
                 nameColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
-                dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
+                if(c.getLatestDocDate() != null)
+                    dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
                 positionColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
                 landlineColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("landline"));
                 cellphoneColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("cpnum"));
