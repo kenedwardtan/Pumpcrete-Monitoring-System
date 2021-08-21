@@ -91,6 +91,7 @@ public class BillingsCreateController extends Controller implements  Initializab
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
+                    stage.setResizable(false);
                     stage.show();
                 }
                 else{
@@ -102,6 +103,7 @@ public class BillingsCreateController extends Controller implements  Initializab
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
+                    stage.setResizable(false);
                     stage.show();
 
                 }
@@ -116,6 +118,7 @@ public class BillingsCreateController extends Controller implements  Initializab
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
     }

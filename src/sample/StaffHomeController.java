@@ -72,6 +72,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
         //dashboard cards
@@ -89,6 +90,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -98,6 +100,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -107,6 +110,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -116,6 +120,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -125,6 +130,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -134,6 +140,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -143,6 +150,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -159,6 +167,7 @@ public class StaffHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
     }

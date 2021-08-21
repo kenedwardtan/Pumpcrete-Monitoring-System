@@ -96,6 +96,7 @@ public class EmployeesController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -119,6 +120,7 @@ public class EmployeesController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -129,6 +131,7 @@ public class EmployeesController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
     }

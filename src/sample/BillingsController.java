@@ -43,15 +43,12 @@ public class BillingsController extends Controller implements Initializable {
     private TableColumn<Billing, String> clientNameColumn;
     @FXML
     private TableColumn<Billing, Boolean> postedColumn;
-
     @FXML
     private Button billings_create_btn;
     @FXML
     private Button billings_back_btn;
     @FXML
     private Button billings_edit_btn;
-    @FXML
-    private Button billings_unpost_btn;
 
     @FXML
     private ImageView billings_2img;
@@ -84,14 +81,15 @@ public class BillingsController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
         //delete selected rows
-        if (e.getSource() == billings_unpost_btn) {
-            billings_tb.getItems().removeAll(billings_tb.getSelectionModel().getSelectedItems());
+        //if (e.getSource() == billings_unpost_btn) {
+            //billings_tb.getItems().removeAll(billings_tb.getSelectionModel().getSelectedItems());
             //*code to delete from db as well*
-        }
+        //}
 
         //add billing
         if (e.getSource() == billings_create_btn) {
@@ -100,6 +98,7 @@ public class BillingsController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -112,6 +111,7 @@ public class BillingsController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
     }
@@ -123,7 +123,6 @@ public class BillingsController extends Controller implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(billings_tb.getSelectionModel().getSelectedItem()); //test
                 billings_2img.setVisible(true);
-                billings_unpost_btn.setVisible(true);
                 billings_edit_btn.setVisible(true);
             }
         });
@@ -132,7 +131,6 @@ public class BillingsController extends Controller implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(billings_tb.getSelectionModel().getSelectedItem()); //test
                 billings_2img.setVisible(false);
-                billings_unpost_btn.setVisible(false);
                 billings_edit_btn.setVisible(false);
             }
         });

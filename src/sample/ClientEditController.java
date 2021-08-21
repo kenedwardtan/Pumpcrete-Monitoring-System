@@ -108,6 +108,7 @@ public class ClientEditController extends Controller implements Initializable {
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
+                        stage.setResizable(false);
                         stage.show();
                     }
                     else
@@ -123,6 +124,7 @@ public class ClientEditController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
     }

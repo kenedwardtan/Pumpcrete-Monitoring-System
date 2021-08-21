@@ -15,15 +15,15 @@
                <Image url="@resources/img/login.png" />
            </image>
        </ImageView>
+      <Button fx:id="login_btn" defaultButton="true" layoutX="660.0" layoutY="495.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="54.0" />
          <TextField fx:id="login_user_tf" alignment="CENTER" layoutX="560.0" layoutY="303.0" prefHeight="41.0" prefWidth="254.0" promptText="Username">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="login_pass_tf" alignment="CENTER" layoutX="560.0" layoutY="356.0" onAction="#handleAction" prefHeight="41.0" prefWidth="254.0" promptText="Password">
+      <PasswordField fx:id="login_pass_tf" alignment="CENTER" depthTest="DISABLE" layoutX="560.0" layoutY="356.0" nodeOrientation="LEFT_TO_RIGHT" onAction="#handleAction" pickOnBounds="false" prefHeight="41.0" prefWidth="254.0" promptText="Password">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font></PasswordField>
-      <Button fx:id="login_btn" layoutX="660.0" layoutY="495.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="53.0" prefWidth="54.0" />
    </children>
 </AnchorPane>

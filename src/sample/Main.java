@@ -16,6 +16,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("Pumpcrete Monitoring System");
         primaryStage.setScene(new Scene(root, 891, 688, Color.web("#F6F6F6")));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

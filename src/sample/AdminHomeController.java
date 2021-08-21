@@ -73,6 +73,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -82,6 +83,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -99,6 +101,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -108,6 +111,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -117,6 +121,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -126,6 +131,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -135,6 +141,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -144,6 +151,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -154,6 +162,7 @@ public class AdminHomeController extends Controller implements Initializable {
             scene = new Scene(root);
             //scene.getStylesheets().add("/sample/resources/css/views.css");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -163,6 +172,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -179,6 +189,7 @@ public class AdminHomeController extends Controller implements Initializable {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
     }

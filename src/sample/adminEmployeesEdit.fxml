@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TextArea?>
@@ -21,26 +22,41 @@
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
         </TextArea>
-        <TextArea fx:id="edit_mn_tf" layoutX="340.0" layoutY="222.0" prefHeight="47.0" prefWidth="209.0">
+        <TextArea fx:id="edit_mn_tf" layoutX="340.0" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
         </TextArea>
         <TextArea fx:id="edit_ln_tf" layoutX="568.0" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
         </TextArea>
         <TextArea fx:id="edit_email_tf" layoutX="112.0" layoutY="306.0" prefHeight="47.0" prefWidth="668.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
         </TextArea>
         <TextArea fx:id="edit_user_tf" layoutX="112.0" layoutY="392.0" prefHeight="47.0" prefWidth="280.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
         </TextArea>
         <ChoiceBox fx:id="edit_role_dd" layoutX="405.0" layoutY="391.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="181.0" value="Select Role">
             <items>
@@ -50,9 +66,21 @@
                     <String fx:value="Staff" />
                 </FXCollections>
             </items>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
         </ChoiceBox>
-        <Button fx:id="edit_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save" />
-        <Button fx:id="edit_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel" />
-      <Button fx:id="edit_generate_btn" layoutX="597.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleAction" prefHeight="51.0" prefWidth="182.0" text="Generate Password" />
+        <Button fx:id="edit_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+        <Button fx:id="edit_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="edit_generate_btn" layoutX="597.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleAction" prefHeight="51.0" prefWidth="182.0" text="Generate Password">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
     </children>
 </AnchorPane>

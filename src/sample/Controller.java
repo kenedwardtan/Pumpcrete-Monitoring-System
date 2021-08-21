@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.model.Postgresql;
@@ -185,6 +187,7 @@ public class Controller {
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
+                        stage.setResizable(false);
                         stage.show();
                         break;
                     case "Admin":
@@ -194,6 +197,7 @@ public class Controller {
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
+                        stage.setResizable(false);
                         stage.show();
                         break;
                     case "Supervisor":
@@ -203,6 +207,7 @@ public class Controller {
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
+                        stage.setResizable(false);
                         stage.show();
                         break;
                     default:
@@ -217,7 +222,6 @@ public class Controller {
                 errorAlert.showAndWait();
             }
         }
-
 
         //clients
         if (e.getSource() == clients_submit_btn) {
@@ -247,6 +251,7 @@ public class Controller {
                             root = loader.load();
                             scene = new Scene(root);
                             stage.setScene(scene);
+                            stage.setResizable(false);
                             stage.show();
                         }
                         else
@@ -262,6 +267,7 @@ public class Controller {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -272,6 +278,7 @@ public class Controller {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -282,6 +289,7 @@ public class Controller {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -299,7 +307,6 @@ public class Controller {
                 String uname = create_user_tf.getText();
                 String role = create_role_dd.getValue();
 
-
                 // check if the username already exists
                 if (!postgresql.checkUsername(con, uname)) {
 
@@ -316,6 +323,7 @@ public class Controller {
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
+                        stage.setResizable(false);
                         stage.show();
                     }
                 } else
@@ -331,6 +339,7 @@ public class Controller {
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
 
@@ -345,6 +354,7 @@ public class Controller {
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
+                    stage.setResizable(false);
                     stage.show();
                     break;
                 case "Admin":
@@ -354,6 +364,7 @@ public class Controller {
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
+                    stage.setResizable(false);
                     stage.show();
                     break;
                 case "Supervisor":
@@ -363,6 +374,7 @@ public class Controller {
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
+                    stage.setResizable(false);
                     stage.show();
                     break;
                 default:
@@ -371,10 +383,9 @@ public class Controller {
                     errorAlert.showAndWait();
                     break;
             }
-
         }
 
-        if(e.getSource() == settings_save_btn) {
+        if (e.getSource() == settings_save_btn) {
             String oldpw = settings_oPass_tf.getText().trim();
             String repeat = settings_roPass_tf.getText().trim();
             String newpw = settings_nPass_tf.getText().trim();
@@ -394,6 +405,7 @@ public class Controller {
                                 root = loader.load();
                                 scene = new Scene(root);
                                 stage.setScene(scene);
+                                stage.setResizable(false);
                                 stage.show();
                                 break;
                             case "Admin":
@@ -403,6 +415,7 @@ public class Controller {
                                 root = loader.load();
                                 scene = new Scene(root);
                                 stage.setScene(scene);
+                                stage.setResizable(false);
                                 stage.show();
                                 break;
                             case "Supervisor":
@@ -412,6 +425,7 @@ public class Controller {
                                 root = loader.load();
                                 scene = new Scene(root);
                                 stage.setScene(scene);
+                                stage.setResizable(false);
                                 stage.show();
                                 break;
                             default:
@@ -435,7 +449,6 @@ public class Controller {
             return true;
         else
             return false;
-
     }
 
     public boolean verifyCreateClient () {
