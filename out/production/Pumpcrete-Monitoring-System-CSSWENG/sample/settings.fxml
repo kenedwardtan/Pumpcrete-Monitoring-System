@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
         <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@resources/img/home/staff/settings.png" />
          </image>
       </ImageView>
-        <PasswordField fx:id="settings_oPass_tf" alignment="CENTER" layoutX="478.0" layoutY="369.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="Old Password">
+        <PasswordField fx:id="settings_oPass_tf" alignment="CENTER" layoutX="478.0" layoutY="344.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="Old Password">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
         </PasswordField>
-        <PasswordField fx:id="settings_nPass_tf" alignment="CENTER" layoutX="478.0" layoutY="429.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="New Password">
+        <PasswordField fx:id="settings_roPass_tf" alignment="CENTER" layoutX="478.0" layoutY="403.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="Repeat Old Password">
+            <font>
+                <Font name="Work Sans Regular" size="13.0" />
+            </font>
+        </PasswordField>
+        <PasswordField fx:id="settings_nPass_tf" alignment="CENTER" layoutX="478.0" layoutY="461.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="New Password">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>

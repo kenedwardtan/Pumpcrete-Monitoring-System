@@ -50,6 +50,8 @@ public class BillingsController extends Controller implements Initializable {
     private Button billings_back_btn;
     @FXML
     private Button billings_edit_btn;
+    @FXML
+    private Button billings_unpost_btn;
 
     @FXML
     private ImageView billings_2img;

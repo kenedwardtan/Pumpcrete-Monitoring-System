@@ -7,6 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -15,6 +18,7 @@ import sample.model.User;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
@@ -117,8 +121,6 @@ public class Controller {
     @FXML
     private TextField edit_billings_price_tf;
     @FXML
-    private DatePicker edit_billings_date;
-    @FXML
     private Button edit_billings_submit_btn;
     @FXML
     private Button edit_billings_cancel_btn;
@@ -149,6 +151,8 @@ public class Controller {
     @FXML
     private PasswordField settings_oPass_tf;
     @FXML
+    private PasswordField settings_roPass_tf;
+    @FXML
     private PasswordField settings_nPass_tf;
     @FXML
     private Button settings_save_btn;
@@ -168,7 +172,7 @@ public class Controller {
             String username = "";
             username = login_user_tf.getText();
             String password = login_pass_tf.getText();
-            con = postgresql.loginUser(username, password);
+            con = postgresql.loginUser(username.trim(), password.trim());
 
             if (con != null) {
                 System.out.println("Successful Login");
@@ -371,46 +375,67 @@ public class Controller {
         }
 
         if(e.getSource() == settings_save_btn) {
-            String oldpw = settings_oPass_tf.getText();
-            String newpw = settings_nPass_tf.getText();
+            String oldpw = settings_oPass_tf.getText().trim();
+            String repeat = settings_roPass_tf.getText().trim();
+            String newpw = settings_nPass_tf.getText().trim();
 
-            postgresql.editPassword(con, oldpw, newpw);
-            String role = postgresql.getRole(con);
-            switch (role) {
-                case "Staff":
-                case "staff":
-                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-                case "Admin":
-                case "admin":
-                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-                case "Supervisor":
-                case "supervisor":
-                    stage = (Stage) settings_cancel_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-                default:
-                    errorAlert.setHeaderText("Input not valid");
-                    errorAlert.setContentText("Invalid Role.");
-                    errorAlert.showAndWait();
-                    break;
+            if (!newpw.equals("") && !oldpw.equals("") && !repeat.equals("")) {//(oldpw.equals(repeat))
+                if (verifyOldPw(oldpw, repeat)) {
+                    boolean changed = postgresql.editPassword(con, oldpw, newpw);
+                    if (changed){
+                        JOptionPane.showMessageDialog(null, "Successfully changed password!\nNew password: " + newpw, "Password Changed!", 1);
+
+                        String role = postgresql.getRole(con);
+                        switch (role) {
+                            case "Staff":
+                            case "staff":
+                                stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                                loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                                root = loader.load();
+                                scene = new Scene(root);
+                                stage.setScene(scene);
+                                stage.show();
+                                break;
+                            case "Admin":
+                            case "admin":
+                                stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                                root = loader.load();
+                                scene = new Scene(root);
+                                stage.setScene(scene);
+                                stage.show();
+                                break;
+                            case "Supervisor":
+                            case "supervisor":
+                                stage = (Stage) settings_cancel_btn.getScene().getWindow();
+                                loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                                root = loader.load();
+                                scene = new Scene(root);
+                                stage.setScene(scene);
+                                stage.show();
+                                break;
+                            default:
+                                errorAlert.setHeaderText("Input not valid");
+                                errorAlert.setContentText("Invalid Role.");
+                                errorAlert.showAndWait();
+                                break;
+                        }
+                    }
+                }
+                else
+                    JOptionPane.showMessageDialog(null, "Passwords do not match, make sure you confirm your old password!", "Password mismatch!", 2);
             }
+            else
+                JOptionPane.showMessageDialog(null, "Fill up new password, blank spaces are not allowed", "New Password Failed", 2);
         }
+    }
+
+    public boolean verifyOldPw(String old, String repeat) {
+        if(old.equals(repeat))
+            return true;
+        else
+            return false;
+
     }
 
     public boolean verifyCreateClient () {

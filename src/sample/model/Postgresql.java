@@ -199,7 +199,7 @@ public class Postgresql {
         return "";
     }
 
-    public static void editPassword (Connection connection,String old, String npw){
+    public static boolean editPassword (Connection connection,String old, String npw){
 
         String DBPassword = "'"+npw+"'";
         String url = "jdbc:postgresql:Pumpcrete";
@@ -218,11 +218,13 @@ public class Postgresql {
                 con.close();
                 p.close();
                 ps.close();
+                return  true;
         } catch (SQLException throwables) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Edit Password Failed");
             errorAlert.setContentText("Wrong password.");
             errorAlert.showAndWait();
+            return false;
         }
     }
 
@@ -237,7 +239,7 @@ public class Postgresql {
         String DBPassword = "'" + u_password +"'";
 
         String query1 = "";
-        String query2 = "INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)";
+        String query2 = "INSERT INTO users(first_name, last_name, middle_name, username, password, email, role) VALUES (?,?,?,?,?,?,?)";
         switch (role)
         {
             case "Staff":
@@ -263,10 +265,11 @@ public class Postgresql {
                 PreparedStatement ps = connection.prepareStatement(query2);
                 ps.setString(1, fname);
                 ps.setString(2, lname);
-                ps.setString(3, uname);
-                ps.setString(4, u_password);
-                ps.setString(5, email);
-                ps.setString(6, role);
+                ps.setString(3, mname);
+                ps.setString(4, uname);
+                ps.setString(5, u_password);
+                ps.setString(6, email);
+                ps.setString(7, role);
 
                 ps.executeUpdate();
 

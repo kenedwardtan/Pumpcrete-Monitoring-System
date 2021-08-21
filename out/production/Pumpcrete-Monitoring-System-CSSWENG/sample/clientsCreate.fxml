@@ -44,6 +44,10 @@
       </TextField>
         <Button fx:id="clients_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save" />
         <Button fx:id="clients_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel" />
-      <TextField fx:id="clients_position_tf" layoutX="367.0" layoutY="184.0" promptText="Position" />
+      <TextField fx:id="clients_position_tf" alignment="CENTER" layoutX="367.0" layoutY="184.0" promptText="Position">
+        <font>
+            <Font name="Work Sans Regular" size="13.0" />
+        </font>
+      </TextField>
     </children>
 </AnchorPane>

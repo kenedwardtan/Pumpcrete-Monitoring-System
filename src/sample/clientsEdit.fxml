@@ -12,7 +12,7 @@
                 <Image url="@resources/img/clients/clientEdit.png" />
             </image>
         </ImageView>
-        <TextArea fx:id="edit_clients_fn_tf" layoutX="178.0" layoutY="229.0" prefHeight="34.0" prefWidth="263.0">
+        <TextArea fx:id="edit_clients_fn_tf" layoutX="178.0" layoutY="231.0" prefHeight="34.0" prefWidth="263.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -44,6 +44,6 @@
         </TextArea>
         <Button fx:id="edit_clients_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save" />
         <Button fx:id="edit_clients_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel" />
-      <TextArea fx:id="edit_clients_position_tf" layoutX="345.0" layoutY="163.0" prefHeight="44.0" prefWidth="192.0" text = "Position"/>
+      <TextArea fx:id="edit_clients_position_tf" layoutX="352.0" layoutY="179.0" prefHeight="44.0" prefWidth="192.0" />
     </children>
 </AnchorPane>

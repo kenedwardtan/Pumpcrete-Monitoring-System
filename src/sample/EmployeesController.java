@@ -105,6 +105,7 @@ public class EmployeesController extends Controller implements Initializable {
             u = employees_tb.getSelectionModel().getSelectedItems();
             int i = 0;
             while (i < u.size()) {
+                System.out.println(u.get(i).username.get());
                 postgresql.deleteUser(Controller.con, u.get(i++).username.get());
             }
 

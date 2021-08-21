@@ -1,6 +1,7 @@
 GRANT UPDATE on "users" to admin_role; --admin can update
 GRANT INSERT on "users" to admin_role; --admin can create new
 GRANT SELECT on "users" to admin_role; --admin can view users
+GRANT DELETE on "users" to admin_role;
 
 --CLIENTS
 GRANT UPDATE on "client" to staff_role;
