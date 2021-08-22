@@ -161,8 +161,8 @@ public class Controller {
     @FXML
     private Button settings_cancel_btn;
 
-	@FXML
-	private JOptionPane optionPane;
+    @FXML
+    private JOptionPane optionPane;
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
@@ -237,26 +237,26 @@ public class Controller {
 
                 String fullname =  fname.trim() + " " + lname.trim();
 
-                    //checks the format of the email
-                    if (EmailVerification(email)) {
-                        if (verifyClientNumbers()) {
-                            //creates the user and inserts into database
-                            postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline, cellphone, email.trim());
-                            String message = "Name: " + fullname;
-                            optionPane.showMessageDialog(null, message, "Client Created!", 1);
-                            //clear fields
+                //checks the format of the email
+                if (EmailVerification(email)) {
+                    if (verifyClientNumbers()) {
+                        //creates the user and inserts into database
+                        postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline, cellphone, email.trim());
+                        String message = "Name: " + fullname;
+                        optionPane.showMessageDialog(null, message, "Client Created!", 1);
+                        //clear fields
 
-                            stage = (Stage) clients_submit_btn.getScene().getWindow();
-                            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
-                            root = loader.load();
-                            scene = new Scene(root);
-                            stage.setScene(scene);
-                            stage.setResizable(false);
-                            stage.show();
-                        }
-                        else
-                            optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
+                        stage = (Stage) clients_submit_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
                     }
+                    else
+                        optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
+                }
             }
         }
 

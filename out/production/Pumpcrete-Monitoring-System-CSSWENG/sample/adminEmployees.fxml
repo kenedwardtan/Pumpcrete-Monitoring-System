@@ -25,15 +25,15 @@
             <TableColumn fx:id="roleColumn" prefWidth="102.0" text="Role" />
         </columns>
       </TableView>
-      <Button fx:id="employees_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button" />
-      <Button fx:id="employees_create_btn" layoutX="85.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="163.0" text="Button" />
-      <TextField layoutX="662.0" layoutY="162.0" prefHeight="29.0" prefWidth="141.0" promptText="Search" />
+      <Button fx:id="employees_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button">
+      <Button fx:id="employees_create_btn" layoutX="85.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="163.0" text="Button">
+      <TextField layoutX="662.0" layoutY="162.0" prefHeight="29.0" prefWidth="141.0" promptText="Search">
       <ImageView fx:id="employees_2img" fitHeight="26.0" fitWidth="220.0" layoutX="385.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@resources/img/home/admin/employeesButtons.png" />
          </image>
       </ImageView>
-      <Button fx:id="employees_remove_btn" layoutX="385.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="20.0" prefWidth="65.0" text="Button" visible="false" />
-      <Button fx:id="employees_edit_btn" layoutX="461.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false" />
+      <Button fx:id="employees_remove_btn" layoutX="385.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="20.0" prefWidth="65.0" text="Button" visible="false">
+      <Button fx:id="employees_edit_btn" layoutX="461.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false">
    </children>
 </AnchorPane>

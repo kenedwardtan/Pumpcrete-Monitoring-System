@@ -359,7 +359,7 @@ public class Postgresql {
         }
     }
 
-    public void editClient (Connection connection, int c_id, String name, String position,
+    public void editClient (Connection connection, long c_id, String name, String position,
                             String address, int landline, long cpnum, String email){
 
         String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
@@ -376,7 +376,7 @@ public class Postgresql {
             ps.setLong(4, cpnum);
             ps.setString(5, email);
             ps.setString(6,address);
-            ps.setInt(7, c_id);
+            ps.setLong(7, c_id);
 
 
             ps.executeUpdate();
@@ -386,7 +386,7 @@ public class Postgresql {
         }
     }
 
-    public void deleteClient (Connection connection, int c_id){
+    public void deleteClient (Connection connection, long c_id){
 
         String query = "DELETE FROM client WHERE client_id = ?";
 
@@ -394,7 +394,7 @@ public class Postgresql {
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1, c_id);
+            ps.setLong(1, c_id);
 
             ps.executeUpdate();
 
@@ -404,7 +404,7 @@ public class Postgresql {
     }
 
 
-    public ObservableList<Client> getClient (Connection connection, int c_id){
+    public ObservableList<Client> getClient (Connection connection, long c_id){
 
         String query = "SELECT * FROM client WHERE client_id = ?";
         ObservableList<Client> c_result = FXCollections.observableArrayList();
@@ -412,7 +412,7 @@ public class Postgresql {
         try {
 
                 PreparedStatement ps = connection.prepareStatement(query);
-                ps.setInt(1, c_id);
+                ps.setLong(1, c_id);
                 ResultSet result = ps.executeQuery();
 
 
@@ -422,7 +422,7 @@ public class Postgresql {
 //                ResultSet result = ps.executeQuery();
 
                 result.next();
-                int id = result.getInt("client_id");
+                long id = result.getLong("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
                 long cpnum = result.getLong("client_cellphone");
@@ -456,7 +456,7 @@ public class Postgresql {
             ResultSet result = pst.executeQuery();
             while (result.next()) {
 
-                int id = result.getInt("client_id");
+                long id = result.getInt("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
                 long cpnum = result.getLong("client_cellphone");
@@ -508,24 +508,27 @@ public class Postgresql {
 
 
     public void addBilling (Connection connection, String client_name, String project_name, String project_add,
-                            String date, int PSC_id, float total){
+                            Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price, String struct, float total){
 
-        String query = "INSERT INTO billings(date_doc, date_used, client_name, project_name, project_add, PSC_id, total, posted,filled_by) VALUES (?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO billings(date_doc, date_used, client_name, project_name, project_add, PSC_id, posted,filled_by, floor_level, qty, unit_price, conc_structure, total) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String filled_by = getCurrUser(connection);
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setDate(1, Date.valueOf(date));
-            ps.setDate(2, Date.valueOf(date));
+            ps.setDate(1, date_doc);
+            ps.setDate(2, date_used);
             ps.setString(3, client_name);
             ps.setString(4, project_name);
             ps.setString(5, project_add);
-           // ps.setDate(5, date_used);
             ps.setInt(6, PSC_id);
-            ps.setFloat(7, total);
-            ps.setBoolean(8, false);
-            ps.setString(9, filled_by);
+            ps.setBoolean(7, false);
+            ps.setString(8, filled_by);
+            ps.setInt(9, floor);
+            ps.setFloat(10, qty);
+            ps.setFloat(11,unit_price);
+            ps.setString(12,struct);
+            ps.setFloat(13, total);
 
             ps.executeUpdate();
 
@@ -544,29 +547,33 @@ public class Postgresql {
             ResultSet result = ps. executeQuery();
 
             result.next();
-                int id = result.getInt("bill_no");
-                String client_name = result.getString("client_name");
-                String project_name = result.getString("project_name");
-                String project_add = result.getString("project_add");
-                Date date_doc = result.getDate("date_doc");
-               // Date date_used = result.getDate("date_used");
-                int PSC_id = result.getInt("PSC_id");
-                float total = result.getFloat("total");
-                boolean posted = result.getBoolean("posted");
-                String filled_by = result.getString("filled_by");
-                String posted_by = result.getString("posted_by");
+            long id = result.getLong("bill_no");
+            String client_name = result.getString("client_name");
+            String project_name = result.getString("project_name");
+            String project_add = result.getString("project_add");
+            Date date_doc = result.getDate("date_doc");
+            Date date_used = result.getDate("date_used");
+            long PSC_id = result.getLong("PSC_id");
+            float total = result.getFloat("total");
+            boolean posted = result.getBoolean("posted");
+            String filled_by = result.getString("filled_by");
+            String posted_by = result.getString("posted_by");
+            long floor_level = result.getLong("floor_level");
+            float qty = result.getFloat("qty");
+            float unit_price = result.getFloat("unit_price");
+            String struct = result.getString("conc_struct");
 
-                Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(),  PSC_id,
-                        total, posted, filled_by, posted_by);
+            Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+                    PSC_id,struct, floor_level, qty, unit_price, total, posted, filled_by, posted_by);
 
-                return b;
+            return b;
 
 
         } catch (SQLException ex) {
 
-        Logger lgr = Logger.getLogger(Postgresql.class.getName());
-        lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        return null;
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
         }
     }
 
@@ -575,26 +582,30 @@ public class Postgresql {
         String query = "SELECT * FROM billings";
 
         ObservableList<Billing> billings = FXCollections.observableArrayList();
-        Billing b ;
+
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet results = ps.executeQuery();
 
             while (results.next()){
-                int id = results.getInt("bill_no");
+                long id = results.getLong("bill_no");
                 String client_name = results.getString("client_name");
                 String project_name = results.getString("project_name");
                 String project_add = results.getString("project_add");
                 Date date_doc = results.getDate("date_doc");
-               // Date date_used = results.getDate("date_used");
-                int PSC_id = results.getInt("PSC_id");
+                Date date_used = results.getDate("date_used");
+                long PSC_id = results.getLong("PSC_id");
                 float total = results.getFloat("total");
                 boolean posted = results.getBoolean("posted");
                 String filled_by = results.getString("filled_by");
                 String posted_by = results.getString("posted_by");
+                long floor_level = results.getLong("floor_level");
+                float qty = results.getFloat("qty");
+                float unit_price = results.getFloat("unit_price");
+                String struct = results.getString("conc_structure");
 
-                b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(),  PSC_id,
-                        total, posted, filled_by, posted_by);
+                Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+                        PSC_id,struct, floor_level, qty, unit_price, total, posted, filled_by, posted_by);
                 billings.add(b);
             }
 

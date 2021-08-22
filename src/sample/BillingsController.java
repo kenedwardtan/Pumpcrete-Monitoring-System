@@ -1,6 +1,8 @@
 package sample;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Billing;
+import sample.model.Client;
 import sample.model.Postgresql;
 
 import javax.swing.*;
@@ -36,7 +39,7 @@ public class BillingsController extends Controller implements Initializable {
     @FXML
     private TableView billings_tb;
     @FXML
-    private TableColumn<Billing, Integer> billNumColumn;
+    private TableColumn<Billing, Long> billNumColumn;
     @FXML
     private TableColumn<Billing, LocalDate> dateColumn;
     @FXML
@@ -62,8 +65,8 @@ public class BillingsController extends Controller implements Initializable {
 
         billings_tb.setItems(postgresql.getAllBillings(Controller.con));
 
-        billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Integer>("bill_no"));
-        clientNameColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("client_name"));
+        billNumColumn.setCellValueFactory(new PropertyValueFactory<Billing, Long>("floor_level"));
+        clientNameColumn.setCellValueFactory(new PropertyValueFactory<Billing, String>("conc_structure"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Billing, LocalDate>("date_doc"));
         postedColumn.setCellValueFactory(new PropertyValueFactory<Billing, Boolean>("posted"));
         billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -121,7 +124,8 @@ public class BillingsController extends Controller implements Initializable {
 
         billings_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                System.out.println(billings_tb.getSelectionModel().getSelectedItem()); //test
+                Billing b = (Billing) billings_tb.getSelectionModel().getSelectedItem();
+                System.out.println(b.getBillNo()); //test
                 billings_2img.setVisible(true);
                 billings_edit_btn.setVisible(true);
             }

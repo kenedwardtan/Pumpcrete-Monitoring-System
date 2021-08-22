@@ -5,7 +5,7 @@ import javafx.beans.property.*;
 import java.time.LocalDate;
 
 public class Client {
-    public SimpleIntegerProperty id;
+    public SimpleLongProperty id;
     public SimpleStringProperty position;
     public SimpleStringProperty name;
     public SimpleLongProperty cpnum;
@@ -14,8 +14,8 @@ public class Client {
     public SimpleIntegerProperty landline;
     public LocalDate latest_date;
 
-    public Client(int id, String position, String name,long cpnum, String email, String address, int landline,LocalDate date){
-        this.id = new SimpleIntegerProperty(id);
+    public Client(long id, String position, String name,long cpnum, String email, String address, int landline,LocalDate date){
+        this.id = new SimpleLongProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
         this.cpnum = new SimpleLongProperty(cpnum);
@@ -24,8 +24,8 @@ public class Client {
         this.landline = new SimpleIntegerProperty(landline);
         this.latest_date =  date;
     }
-    public Client(int id, String position, String name,long cpnum, String email, String address, int landline){
-        this.id = new SimpleIntegerProperty(id);
+    public Client(long id, String position, String name,long cpnum, String email, String address, int landline){
+        this.id = new SimpleLongProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
         this.cpnum = new SimpleLongProperty(cpnum);
@@ -40,7 +40,7 @@ public class Client {
 
     public String getName() {return name.get();}
 
-    public int getID() { return  id.get();}
+    public long getID() { return  id.get();}
 
     public long getCpnum() {
         return cpnum.get();

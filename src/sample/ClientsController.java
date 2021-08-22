@@ -34,8 +34,8 @@ public class ClientsController extends Controller implements Initializable {
     private FXMLLoader loader;
     public Postgresql postgresql;
     public static Connection con;
-    public int selectedID =0;
-    public static int editClient;
+    public long selectedID =0;
+    public static long editClient;
 
     @FXML
     private Button clients_create_btn;
@@ -54,7 +54,7 @@ public class ClientsController extends Controller implements Initializable {
     @FXML
     private TableView clients_details_tb;
     @FXML
-    private TableColumn<Client, Integer> IDColumn1;
+    private TableColumn<Client, Long> IDColumn1;
     @FXML
     private TableColumn<Client, LocalDate> dateColumn1;
     @FXML
@@ -62,7 +62,7 @@ public class ClientsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Client, String> emailColumn1;
     @FXML
-    private TableColumn<Client, Integer> cellphoneColumn1;
+    private TableColumn<Client, Long> cellphoneColumn1;
     @FXML
     private TableColumn<Client, Integer> landlineColumn1;
     @FXML
@@ -176,14 +176,14 @@ public class ClientsController extends Controller implements Initializable {
                 //set details table
 
                 clients_details_tb.setItems(clients_tb.getSelectionModel().getSelectedItems());
-                IDColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
+                IDColumn1.setCellValueFactory(new PropertyValueFactory<Client, Long>("id"));
                 emailColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
                 nameColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
                 if(c.getLatestDocDate() != null)
                     dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
                 positionColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
                 landlineColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("landline"));
-                cellphoneColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("cpnum"));
+                cellphoneColumn1.setCellValueFactory(new PropertyValueFactory<Client, Long>("cpnum"));
                 addressColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("address"));
 
             }
@@ -202,7 +202,7 @@ public class ClientsController extends Controller implements Initializable {
         });
     }
 
-    public static int getEditClient() {
+    public static long getEditClient() {
         return editClient;
     }
 }

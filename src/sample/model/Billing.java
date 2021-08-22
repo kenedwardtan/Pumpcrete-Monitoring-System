@@ -5,32 +5,41 @@ import javafx.beans.property.*;
 import java.time.LocalDate;
 
 public class Billing {
-    public SimpleIntegerProperty bill_no;
-    public LocalDate date_doc;
+    public SimpleLongProperty bill_no;
     public SimpleStringProperty client_name;
     public SimpleStringProperty project_name;
     public SimpleStringProperty project_add;
-  //  public LocalDate date_used;
-    public SimpleIntegerProperty PSC_id;
+    public LocalDate date_doc;
+    public LocalDate date_used;
+    public SimpleLongProperty PSC_id;
+    public SimpleStringProperty conc_structure;
+    public SimpleLongProperty floor_level;
+    public SimpleFloatProperty quantity;
+    public SimpleFloatProperty unit_price;
     public SimpleFloatProperty total;
     public SimpleBooleanProperty posted;
     public SimpleStringProperty filled_by;
     public SimpleStringProperty posted_by;
 
-    public Billing (int bill_no, String client_name, String project_name, String project_add, LocalDate date_doc,
-                    int psc_id, float total,boolean posted,String filled_by,String posted_by){
+    public Billing (long bill_no, String client_name, String project_name, String project_add, LocalDate date_doc, LocalDate date_used,
+                    long psc_id, String conc_structure, long floor_level, float qty, float unit_price,
+                    float total,boolean posted,String filled_by,String posted_by){
 
-        this.bill_no = new SimpleIntegerProperty(bill_no);
+        this.bill_no = new SimpleLongProperty(bill_no);
         this.date_doc = date_doc;
-     //   this.date_used =date_used;
+        this.date_used =date_used;
         this.client_name = new SimpleStringProperty(client_name);
         this.project_name = new SimpleStringProperty(project_name);
         this.project_add = new SimpleStringProperty(project_add);
-        this.PSC_id = new SimpleIntegerProperty(psc_id);
+        this.PSC_id = new SimpleLongProperty(psc_id);
         this.total = new SimpleFloatProperty(total);
         this.posted = new SimpleBooleanProperty(posted);
         this.filled_by = new SimpleStringProperty(filled_by);
         this.posted_by= new SimpleStringProperty(posted_by);
+        this.conc_structure = new SimpleStringProperty(conc_structure);
+        this.floor_level = new SimpleLongProperty(floor_level);
+        this.quantity = new SimpleFloatProperty(qty);
+        this.unit_price = new SimpleFloatProperty(unit_price);
     }
 
 
@@ -38,13 +47,11 @@ public class Billing {
         return date_doc;
     }
 
-
     public float getTotal() {
         return total.get();
     }
 
-
-    public int getPSC_id() {
+    public long getPSC_id() {
         return PSC_id.get();
     }
 
@@ -68,7 +75,15 @@ public class Billing {
         return posted.get();
     }
 
-    public Integer getBillNo() {return bill_no.get();}
+    public long getBillNo() {return bill_no.get();}
 
     public String getClientName (){return client_name.get();}
+
+    public String getConcStructure() {return conc_structure.get();}
+
+    public float getQty(){return quantity.get();}
+
+    public float getUnitPrice() {return unit_price.get();}
+
+    public long getFloorLevel(){return floor_level.get();}
 }
