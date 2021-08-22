@@ -43,7 +43,7 @@ public class ClientsController extends Controller implements Initializable {
     @FXML
     private TableView clients_tb;
     @FXML
-    private TableColumn<Client, Integer> IDColumn;
+    private TableColumn<Client, Long> IDColumn;
     @FXML
     private TableColumn<Client, LocalDate> dateColumn;
     @FXML
@@ -87,7 +87,7 @@ public class ClientsController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         clients_tb.setItems(postgresql.getAllClients(Controller.con));
 
-        IDColumn.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
+        IDColumn.setCellValueFactory(new PropertyValueFactory<Client, Long>("id"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));

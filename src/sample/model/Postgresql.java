@@ -267,7 +267,7 @@ public class Postgresql {
                 ps.setString(2, lname);
                 ps.setString(3, mname);
                 ps.setString(4, uname);
-                ps.setString(5, u_password);
+                ps.setString(5, DBPassword);
                 ps.setString(6, email);
                 ps.setString(7, role);
 
@@ -456,7 +456,7 @@ public class Postgresql {
             ResultSet result = pst.executeQuery();
             while (result.next()) {
 
-                long id = result.getInt("client_id");
+                long id = result.getLong("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
                 long cpnum = result.getLong("client_cellphone");
