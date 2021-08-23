@@ -246,20 +246,21 @@ public class Controller {
         //clients
         if (e.getSource() == clients_submit_btn) {
             if (verifyCreateClient()) {
-                // retrieve inputs
-                String fname = clients_fn_tf.getText();
-                String lname = clients_ln_tf.getText();
-                String position = clients_position_tf.getText();
-                String address = clients_address_tf.getText();
-                String email = clients_email_tf.getText();
-                int landline = Integer.parseInt(clients_landline_tf.getText());
-                long cellphone =  Long.parseLong(clients_cellphone_tf.getText());
+                if (verifyClientNumbers()) {
+                    // retrieve inputs
+                    String fname = clients_fn_tf.getText();
+                    String lname = clients_ln_tf.getText();
+                    String position = clients_position_tf.getText();
+                    String address = clients_address_tf.getText();
+                    String email = clients_email_tf.getText();
+                    int landline = Integer.parseInt(clients_landline_tf.getText());
+                    long cellphone =  Long.parseLong(clients_cellphone_tf.getText());
 
-                String fullname =  fname.trim() + " " + lname.trim();
+                    String fullname =  fname.trim() + " " + lname.trim();
 
-                //checks the format of the email
-                if (EmailVerification(email)) {
-                    if (verifyClientNumbers()) {
+                    //checks the format of the email
+                    if (EmailVerification(email)) {
+
                         //creates the user and inserts into database
                         postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline, cellphone, email.trim());
                         String message = "Name: " + fullname;
@@ -274,9 +275,8 @@ public class Controller {
                         stage.setResizable(false);
                         stage.show();
                     }
-                    else
-                        optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
-                }
+                }else
+                    optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
             }
         }
 
@@ -528,7 +528,7 @@ public class Controller {
 
     //verify email format
     public boolean EmailVerification (String email) {
-        String regex = "^(.+)@(.+).com$";
+        String regex = "^([a-zA-Z0-9][a-zA-Z!@#$%^&*?(){}\\s])@([a-zA-Z0-9][a-zA-Z!@#$%^&*?(){}\\s]).com$";
 
         //initialize the Pattern object
         Pattern pattern = Pattern.compile(regex);
