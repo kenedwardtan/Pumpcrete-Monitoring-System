@@ -387,11 +387,11 @@ public class Controller {
 
         if (e.getSource() == settings_save_btn) {
             String oldpw = settings_oPass_tf.getText().trim();
-            String repeat = settings_roPass_tf.getText().trim();
             String newpw = settings_nPass_tf.getText().trim();
+            String repeat = settings_roPass_tf.getText().trim();
 
             if (!newpw.equals("") && !oldpw.equals("") && !repeat.equals("")) {//(oldpw.equals(repeat))
-                if (verifyOldPw(oldpw, repeat)) {
+                if (verifyNewPw(newpw, repeat)) {
                     boolean changed = postgresql.editPassword(con, oldpw, newpw);
                     if (changed){
                         JOptionPane.showMessageDialog(null, "Successfully changed password!\nNew password: " + newpw, "Password Changed!", 1);
@@ -444,8 +444,8 @@ public class Controller {
         }
     }
 
-    public boolean verifyOldPw(String old, String repeat) {
-        if(old.equals(repeat))
+    public boolean verifyNewPw(String newpw, String repeat) {
+        if(newpw.equals(repeat))
             return true;
         else
             return false;
