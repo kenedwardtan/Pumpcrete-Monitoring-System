@@ -131,7 +131,7 @@ public class ClientsController extends Controller implements Initializable {
             ObservableList<Client> c = FXCollections.observableArrayList();
             c = clients_tb.getSelectionModel().getSelectedItems();
             int i = 0;
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO);
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {

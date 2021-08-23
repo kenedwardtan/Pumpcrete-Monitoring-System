@@ -106,7 +106,7 @@ public class EmployeesController extends Controller implements Initializable {
             u = employees_tb.getSelectionModel().getSelectedItems();
             boolean success = true;
             int i = 0;
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO);
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
