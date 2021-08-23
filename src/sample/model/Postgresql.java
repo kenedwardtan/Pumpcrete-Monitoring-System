@@ -311,16 +311,24 @@ public class Postgresql {
 
     public void deleteUser (Connection connection, String uname){
 
-        String query = "DELETE FROM users WHERE username = ?";
+        String query1 = "DROP ROLE " +uname;
+
+        String query2 = "DELETE FROM users WHERE username = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
         try {
-            PreparedStatement ps = connection.prepareStatement(query);
+            PreparedStatement ps = connection.prepareStatement(query1);
 
-            ps.setString(1, uname);
+            ps.execute();
 
-            ps.executeUpdate();
+            PreparedStatement p = connection.prepareStatement(query2);
+
+            p.setString(1, uname);
+
+            p.executeUpdate();
+
+
 
             System.out.println("User deleted!");
 
