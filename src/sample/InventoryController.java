@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Billing;
 import sample.model.Postgresql;
+import sample.model.Pumpcrete;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -31,7 +34,7 @@ public class InventoryController extends Controller implements Initializable {
     public Postgresql postgresql;
     public static Connection con;
     public Controller Controller;
-
+    public long selectedID =0;
     @FXML
     private TableView inventory_tb;
     /*
@@ -109,6 +112,13 @@ public class InventoryController extends Controller implements Initializable {
 
         //delete selected rows
         if (e.getSource() == inventory_delete_btn) {
+            ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
+            p = inventory_tb.getSelectionModel().getSelectedItems();
+            int i = 0;
+            while (i < p.size()) {
+                postgresql.deletePumpcrete(Controller.con, p.get(i++).getPumpcrete_Id());
+            }
+
             inventory_tb.getItems().removeAll(inventory_tb.getSelectionModel().getSelectedItems());
         }
 
@@ -142,8 +152,9 @@ public class InventoryController extends Controller implements Initializable {
 
         inventory_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                Billing b = (Billing) inventory_tb.getSelectionModel().getSelectedItem();
-                System.out.println(b.getBill_no()); //test
+                Pumpcrete p  = (Pumpcrete) inventory_tb.getSelectionModel().getSelectedItem();
+                selectedID = p.getPumpcrete_Id();
+                System.out.println(selectedID); //test
                 inventory_2img.setVisible(true);
                 inventory_edit_btn.setVisible(true);
             }
@@ -152,6 +163,7 @@ public class InventoryController extends Controller implements Initializable {
         inventory_tb.setOnMouseExited((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(inventory_tb.getSelectionModel().getSelectedItem()); //test
+                selectedID =0;
                 inventory_2img.setVisible(false);
                 inventory_edit_btn.setVisible(false);
             }

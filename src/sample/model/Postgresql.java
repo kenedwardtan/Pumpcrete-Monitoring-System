@@ -764,54 +764,82 @@ public class Postgresql {
     }
 
 
-    public void addPumpcrete (Connection connection, long id, String desc, String plate, String fuel, Date purchase_date,
-                              long cr, long or, int tires, boolean rented, String client_name ) {
-        if (rented)
-        {
-            String query = "INSERT INTO pumpcrete( description, plate_no, fuel_type, purchase_date, cr_no, or_no, tires, rented, client_name ) VALUES (?,?,?,?,?,?,?,?,?)";
-            try {
-                PreparedStatement ps = connection.prepareStatement(query);
+    public boolean checkPumpcrete (Connection connection, String plate, long cr, long or)
+    {
 
-                ps.setString(1, desc);
-                ps.setString(2, plate);
-                ps.setString(3, fuel);
-                ps.setDate(4, purchase_date);
-                ps.setLong(5,cr);
-                ps.setLong(6, or);
-                ps.setInt(7, tires);
-                ps.setBoolean(8, true);
-                ps.setString(9,client_name);
+        Boolean pumpcrete_exist = false;
+        //check plate_no
+        try {
+            String query = "SELECT * FROM pumpcrete WHERE plate_no = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
 
-                ps.executeUpdate();
+            ps.setString(1, plate);
+            ResultSet rs = ps.executeQuery();
 
-            } catch (SQLException ex) {
-                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            if (rs.next()) {
+                pumpcrete_exist = true;
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
-        else {
-            String query = "INSERT INTO pumpcrete( description, plate_no, fuel_type, purchase_date, cr_no, or_no, tires, rented ) VALUES (?,?,?,?,?,?,?,?)";
-            try {
-                PreparedStatement ps = connection.prepareStatement(query);
+        //check cr
+        try {
+            String query = "SELECT * FROM pumpcrete WHERE cr_no = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
 
-                ps.setString(1, desc);
-                ps.setString(2, plate);
-                ps.setString(3, fuel);
-                ps.setDate(4, purchase_date);
-                ps.setLong(5, cr);
-                ps.setLong(6, or);
-                ps.setInt(7, tires);
-                ps.setBoolean(8, false);
+            ps.setLong(1, cr);
+            ResultSet rs = ps.executeQuery();
 
-                ps.executeUpdate();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            if (rs.next()) {
+                pumpcrete_exist = true;
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //check or
+        try {
+            String query = "SELECT * FROM pumpcrete WHERE or_no = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setLong(1, or);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                pumpcrete_exist = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+        return pumpcrete_exist;
+    }
+    public void addPumpcrete (Connection connection, String desc, String plate, String fuel, Date date,
+                              long cr, long or, int tires) {
+
+        String query = "INSERT INTO pumpcrete( description, plate_no, fuel_type, purchase_date, cr_no, or_no, tires,rented) VALUES (?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, desc);
+            ps.setString(2, plate);
+            ps.setString(3, fuel);
+            ps.setDate(4, date);
+            ps.setLong(5,cr);
+            ps.setLong(6, or);
+            ps.setInt(7, tires);
+            ps.setBoolean(8, false);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }
 
-    public void deleteBilling (Connection con, long id){
+    public void deletePumpcrete (Connection con, long id){
         String query = "DELETE FROM pumpcrete WHERE pumpcrete_id = ?";
         try{
             PreparedStatement ps = con.prepareStatement(query);
