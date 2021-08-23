@@ -457,7 +457,7 @@ public class Controller {
                     }
                 }
                 else
-                    JOptionPane.showMessageDialog(null, "Passwords do not match, make sure you confirm your old password!", "Password mismatch!", 2);
+                    JOptionPane.showMessageDialog(null, "Passwords do not match, make sure you confirm your new passwords match!", "Password mismatch!", 2);
             }
             else
                 JOptionPane.showMessageDialog(null, "Fill up new password, blank spaces are not allowed", "New Password Failed", 2);

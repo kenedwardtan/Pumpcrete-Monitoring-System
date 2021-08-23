@@ -24,7 +24,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
         </PasswordField>
-        <PasswordField fx:id="settings_roPass_tf" alignment="CENTER" layoutX="472.0" layoutY="457.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="Repeat New Password">
+        <PasswordField fx:id="settings_roPass_tf" alignment="CENTER" layoutX="478.0" layoutY="457.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="Repeat New Password">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -32,7 +32,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
         </PasswordField>
-        <PasswordField fx:id="settings_nPass_tf" alignment="CENTER" layoutX="472.0" layoutY="403.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="New Password">
+        <PasswordField fx:id="settings_nPass_tf" alignment="CENTER" layoutX="478.0" layoutY="403.0" onAction="#handleAction" prefHeight="35.0" prefWidth="250.0" promptText="New Password">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
