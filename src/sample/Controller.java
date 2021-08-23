@@ -127,6 +127,26 @@ public class Controller {
     @FXML
     private Button edit_billings_cancel_btn;
 
+    // inventory - edit
+    @FXML
+    private TextField edit_inventory_desc_tf;
+    @FXML
+    private TextField edit_inventory_plate_tf;
+    @FXML
+    private TextField edit_inventory_fuel_tf;
+    @FXML
+    private TextField edit_inventory_cr_tf;
+    @FXML
+    private TextField edit_inventory_or_tf;
+    @FXML
+    private TextField edit_inventory_tires_tf;
+    @FXML
+    private DatePicker edit_inventory_date;
+    @FXML
+    private Button edit_inventory_submit_btn;
+    @FXML
+    private Button edit_inventory_cancel_btn;
+
     //employees - create
     @FXML
     private TextField create_fn_tf;

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.InventoryController">
+    <children>
+        <ImageView fitHeight="688.0" fitWidth="892.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@resources/img/inventory/inventory.png" />
+            </image>
+        </ImageView>
+        <TableView fx:id="inventory_tb" layoutX="87.0" layoutY="209.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="333.0" prefWidth="718.0">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="103.0" text="ID" />
+                <TableColumn fx:id="statusColumn" prefWidth="144.0" text="Status" />
+                <TableColumn fx:id="descColumn" prefWidth="368.0" text="Description" />
+                <TableColumn fx:id="cidColumn" prefWidth="96.66668701171875" text="Client ID" />
+            </columns>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+
+        </TableView>
+      <TableView fx:id="inventory_tb1" layoutX="87.0" layoutY="560.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="73.0" prefWidth="718.0">
+         <columns>
+            <TableColumn fx:id="idColumn1" prefWidth="44.33332824707031" text="ID" />
+            <TableColumn fx:id="statusColumn1" prefWidth="51.66667175292969" text="Status" />
+            <TableColumn fx:id="descColumn1" prefWidth="113.66665649414062" text="Description" />
+            <TableColumn fx:id="plateColumn1" prefWidth="61.0" text="Plate #" />
+            <TableColumn fx:id="fuelColumn1" minWidth="7.0" prefWidth="76.66665649414062" text="Fuel " />
+            <TableColumn fx:id="dateColumn1" prefWidth="96.0" text="Purchase Date" />
+            <TableColumn fx:id="crColumn1" minWidth="0.0" prefWidth="63.3333740234375" text="CR #" />
+            <TableColumn fx:id="orColumn1" minWidth="0.0" prefWidth="53.6666259765625" text="OR #" />
+            <TableColumn fx:id="tiresColumn1" prefWidth="62.0" text="# of Tires" />
+            <TableColumn fx:id="cidColumn1" prefWidth="73.0" text="Client ID" />
+         </columns>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </TableView>
+        <Button fx:id="inventory_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+        <Button fx:id="inventory_create_btn" layoutX="85.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="143.0" text="Button">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+        <TextField fx:id="inventory_search_tf" layoutX="664.0" layoutY="162.0" onAction="#handleAction" prefHeight="29.0" prefWidth="141.0" promptText="Search">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></TextField>
+        <ImageView fx:id="inventory_2img" fitHeight="26.0" fitWidth="220.0" layoutX="385.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <image>
+                <Image url="@resources/img/home/admin/employeesButtons.png" />
+            </image>
+
+        </ImageView>
+        <Button fx:id="inventory_edit_btn" layoutX="462.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="inventory_delete_btn" layoutX="384.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="66.0" text="Button" visible="false">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+    </children>
+</AnchorPane>

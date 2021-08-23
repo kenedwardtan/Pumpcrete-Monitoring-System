@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -22,14 +23,23 @@
                 <TableColumn fx:id="dateColumn" prefWidth="205.333251953125" text="Date of Document" />
                 <TableColumn fx:id="postedColumn" prefWidth="205.333251953125" text="Posted" />
             </columns>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
 
         </TableView>
         <Button fx:id="billings_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button">
-         </Button>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
         <Button fx:id="billings_create_btn" layoutX="85.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="122.0" text="Button">
-         </Button>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
         <TextField fx:id="billings_search_tf" layoutX="664.0" layoutY="162.0" onAction="#handleAction" prefHeight="29.0" prefWidth="141.0" promptText="Search">
-         </TextField>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor></TextField>
         <ImageView fx:id="billings_2img" fitHeight="26.0" fitWidth="220.0" layoutX="423.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
                 <Image url="@resources/img/billings/editBtn.png" />
