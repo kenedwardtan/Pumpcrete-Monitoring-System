@@ -20,60 +20,73 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-public class BillingsCreateController extends Controller implements  Initializable {
+public class InventoryCreateController extends Controller implements  Initializable {
     private Stage stage;
     private Parent root;
     private Scene scene;
     private FXMLLoader loader;
     public Postgresql postgresql;
 
-    //FXML ELEMENTS
-    //billings - create
     @FXML
-    private ChoiceBox<String> billings_client;
+    private TextField inventory_desc_tf;
     @FXML
-    private TextField billings_psc_tf;
+    private TextField inventory_plate_tf;
     @FXML
-    private TextField billings_padd_tf;
+    private TextField inventory_fuel_tf;
     @FXML
-    private TextField billings_pname_tf;
+    private TextField inventory_cr_tf;
     @FXML
-    private TextField billings_struct_tf;
+    private TextField inventory_or_tf;
     @FXML
-    private TextField billings_flr_tf;
+    private TextField inventory_tires_tf;
     @FXML
-    private TextField billings_qty_tf;
+    private DatePicker inventory_date;
     @FXML
-    private TextField billings_price_tf;
+    private Button inventory_submit_btn;
     @FXML
-    private DatePicker billings_date;
+    private Button inventory_cancel_btn;
+
     @FXML
-    private Button billings_submit_btn;
+    private TextField edit_inventory_desc_tf;
     @FXML
-    private Button billings_cancel_btn;
+    private TextField edit_inventory_plate_tf;
+    @FXML
+    private TextField edit_inventory_fuel_tf;
+    @FXML
+    private TextField edit_inventory_cr_tf;
+    @FXML
+    private TextField edit_inventory_or_tf;
+    @FXML
+    private TextField edit_inventory_tires_tf;
+    @FXML
+    private DatePicker edit_inventory_date;
+    @FXML
+    private Button edit_inventory_submit_btn;
+    @FXML
+    private Button edit_inventory_cancel_btn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<String> test = postgresql.getAllClientNames(Controller.con);
-        billings_client.setItems(test);
+        //inventory_client.setItems(test);
     }
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
-        if (e.getSource() == billings_submit_btn) {
+        if (e.getSource() == inventory_submit_btn) {
             if (checkFields()) {
-                String client_name = billings_client.getValue();
-                int psc = Integer.parseInt(billings_psc_tf.getText());
-                String project_name = billings_pname_tf.getText();
-                String project_add = billings_padd_tf.getText();
-                Date date_used = Date.valueOf(billings_date.getValue());
+                String client_name = inventory_client.getValue();
+                int psc = Integer.parseInt(inventory_psc_tf.getText());
+                String project_name = inventory_pname_tf.getText();
+                String project_add = inventory_padd_tf.getText();
+                Date date_used = Date.valueOf(inventory_date.getValue());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String date_doc = formatter.format(LocalDate.now());
-                String struct = billings_struct_tf.getText();
-                int floor_level = Integer.parseInt(billings_flr_tf.getText());
-                float qty_temp = Float.parseFloat(billings_qty_tf.getText());
-                float unit_price = Float.parseFloat(billings_price_tf.getText());
+                String struct = inventory_struct_tf.getText();
+                int floor_level = Integer.parseInt(inventory_flr_tf.getText());
+                float qty_temp = Float.parseFloat(inventory_qty_tf.getText());
+                float unit_price = Float.parseFloat(inventory_price_tf.getText());
                 float qty_added = 0;
                 float qty_final = 0;
                 //additional if less than 50
@@ -89,8 +102,8 @@ public class BillingsCreateController extends Controller implements  Initializab
                 if (!postgresql.checkBillingPSC(Controller.con, psc)) {
                     postgresql.addBilling(Controller.con, client_name, project_name, project_add,
                             Date.valueOf(date_doc), psc, date_used, floor_level, qty_final, unit_price, struct, total);
-                    stage = (Stage) billings_submit_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+                    stage = (Stage) inventory_submit_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -100,8 +113,8 @@ public class BillingsCreateController extends Controller implements  Initializab
                     //clear
                     //show error message
                     JOptionPane.showMessageDialog(null, "A Similar bill already exists. (Repeating PSC No.)", "Unique Billing Violation", 2);
-                    stage = (Stage) billings_submit_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("billingsCreate.fxml"));
+                    stage = (Stage) inventory_submit_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("inventoryCreate.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
                     stage.setScene(scene);
@@ -110,13 +123,12 @@ public class BillingsCreateController extends Controller implements  Initializab
 
                 }
             }
-
         }
 
-        if (e.getSource() == billings_cancel_btn) {
+        if (e.getSource() == inventory_cancel_btn) {
             //clear fields
-            stage = (Stage) billings_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+            stage = (Stage) inventory_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
@@ -125,17 +137,16 @@ public class BillingsCreateController extends Controller implements  Initializab
         }
     }
 
-
     public boolean checkFields() {
-        String client_name = billings_client.getValue();
-        String psc = billings_psc_tf.getText();
-        String project_name = billings_pname_tf.getText();
-        String project_add = billings_padd_tf.getText();
-        String date_used = String.valueOf(billings_date.getValue());
-        String floor_level = billings_flr_tf.getText();
-        String qty_temp = billings_qty_tf.getText();
-        String struct = billings_struct_tf.getText();
-        String unit = billings_price_tf.getText();
+        String client_name = inventory_client.getValue();
+        String psc = inventory_psc_tf.getText();
+        String project_name = inventory_pname_tf.getText();
+        String project_add = inventory_padd_tf.getText();
+        String date_used = String.valueOf(inventory_date.getValue());
+        String floor_level = inventory_flr_tf.getText();
+        String qty_temp = inventory_qty_tf.getText();
+        String struct = inventory_struct_tf.getText();
+        String unit = inventory_price_tf.getText();
 
 
         //check if theyre null
