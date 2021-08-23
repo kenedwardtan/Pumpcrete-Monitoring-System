@@ -21,8 +21,9 @@ public class Billing {
     public SimpleStringProperty filled_by;
     public SimpleStringProperty posted_by;
 
-    public Billing (long bill_no, String client_name, String project_name, String project_add, LocalDate date_doc, LocalDate date_used,
-                    long psc_id, String conc_structure, long floor_level, float qty, float unit_price,
+
+    public Billing (long bill_no, String client_name, String project_name, String project_add, LocalDate date_doc,
+                    LocalDate date_used, long psc_id, String conc_structure, long floor_level, float qty, float unit_price,
                     float total,boolean posted,String filled_by,String posted_by){
 
         this.bill_no = new SimpleLongProperty(bill_no);
@@ -75,15 +76,15 @@ public class Billing {
         return posted.get();
     }
 
-    public long getBillNo() {return bill_no.get();}
+    public long getBill_no() {return bill_no.get();}
 
-    public String getClientName (){return client_name.get();}
+    public String getClient_name (){return client_name.get();}
 
-    public String getConcStructure() {return conc_structure.get();}
+    public String getConc_structure() {return conc_structure.get();}
 
     public float getQty(){return quantity.get();}
 
-    public float getUnitPrice() {return unit_price.get();}
+    public float getUnit_price() {return unit_price.get();}
 
-    public long getFloorLevel(){return floor_level.get();}
+    public long getFloor_level(){return floor_level.get();}
 }

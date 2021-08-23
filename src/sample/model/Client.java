@@ -40,7 +40,7 @@ public class Client {
 
     public String getName() {return name.get();}
 
-    public long getID() { return  id.get();}
+    public long getId() { return  id.get();}
 
     public long getCpnum() {
         return cpnum.get();
@@ -58,5 +58,5 @@ public class Client {
         return landline.get();
     }
 
-    public LocalDate getLatestDocDate(){return latest_date;}
+    public LocalDate getLatest_date(){return latest_date;}
 }

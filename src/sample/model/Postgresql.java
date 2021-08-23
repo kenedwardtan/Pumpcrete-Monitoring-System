@@ -466,11 +466,14 @@ public class Postgresql {
                 if(result.getDate("latest_doc_date") != null) {
                     Date date = result.getDate("latest_doc_date");
                     c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                    c_result.add(c);
                 }
-                c = new Client(id, position, name, cpnum, email, address, landline);
+                else {
+                    c = new Client(id, position, name, cpnum, email, address, landline);
+                    c_result.add(c);
+                }
 
 
-                c_result.add(c);
             }
 
             return c_result;
@@ -720,7 +723,7 @@ public class Postgresql {
     }
 
 //Checks if billing psc and client
-    public boolean checkBillingPSC(Connection connection, int id){
+    public boolean checkBillingPSC(Connection connection, long id){
         ResultSet rs;
         boolean billing_exist = false;
 
@@ -730,7 +733,7 @@ public class Postgresql {
         try {
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             rs = ps.executeQuery();
 
             if(rs.next())
@@ -744,9 +747,66 @@ public class Postgresql {
 
         return billing_exist;
     }
+
+
+    public void addPumpcrete (Connection connection, long id, String desc, String plate, String fuel, Date purchase_date,
+                              long cr, long or, int tires, boolean rented, String client_name ) {
+        if (rented)
+        {
+            String query = "INSERT INTO pumpcrete( description, plate_no, fuel_type, purchase_date, cr_no, or_no, tires, rented, client_name ) VALUES (?,?,?,?,?,?,?,?,?)";
+            try {
+                PreparedStatement ps = connection.prepareStatement(query);
+
+                ps.setString(1, desc);
+                ps.setString(2, plate);
+                ps.setString(3, fuel);
+                ps.setDate(4, purchase_date);
+                ps.setLong(5,cr);
+                ps.setLong(6, or);
+                ps.setInt(7, tires);
+                ps.setBoolean(8, true);
+                ps.setString(9,client_name);
+
+                ps.executeUpdate();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else {
+            String query = "INSERT INTO pumpcrete( description, plate_no, fuel_type, purchase_date, cr_no, or_no, tires, rented ) VALUES (?,?,?,?,?,?,?,?)";
+            try {
+                PreparedStatement ps = connection.prepareStatement(query);
+
+                ps.setString(1, desc);
+                ps.setString(2, plate);
+                ps.setString(3, fuel);
+                ps.setDate(4, purchase_date);
+                ps.setLong(5, cr);
+                ps.setLong(6, or);
+                ps.setInt(7, tires);
+                ps.setBoolean(8, false);
+
+                ps.executeUpdate();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    public void deleteBilling (Connection con, long id){
+        String query = "DELETE FROM pumpcrete WHERE pumpcrete_id = ?";
+        try{
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setLong (1, id);
+            ps.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
-
-
 
 //    //Once all information are verified, adds new user to the database.
 //    public static void createContact (Connection connection, String fname, String lname, int cpnum, String email, String address, int landline){

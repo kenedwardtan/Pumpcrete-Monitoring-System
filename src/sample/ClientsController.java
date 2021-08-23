@@ -167,7 +167,7 @@ public class ClientsController extends Controller implements Initializable {
         clients_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 Client c = (Client) clients_tb.getSelectionModel().getSelectedItem();
-                selectedID = c.getID();
+                selectedID = c.getId();
                 System.out.println(selectedID); //test
                 clients_2img.setVisible(true);
                 clients_remove_btn.setVisible(true);
@@ -179,7 +179,7 @@ public class ClientsController extends Controller implements Initializable {
                 IDColumn1.setCellValueFactory(new PropertyValueFactory<Client, Long>("id"));
                 emailColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
                 nameColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
-                if(c.getLatestDocDate() != null)
+                if(c.getLatest_date() != null)
                     dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
                 positionColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
                 landlineColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("landline"));

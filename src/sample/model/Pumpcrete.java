@@ -34,14 +34,14 @@ public class Pumpcrete {
         this.client_name = new SimpleStringProperty(name);
     }
 
-    public long getPumpcreteID() {return pumpcrete_id.get();}
-    public String getPumpcreteDesc(){return description.get();}
-    public String getPumpcretePlateNo() {return plate_no.get();}
-    public String getPumpcreteFuel() {return fuel_type.get();}
+    public long getPumpcrete_Id() {return pumpcrete_id.get();}
+    public String getDescription(){return description.get();}
+    public String getPlate_no() {return plate_no.get();}
+    public String getFuel_type() {return fuel_type.get();}
     public LocalDate getPurchase_date() {return purchase_date;}
-    public long getPumpcreteCR(){return cr_no.get();}
-    public long getPumpcreteOR(){ return or_no.get();}
-    public int getPumpcreteTires() {return tires.get();}
-    public boolean getPumpcreteRented() {return rented.get();}
-    public String getPumpcreteClientName() {return client_name.getName();}
+    public long getCr_no(){return cr_no.get();}
+    public long getOr_no(){ return or_no.get();}
+    public int getTires() {return tires.get();}
+    public boolean getRented() {return rented.get();}
+    public String getClient_name() {return client_name.getName();}
 }
