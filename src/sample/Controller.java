@@ -530,7 +530,8 @@ public class Controller {
     public boolean EmailVerification (String email) {
 //        String first = "";
 //        String last = "^[a-zA-Z0-9!@#$%^&*?(){}]*$";
-        String regex = "^[a-zA-Z0-9!@#$%^&*?(){}]*\\S@[a-zA-Z0-9!@#$%^&*?(){}]*\\S.com$";
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.)([a-zA-Z0-9-]+)*$";
+                //"^([a-zA-Z0-9!@#$%^&*?(){}]+\\S)@([a-zA-Z0-9!@#$%^&*?(){}]+\\S)(?:\\.)com$";
 
         //initialize the Pattern object
         Pattern pattern = Pattern.compile(regex);

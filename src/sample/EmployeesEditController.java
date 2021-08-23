@@ -91,7 +91,7 @@ public class EmployeesEditController extends Controller implements Initializable
                     //checks the format of the email
                     if (EmailVerification()) {
                         //creates the user and inserts into database
-                        postgresql.editUser(con, uname, fname, mname, lname, email, role);
+                        postgresql.editUser(con, this.oldUname,  uname, fname, mname, lname, email, role);
 
                         stage = (Stage) edit_submit_btn.getScene().getWindow();
                         loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));

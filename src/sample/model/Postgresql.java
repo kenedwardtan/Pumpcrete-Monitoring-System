@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 
+import javax.swing.*;
 import java.math.BigInteger;
 import java.sql.*;
 import java.sql.Date;
@@ -284,9 +285,9 @@ public class Postgresql {
     }
 
 
-    public void editUser (Connection con, String uname, String fname, String mname, String lname, String email, String role){
+    public void editUser (Connection con, String old, String uname, String fname, String mname, String lname, String email, String role){
 
-        String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ? WHERE username = ?";
+        String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ?, username = ? WHERE username = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -299,6 +300,7 @@ public class Postgresql {
             ps.setString(4, email);
             ps.setString(5, role);
             ps.setString(6, uname);
+            ps.setString(7, old);
 
             ps.executeUpdate();
 
@@ -309,31 +311,36 @@ public class Postgresql {
         }
 	}
 
-    public void deleteUser (Connection connection, String uname){
+    public boolean deleteUser (Connection connection, String uname){
 
-        String query1 = "DROP ROLE " +uname;
+        if (uname.equals(getCurrUser(connection).toString())){
+            return false;
+        }
+        else {
+            String query1 = "DROP ROLE " + uname;
 
-        String query2 = "DELETE FROM users WHERE username = ?";
+            String query2 = "DELETE FROM users WHERE username = ?";
 
-        String url = "jdbc:postgresql:Pumpcrete";
+            String url = "jdbc:postgresql:Pumpcrete";
 
-        try {
-            PreparedStatement ps = connection.prepareStatement(query1);
+            try {
+                PreparedStatement ps = connection.prepareStatement(query1);
 
-            ps.execute();
+                ps.execute();
 
-            PreparedStatement p = connection.prepareStatement(query2);
+                PreparedStatement p = connection.prepareStatement(query2);
 
-            p.setString(1, uname);
+                p.setString(1, uname);
 
-            p.executeUpdate();
+                p.executeUpdate();
 
 
+                System.out.println("User deleted!");
 
-            System.out.println("User deleted!");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return true;
         }
     }
 
@@ -651,8 +658,8 @@ public class Postgresql {
 
     public String resetPassword(Connection connection, String uname, String old) {
         Random r = new Random();
-        String password = "password" + (r.nextInt(9999)+1);
-        String query1 = "ALTER USER "+uname+" WITH PASSWORD "+ "'"+password+"'";
+        String password = "'password" + (r.nextInt(9999)+1) +"'";
+        String query1 = "ALTER USER "+uname+" WITH PASSWORD "+ password;
         String query2 = "UPDATE users SET password = ? WHERE username = ?";
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -685,7 +692,7 @@ public class Postgresql {
         try {
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1, uname.trim());
+            ps.setString(1, uname.toLowerCase().trim());
             rs = ps.executeQuery();
 
             if(rs.next())

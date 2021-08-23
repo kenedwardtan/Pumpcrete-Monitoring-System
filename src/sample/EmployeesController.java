@@ -104,13 +104,23 @@ public class EmployeesController extends Controller implements Initializable {
         if (e.getSource() == employees_remove_btn) {
             ObservableList<User> u = FXCollections.observableArrayList();
             u = employees_tb.getSelectionModel().getSelectedItems();
+            boolean success = true;
             int i = 0;
-            while (i < u.size()) {
-                System.out.println(u.get(i).username.get());
-                postgresql.deleteUser(Controller.con, u.get(i++).username.get());
-            }
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.showAndWait();
 
-            employees_tb.getItems().removeAll(employees_tb.getSelectionModel().getSelectedItems());
+            if (alert.getResult() == ButtonType.YES) {
+                //do stuff
+                while (i < u.size() && success) {
+                    System.out.println(u.get(i).username.get());
+                    success = postgresql.deleteUser(Controller.con, u.get(i++).username.get());
+                }
+                if (success){
+                    employees_tb.getItems().removeAll(employees_tb.getSelectionModel().getSelectedItems());
+                }
+                else
+                    JOptionPane.showMessageDialog(null, "Cannot delete your own account!", "Delete Failed", 2);
+            }
         }
 
         //create account

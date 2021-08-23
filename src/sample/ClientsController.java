@@ -131,10 +131,16 @@ public class ClientsController extends Controller implements Initializable {
             ObservableList<Client> c = FXCollections.observableArrayList();
             c = clients_tb.getSelectionModel().getSelectedItems();
             int i = 0;
-            while (i < c.size()) {
-                postgresql.deleteClient(Controller.con, c.get(i++).id.get());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.showAndWait();
+
+            if (alert.getResult() == ButtonType.YES) {
+                //do stuff
+                while (i < c.size()) {
+                    postgresql.deleteClient(Controller.con, c.get(i++).id.get());
+                }
             }
-            clients_tb.getItems().removeAll(clients_tb.getSelectionModel().getSelectedItems());
+
         }
 
 
