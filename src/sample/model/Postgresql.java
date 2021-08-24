@@ -423,6 +423,7 @@ public class Postgresql {
 
         String query = "SELECT * FROM client WHERE client_id = ?";
         ObservableList<Client> c_result = FXCollections.observableArrayList();
+        Client c;
 
         try {
 
@@ -447,8 +448,10 @@ public class Postgresql {
                 Date date = result.getDate("latest_doc_date");
 
                 System.out.println(name + " " + position + " " + address + " " + cpnum + " " + landline);
-
-                Client c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                if (date != null)
+                    c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                else
+                    c = new Client(id, position, name, cpnum, email, address, landline);
                 c_result.add(c);
                 return c_result;
             } catch (SQLException ex) {
