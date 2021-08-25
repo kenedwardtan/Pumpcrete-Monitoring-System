@@ -64,7 +64,7 @@ public class EmployeesEditController extends Controller implements Initializable
 
         edit_fn_tf.setText(u.get(0).first_name.get());
         edit_mn_tf.setText(u.get(0).middle_name.get());
-        edit_ln_tf.setText(u.get(0).first_name.get());
+        edit_ln_tf.setText(u.get(0).last_name.get());
         edit_email_tf.setText(u.get(0).email.get());
         edit_user_tf.setText(u.get(0).username.get());
         this.oldUname = u.get(0).username.get();
@@ -89,7 +89,7 @@ public class EmployeesEditController extends Controller implements Initializable
             if (verifyEditFields()) {
                 if (!postgresql.checkUsername(con, uname) || uname.equals(this.oldUname)) {
                     //checks the format of the email
-                    if (EmailVerification()) {
+                    if (EmailVerification(email)) {
                         //creates the user and inserts into database
                         postgresql.editUser(con, this.oldUname,  uname, fname, mname, lname, email, role);
 
@@ -153,15 +153,17 @@ public class EmployeesEditController extends Controller implements Initializable
     }
 
     //verify email format
-    public boolean EmailVerification() {
-        String regex = "^(.+)@(.+).com$";
-        String email = edit_email_tf.getText();
+    public boolean EmailVerification (String email) {
+//        String first = "";
+//        String last = "^[a-zA-Z0-9!@#$%^&*?(){}]*$";
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.)([a-zA-Z0-9-]+)*$";
+        //"^([a-zA-Z0-9!@#$%^&*?(){}]+\\S)@([a-zA-Z0-9!@#$%^&*?(){}]+\\S)(?:\\.)com$";
 
         //initialize the Pattern object
         Pattern pattern = Pattern.compile(regex);
 
         //searching for occurrences of regex
-        Matcher matcher = pattern.matcher(email);
+        Matcher matcher = pattern.matcher(email.trim());
 
         if (matcher.matches()) {
             System.out.println("Email format is correct.");

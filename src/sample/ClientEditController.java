@@ -19,6 +19,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClientEditController extends Controller implements Initializable {
 
@@ -71,7 +73,7 @@ public class ClientEditController extends Controller implements Initializable {
         edit_clients_position_tf.setText(c.get(0).getPosition());
         edit_clients_address_tf.setText(c.get(0).getAddress());
         edit_clients_email_tf.setText(c.get(0).getEmail());
-        edit_clients_cellphone_tf.setText(Long.toString(c.get(0).getCpnum()));
+        edit_clients_cellphone_tf.setText(c.get(0).getCpnum());
         edit_clients_landline_tf.setText(Integer.toString(c.get(0).getLandline()));
     }
 
@@ -104,7 +106,7 @@ public class ClientEditController extends Controller implements Initializable {
                         //clear fields
 
                         stage = (Stage) edit_clients_submit_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("clientsCreate.fxml"));
+                        loader = new FXMLLoader(getClass().getResource("clients.fxml"));
                         root = loader.load();
                         scene = new Scene(root);
                         stage.setScene(scene);
@@ -162,4 +164,25 @@ public class ClientEditController extends Controller implements Initializable {
             return false;
         }
     }
+    public boolean EmailVerification (String email) {
+//        String first = "";
+//        String last = "^[a-zA-Z0-9!@#$%^&*?(){}]*$";
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.)([a-zA-Z0-9-]+)*$";
+        //"^([a-zA-Z0-9!@#$%^&*?(){}]+\\S)@([a-zA-Z0-9!@#$%^&*?(){}]+\\S)(?:\\.)com$";
+
+        //initialize the Pattern object
+        Pattern pattern = Pattern.compile(regex);
+
+        //searching for occurrences of regex
+        Matcher matcher = pattern.matcher(email.trim());
+
+        if (matcher.matches()) {
+            System.out.println("Email format is correct.");
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!\n(e.g. name@brand.com)", "Invalid Email", 2);
+            return false;
+        }
+    }
+
 }

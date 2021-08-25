@@ -8,7 +8,7 @@ public class Client {
     public SimpleLongProperty id;
     public SimpleStringProperty position;
     public SimpleStringProperty name;
-    public SimpleLongProperty cpnum;
+    public SimpleStringProperty cpnum;
     public SimpleStringProperty email;
     public SimpleStringProperty address;
     public SimpleIntegerProperty landline;
@@ -18,7 +18,7 @@ public class Client {
         this.id = new SimpleLongProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
-        this.cpnum = new SimpleLongProperty(cpnum);
+        this.cpnum = new SimpleStringProperty("0"+Long.toString(cpnum));
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
         this.landline = new SimpleIntegerProperty(landline);
@@ -28,7 +28,7 @@ public class Client {
         this.id = new SimpleLongProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
-        this.cpnum = new SimpleLongProperty(cpnum);
+        this.cpnum = new SimpleStringProperty("0"+Long.toString(cpnum));
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
         this.landline = new SimpleIntegerProperty(landline);
@@ -42,7 +42,7 @@ public class Client {
 
     public long getId() { return  id.get();}
 
-    public long getCpnum() {
+    public String getCpnum() {
         return cpnum.get();
     }
 

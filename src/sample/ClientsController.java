@@ -140,6 +140,7 @@ public class ClientsController extends Controller implements Initializable {
                     postgresql.deleteClient(Controller.con, c.get(i++).id.get());
                 }
             }
+            clients_tb.getItems().removeAll(clients_tb.getSelectionModel().getSelectedItems());
 
         }
 

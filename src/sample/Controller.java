@@ -297,7 +297,8 @@ public class Controller {
                         stage.show();
                     }
                 }else
-                    optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
+                    optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number!\n" +
+                            "Landline must only contain exactly 8 digits.\n Cellphone Number must contain exactly 11 digits.", "Contact number error!", 2);
             }
         }
 
@@ -559,13 +560,15 @@ public class Controller {
 
         // if everything is ok
         else {
-            System.out.println("All fields are field!");
-            return true;
+            if (this.checkFormat(fname.trim()) && this.checkFormat(position.trim()) && this.checkFormat(lname.trim()))
+                return true;
+            else
+                return false;
         }
     }
 
     public boolean verifyClientNumbers () {
-        if (clients_landline_tf.getText().matches("\\d{8}") && clients_cellphone_tf.getText().matches("\\d{8}|\\d{11}")){
+        if (clients_landline_tf.getText().matches("\\d{8}|") && clients_cellphone_tf.getText().matches("09\\d{9}")){
             System.out.println("Its Valid Number");
             return true;
         } else {
@@ -592,8 +595,11 @@ public class Controller {
 
         // if everything is ok
         else {
-            System.out.println("All fields are field!");
-            return true;
+            if (this.checkFormat(fname.trim()) && this.checkFormat(mname.trim()) && this.checkFormat(lname.trim()) && this.checkFormat(uname.trim()) && this.checkFormat(role.trim()))
+                return true;
+            else
+                return false;
+
         }
     }
 
@@ -661,6 +667,22 @@ public class Controller {
                 check = false;
 
             return check;
-        }
+    }
 
+    public boolean checkFormat(String uname){
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+$";
+        //"^([a-zA-Z0-9!@#$%^&*?(){}]+\\S)@([a-zA-Z0-9!@#$%^&*?(){}]+\\S)(?:\\.)com$";
+
+        //initialize the Pattern object
+        Pattern pattern = Pattern.compile(regex);
+
+        //searching for occurrences of regex
+        Matcher matcher = pattern.matcher(uname.trim());
+        if (matcher.matches()) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Make sure you don't have white spaces!\n", "Invalid fields", 2);
+            return false;
+        }
+    }
 }
