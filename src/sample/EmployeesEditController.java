@@ -147,8 +147,10 @@ public class EmployeesEditController extends Controller implements Initializable
 
         // if everything is ok
         else {
-            System.out.println("All fields are field!");
-            return true;
+            if (this.checkFormat(fname.trim()) && this.checkFormat(mname.trim()) && this.checkFormat(lname.trim()) && this.checkFormat(uname.trim()) && this.checkFormat(role.trim()))
+                return true;
+            else
+                return false;
         }
     }
 
@@ -170,6 +172,23 @@ public class EmployeesEditController extends Controller implements Initializable
             return true;
         } else {
             JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!\n(e.g. name@brand.com)", "Invalid Email", 2);
+            return false;
+        }
+    }
+
+    public boolean checkFormat(String uname){
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+$";
+        //"^([a-zA-Z0-9!@#$%^&*?(){}]+\\S)@([a-zA-Z0-9!@#$%^&*?(){}]+\\S)(?:\\.)com$";
+
+        //initialize the Pattern object
+        Pattern pattern = Pattern.compile(regex);
+
+        //searching for occurrences of regex
+        Matcher matcher = pattern.matcher(uname.trim());
+        if (matcher.matches()) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Make sure you don't have white spaces!\n", "Invalid fields", 2);
             return false;
         }
     }

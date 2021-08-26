@@ -85,20 +85,20 @@ public class ClientEditController extends Controller implements Initializable {
         if (e.getSource() == edit_clients_submit_btn) {
 
             if (verifyEditFields()) {
+                if (verifyClientNumbers()) {
 
-                String fname = edit_clients_fn_tf.getText().trim();
-                String lname = edit_clients_ln_tf.getText().trim();
-                String position = edit_clients_position_tf.getText().trim();
-                String address = edit_clients_address_tf.getText().trim();
-                String email = edit_clients_email_tf.getText().trim();
-                Long cp = Long.parseLong(edit_clients_cellphone_tf.getText().trim());
-                int landline = Integer.parseInt(edit_clients_landline_tf.getText().trim());
+                    String fname = edit_clients_fn_tf.getText().trim();
+                    String lname = edit_clients_ln_tf.getText().trim();
+                    String position = edit_clients_position_tf.getText().trim();
+                    String address = edit_clients_address_tf.getText().trim();
+                    String email = edit_clients_email_tf.getText().trim();
+                    Long cp = Long.parseLong(edit_clients_cellphone_tf.getText().trim());
+                    int landline = Integer.parseInt(edit_clients_landline_tf.getText().trim());
 
-                String fullname =  fname.trim() + " " + lname.trim();
+                    String fullname = fname.trim() + " " + lname.trim();
 
-                //checks the format of the email
-                if (this.EmailVerification(email)) {
-                    if (this.verifyClientNumbers()) {
+                    //checks the format of the email
+                    if (this.EmailVerification(email)) {
                         //creates the user and inserts into database
                         postgresql.editClient(con, ClientsController.getEditClient(), fullname.trim(), position.trim(), address.trim(), landline, cp, email.trim());
                         String message = "Name: " + fullname;
@@ -148,8 +148,10 @@ public class ClientEditController extends Controller implements Initializable {
 
         // if everything is ok
         else {
-            System.out.println("All fields are field!");
-            return true;
+            if (this.checkFormat(fname.trim()) && this.checkFormat(position.trim()) && this.checkFormat(lname.trim()))
+                return true;
+            else
+                return false;
         }
     }
 
@@ -181,6 +183,23 @@ public class ClientEditController extends Controller implements Initializable {
             return true;
         } else {
             JOptionPane.showMessageDialog(null, "Make sure you're email format is correct!\n(e.g. name@brand.com)", "Invalid Email", 2);
+            return false;
+        }
+    }
+
+    public boolean checkFormat(String uname){
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+$";
+        //"^([a-zA-Z0-9!@#$%^&*?(){}]+\\S)@([a-zA-Z0-9!@#$%^&*?(){}]+\\S)(?:\\.)com$";
+
+        //initialize the Pattern object
+        Pattern pattern = Pattern.compile(regex);
+
+        //searching for occurrences of regex
+        Matcher matcher = pattern.matcher(uname.trim());
+        if (matcher.matches()) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Make sure you don't have white spaces!\n", "Invalid fields", 2);
             return false;
         }
     }
