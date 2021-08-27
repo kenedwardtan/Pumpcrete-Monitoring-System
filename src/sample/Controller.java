@@ -283,7 +283,7 @@ public class Controller {
                     if (EmailVerification(email)) {
 
                         //creates the user and inserts into database
-                        postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline.trim(), cellphone.trim(), email.trim());
+                        postgresql.createClient(con, fname.trim(), lname.trim(), position.trim(), address.trim(), landline.trim(), cellphone.trim(), email.trim());
                         String message = "Name: " + fullname;
                         optionPane.showMessageDialog(null, message, "Client Created!", 1);
                         //clear fields

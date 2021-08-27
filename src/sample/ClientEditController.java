@@ -63,15 +63,10 @@ public class ClientEditController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         c = FXCollections.observableArrayList();
         c = postgresql.getClient(Controller.con, ClientsController.getEditClient());
-        this.ogName = c.get(0).name.get();
-        String[] names = this.ogName.split(" ");
-        String fname = names[0];
-        String lname = names[1];
+        this.ogName = c.get(0).fname.get() +" "+ c.get(0).lname.get();
 
-        System.out.println(fname + " " + lname + " " + c.get(0).getAddress());
-
-        edit_clients_fn_tf.setText(fname);
-        edit_clients_ln_tf.setText(lname);
+        edit_clients_fn_tf.setText(c.get(0).fname.get());
+        edit_clients_ln_tf.setText(c.get(0).lname.get());
         edit_clients_position_tf.setText(c.get(0).getPosition());
         edit_clients_address_tf.setText(c.get(0).getAddress());
         edit_clients_email_tf.setText(c.get(0).getEmail());
@@ -107,7 +102,7 @@ public class ClientEditController extends Controller implements Initializable {
                             postgresql.updateBillingClient(Controller.con, ogName, fullname);
                         }
                         //creates the user and inserts into database
-                        postgresql.editClient(con, ClientsController.getEditClient(), fullname.trim(), position.trim(), address.trim(), landline.trim(), cp.trim(), email.trim());
+                        postgresql.editClient(con, ClientsController.getEditClient(), fname.trim(), lname.trim(), position.trim(), address.trim(), landline.trim(), cp.trim(), email.trim());
                         String message = "Name: " + fullname;
                         optionPane.showMessageDialog(null, message, "Client edited!", 1);
                         //clear fields

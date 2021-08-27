@@ -346,24 +346,25 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static void createClient (Connection connection, String name, String position,
+    public static void createClient (Connection connection, String fname, String lname, String position,
                                      String address,String landline, String cpnum, String email){
 
 
-        String query = "INSERT INTO client(client_name, client_position, client_address," +
-                "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO client(client_firstname, client_lastname, client_position, client_address," +
+                "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?,?)";
 
         //Date date = new Date(20000101);
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1, name);
-            ps.setString(2, position);
-            ps.setString(3, address);
-            ps.setString(4, landline);
-            ps.setString(5, cpnum);
-            ps.setString(6, email);
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, position);
+            ps.setString(4, address);
+            ps.setString(5, landline);
+            ps.setString(6, cpnum);
+            ps.setString(7, email);
             //ps.setDate(7, date);
 
             ps.executeUpdate();
@@ -374,10 +375,10 @@ public class Postgresql {
         }
     }
 
-    public void editClient (Connection connection, long c_id, String name, String position,
+    public void editClient (Connection connection, long c_id, String fname, String lname, String position,
                             String address, String landline, String cpnum, String email){
 
-        String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
+        String query = "UPDATE client SET client_position = ?, client_firstname = ?, client_lastname = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
         //Date date = new Date(20000101);
@@ -386,12 +387,13 @@ public class Postgresql {
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, position);
-            ps.setString(2, name);
-            ps.setString(3, landline);
-            ps.setString(4, cpnum);
-            ps.setString(5, email);
-            ps.setString(6,address);
-            ps.setLong(7, c_id);
+            ps.setString(2, fname);
+            ps.setString(3, lname);
+            ps.setString(4, landline);
+            ps.setString(5, cpnum);
+            ps.setString(6, email);
+            ps.setString(7,address);
+            ps.setLong(8, c_id);
 
 
             ps.executeUpdate();
@@ -439,7 +441,8 @@ public class Postgresql {
 
                 result.next();
                 long id = result.getLong("client_id");
-                String name = result.getString("client_name");
+                String fname = result.getString("client_firstname");
+                String lname = result.getString("client_lastname");
                 String position = result.getString("client_position");
                 String cpnum = result.getString("client_cellphone");
                 String landline = result.getString("client_landline");
@@ -447,11 +450,10 @@ public class Postgresql {
                 String address = result.getString("client_address");
                 Date date = result.getDate("latest_doc_date");
 
-                System.out.println(name + " " + position + " " + address + " " + cpnum + " " + landline);
                 if (date != null)
-                    c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                    c = new Client(id, position, fname, lname, cpnum, email, address, landline, date.toLocalDate());
                 else
-                    c = new Client(id, position, name, cpnum, email, address, landline);
+                    c = new Client(id, position, fname, lname, cpnum, email, address, landline);
                 c_result.add(c);
                 return c_result;
             } catch (SQLException ex) {
@@ -475,7 +477,8 @@ public class Postgresql {
             while (result.next()) {
 
                 long id = result.getLong("client_id");
-                String name = result.getString("client_name");
+                String fname = result.getString("client_firstname");
+                String lname = result.getString("client_lastname");
                 String position = result.getString("client_position");
                 String cpnum = result.getString("client_cellphone");
                 String landline = result.getString("client_landline");
@@ -483,11 +486,11 @@ public class Postgresql {
                 String address = result.getString("client_address");
                 if(result.getDate("latest_doc_date") != null) {
                     Date date = result.getDate("latest_doc_date");
-                    c = new Client(id, position, name, cpnum, email, address, landline, date.toLocalDate());
+                    c = new Client(id, position, fname, lname, cpnum, email, address, landline, date.toLocalDate());
                     c_result.add(c);
                 }
                 else {
-                    c = new Client(id, position, name, cpnum, email, address, landline);
+                    c = new Client(id, position, fname, lname, cpnum, email, address, landline);
                     c_result.add(c);
                 }
 
@@ -506,13 +509,15 @@ public class Postgresql {
 
     public static ObservableList<String> getAllClientNames(Connection con)
     {
-        String query = "SELECT client_name,client_id FROM client";
+        String query = "SELECT client_firstname,client_lastname,client_id FROM client";
         try {
             PreparedStatement pst = con.prepareStatement(query);
             ObservableList<String> cn_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
-                String name = result.getString("client_name");
+                String fname = result.getString("client_firstname");
+                String lname = result.getString("client_lastname");
+                String name = fname+" "+lname;
                 cn_result.add(name);
             }
 
