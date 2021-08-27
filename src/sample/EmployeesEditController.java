@@ -147,7 +147,7 @@ public class EmployeesEditController extends Controller implements Initializable
 
         // if everything is ok
         else {
-            if (this.checkFormat(fname.trim()) && this.checkFormat(mname.trim()) && this.checkFormat(lname.trim()) && this.checkFormat(uname.trim()) && this.checkFormat(role.trim()))
+            if (this.checkFormat(uname.trim()) && this.checkFormat(role.trim()))
                 return true;
             else
                 return false;

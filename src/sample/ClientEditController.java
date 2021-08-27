@@ -55,14 +55,16 @@ public class ClientEditController extends Controller implements Initializable {
     @FXML
     private JOptionPane optionPane;
 
+    private String ogName;
+
     private static ObservableList<Client> c;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         c = FXCollections.observableArrayList();
         c = postgresql.getClient(Controller.con, ClientsController.getEditClient());
-        String name = c.get(0).name.get();
-        String[] names = name.split(" ");
+        this.ogName = c.get(0).name.get();
+        String[] names = this.ogName.split(" ");
         String fname = names[0];
         String lname = names[1];
 
@@ -74,7 +76,7 @@ public class ClientEditController extends Controller implements Initializable {
         edit_clients_address_tf.setText(c.get(0).getAddress());
         edit_clients_email_tf.setText(c.get(0).getEmail());
         edit_clients_cellphone_tf.setText(c.get(0).getCpnum());
-        edit_clients_landline_tf.setText(Integer.toString(c.get(0).getLandline()));
+        edit_clients_landline_tf.setText(c.get(0).getLandline());
     }
 
     @FXML
@@ -92,15 +94,20 @@ public class ClientEditController extends Controller implements Initializable {
                     String position = edit_clients_position_tf.getText().trim();
                     String address = edit_clients_address_tf.getText().trim();
                     String email = edit_clients_email_tf.getText().trim();
-                    Long cp = Long.parseLong(edit_clients_cellphone_tf.getText().trim());
-                    int landline = Integer.parseInt(edit_clients_landline_tf.getText().trim());
+                    String cp = edit_clients_cellphone_tf.getText().trim();
+                    String landline = edit_clients_landline_tf.getText().trim();
 
                     String fullname = fname.trim() + " " + lname.trim();
 
                     //checks the format of the email
                     if (this.EmailVerification(email)) {
+
+                        //updates name in billings if name is edited
+                        if (!fullname.equals(this.ogName)){
+                            postgresql.updateBillingClient(Controller.con, ogName, fullname);
+                        }
                         //creates the user and inserts into database
-                        postgresql.editClient(con, ClientsController.getEditClient(), fullname.trim(), position.trim(), address.trim(), landline, cp, email.trim());
+                        postgresql.editClient(con, ClientsController.getEditClient(), fullname.trim(), position.trim(), address.trim(), landline.trim(), cp.trim(), email.trim());
                         String message = "Name: " + fullname;
                         optionPane.showMessageDialog(null, message, "Client edited!", 1);
                         //clear fields
@@ -148,7 +155,7 @@ public class ClientEditController extends Controller implements Initializable {
 
         // if everything is ok
         else {
-            if (this.checkFormat(fname.trim()) && this.checkFormat(position.trim()) && this.checkFormat(lname.trim()))
+            if (this.checkFormat(position.trim()))
                 return true;
             else
                 return false;
@@ -156,11 +163,10 @@ public class ClientEditController extends Controller implements Initializable {
     }
 
     public boolean verifyClientNumbers () {
-        if (edit_clients_landline_tf.getText().matches("\\d{8}") && edit_clients_cellphone_tf.getText().matches("\\d{8}|\\d{11}")){
-
+        if (edit_clients_landline_tf.getText().matches("\\d{8}|") && edit_clients_cellphone_tf.getText().matches("09\\d{9}")){
             System.out.println("Its Valid Number");
             return true;
-        }else {
+        } else {
 
             System.out.println("Invalid Input..!");
             return false;

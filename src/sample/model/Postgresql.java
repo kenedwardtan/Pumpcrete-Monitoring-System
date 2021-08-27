@@ -347,7 +347,7 @@ public class Postgresql {
 
     //Once all information are verified, adds new user to the database.
     public static void createClient (Connection connection, String name, String position,
-                                     String address,int landline, long cpnum, String email){
+                                     String address,String landline, String cpnum, String email){
 
 
         String query = "INSERT INTO client(client_name, client_position, client_address," +
@@ -361,8 +361,8 @@ public class Postgresql {
             ps.setString(1, name);
             ps.setString(2, position);
             ps.setString(3, address);
-            ps.setInt(4, landline);
-            ps.setLong(5, cpnum);
+            ps.setString(4, landline);
+            ps.setString(5, cpnum);
             ps.setString(6, email);
             //ps.setDate(7, date);
 
@@ -375,7 +375,7 @@ public class Postgresql {
     }
 
     public void editClient (Connection connection, long c_id, String name, String position,
-                            String address, int landline, long cpnum, String email){
+                            String address, String landline, String cpnum, String email){
 
         String query = "UPDATE client SET client_position = ?, client_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
 
@@ -387,8 +387,8 @@ public class Postgresql {
 
             ps.setString(1, position);
             ps.setString(2, name);
-            ps.setInt(3, landline);
-            ps.setLong(4, cpnum);
+            ps.setString(3, landline);
+            ps.setString(4, cpnum);
             ps.setString(5, email);
             ps.setString(6,address);
             ps.setLong(7, c_id);
@@ -441,8 +441,8 @@ public class Postgresql {
                 long id = result.getLong("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
-                long cpnum = result.getLong("client_cellphone");
-                int landline = result.getInt("client_landline");
+                String cpnum = result.getString("client_cellphone");
+                String landline = result.getString("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
                 Date date = result.getDate("latest_doc_date");
@@ -467,7 +467,7 @@ public class Postgresql {
     {
         Client c;
 
-        String query = "SELECT * FROM client";
+        String query = "SELECT * FROM client ORDER BY client_id";
         try {
             PreparedStatement pst = con.prepareStatement(query);
             ObservableList<Client> c_result = FXCollections.observableArrayList();
@@ -477,8 +477,8 @@ public class Postgresql {
                 long id = result.getLong("client_id");
                 String name = result.getString("client_name");
                 String position = result.getString("client_position");
-                long cpnum = result.getLong("client_cellphone");
-                int landline = result.getInt("client_landline");
+                String cpnum = result.getString("client_cellphone");
+                String landline = result.getString("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
                 if(result.getDate("latest_doc_date") != null) {
@@ -550,6 +550,25 @@ public class Postgresql {
             ps.setFloat(11,unit_price);
             ps.setString(12,struct);
             ps.setFloat(13, total);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updateBillingClient(Connection connection, String ogName, String fullname) {
+        String query = "UPDATE billings SET client_name = ? WHERE client_name = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, fullname);
+            ps.setString(2, ogName);
+
 
             ps.executeUpdate();
 
@@ -853,6 +872,8 @@ public class Postgresql {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+
 }
 
 //    //Once all information are verified, adds new user to the database.

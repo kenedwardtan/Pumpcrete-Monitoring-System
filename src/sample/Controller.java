@@ -274,8 +274,8 @@ public class Controller {
                     String position = clients_position_tf.getText();
                     String address = clients_address_tf.getText();
                     String email = clients_email_tf.getText();
-                    int landline = Integer.parseInt(clients_landline_tf.getText());
-                    long cellphone =  Long.parseLong(clients_cellphone_tf.getText());
+                    String landline = clients_landline_tf.getText();
+                    String cellphone =  clients_cellphone_tf.getText();
 
                     String fullname =  fname.trim() + " " + lname.trim();
 
@@ -283,7 +283,7 @@ public class Controller {
                     if (EmailVerification(email)) {
 
                         //creates the user and inserts into database
-                        postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline, cellphone, email.trim());
+                        postgresql.createClient(con, fullname.trim(), position.trim(), address.trim(), landline.trim(), cellphone.trim(), email.trim());
                         String message = "Name: " + fullname;
                         optionPane.showMessageDialog(null, message, "Client Created!", 1);
                         //clear fields
@@ -560,7 +560,7 @@ public class Controller {
 
         // if everything is ok
         else {
-            if (this.checkFormat(fname.trim()) && this.checkFormat(position.trim()) && this.checkFormat(lname.trim()))
+            if (this.checkFormat(position.trim()))
                 return true;
             else
                 return false;
@@ -568,7 +568,7 @@ public class Controller {
     }
 
     public boolean verifyClientNumbers () {
-        if (clients_landline_tf.getText().matches("\\d{8}|") && clients_cellphone_tf.getText().matches("09\\d{9}")){
+        if (clients_landline_tf.getText().matches("\\d{8}") && clients_cellphone_tf.getText().matches("09\\d{9}")){
             System.out.println("Its Valid Number");
             return true;
         } else {
@@ -595,7 +595,7 @@ public class Controller {
 
         // if everything is ok
         else {
-            if (this.checkFormat(fname.trim()) && this.checkFormat(mname.trim()) && this.checkFormat(lname.trim()) && this.checkFormat(uname.trim()) && this.checkFormat(role.trim()))
+            if (this.checkFormat(uname.trim()) && this.checkFormat(role.trim()))
                 return true;
             else
                 return false;

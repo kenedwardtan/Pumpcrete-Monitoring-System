@@ -11,27 +11,27 @@ public class Client {
     public SimpleStringProperty cpnum;
     public SimpleStringProperty email;
     public SimpleStringProperty address;
-    public SimpleIntegerProperty landline;
+    public SimpleStringProperty landline;
     public LocalDate latest_date;
 
-    public Client(long id, String position, String name,long cpnum, String email, String address, int landline,LocalDate date){
+    public Client(long id, String position, String name,String cpnum, String email, String address, String landline,LocalDate date){
         this.id = new SimpleLongProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
-        this.cpnum = new SimpleStringProperty("0"+Long.toString(cpnum));
+        this.cpnum = new SimpleStringProperty(cpnum);
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
-        this.landline = new SimpleIntegerProperty(landline);
+        this.landline = new SimpleStringProperty(landline);
         this.latest_date =  date;
     }
-    public Client(long id, String position, String name,long cpnum, String email, String address, int landline){
+    public Client(long id, String position, String name,String cpnum, String email, String address, String landline){
         this.id = new SimpleLongProperty(id);
         this.position = new SimpleStringProperty(position);
         this.name = new SimpleStringProperty(name);
-        this.cpnum = new SimpleStringProperty("0"+Long.toString(cpnum));
+        this.cpnum = new SimpleStringProperty(cpnum);
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
-        this.landline = new SimpleIntegerProperty(landline);
+        this.landline = new SimpleStringProperty(landline);
     }
 
     public String getPosition() {
@@ -54,7 +54,7 @@ public class Client {
         return address.get();
     }
 
-    public int getLandline() {
+    public String getLandline() {
         return landline.get();
     }
 
