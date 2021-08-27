@@ -293,6 +293,10 @@ public class Postgresql {
         String url = "jdbc:postgresql:Pumpcrete";
 
         try {
+            if (!old.equals(uname)) {
+                PreparedStatement p = con.prepareStatement(query1);
+                p.execute();
+            }
             PreparedStatement ps = con.prepareStatement(query);
 
             ps.setString(1, fname);
@@ -304,9 +308,6 @@ public class Postgresql {
             ps.setString(7, old);
 
             ps.executeUpdate();
-
-            PreparedStatement p = con.prepareStatement(query1);
-            p.execute();
 
             System.out.println("Edit success!");
 
@@ -381,6 +382,7 @@ public class Postgresql {
 
     public void editClient (Connection connection, long c_id, String fname, String lname, String position,
                             String address, String landline, String cpnum, String email){
+        System.out.println("Inside edit");
 
         String query = "UPDATE client SET client_position = ?, client_firstname = ?, client_lastname = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
 
@@ -388,6 +390,7 @@ public class Postgresql {
         //Date date = new Date(20000101);
 
         try{
+            System.out.println("try");
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, position);
@@ -399,10 +402,10 @@ public class Postgresql {
             ps.setString(7,address);
             ps.setLong(8, c_id);
 
-
             ps.executeUpdate();
 
         } catch (SQLException ex) {
+            System.out.println("catch");
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

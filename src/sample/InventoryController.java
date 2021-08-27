@@ -135,15 +135,44 @@ public class InventoryController extends Controller implements Initializable {
 
         //back to dashboard
         if (e.getSource() == inventory_back_btn) {
-            //switch roles?
-            //temp
-            stage = (Stage) inventory_back_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
+            switch (postgresql.getRole(Controller.con)) {
+                case "Staff":
+                case "staff":
+                    stage = (Stage) inventory_back_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                    break;
+                case "Admin":
+                case "admin":
+                    stage = (Stage) inventory_back_btn.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                    break;
+                case "Supervisor":
+                case "supervisor":
+                    stage = (Stage) inventory_back_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                    break;
+                default:
+                    errorAlert.setHeaderText("Input not valid");
+                    errorAlert.setContentText("Invalid Role.");
+                    errorAlert.showAndWait();
+                    break;
+
+            }
         }
     }
 

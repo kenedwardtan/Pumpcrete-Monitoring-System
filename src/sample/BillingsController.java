@@ -106,13 +106,46 @@ public class BillingsController extends Controller implements Initializable {
             //switch roles?
             //temp
             stage = (Stage) billings_back_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
+            System.out.println(postgresql.getCurrUser(Controller.con));
+            switch (postgresql.getRole(Controller.con)) {
+                    case "Staff":
+                    case "staff":
+                        stage = (Stage) billings_back_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+                        break;
+                    case "Admin":
+                    case "admin":
+                        stage = (Stage) billings_back_btn.getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeAdmin.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+                        break;
+                    case "Supervisor":
+                    case "supervisor":
+                        stage = (Stage) billings_back_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+                        break;
+                    default:
+                        errorAlert.setHeaderText("Input not valid");
+                        errorAlert.setContentText("Invalid Role.");
+                        errorAlert.showAndWait();
+                        break;
+
+                }
+            }
     }
 
     @FXML
