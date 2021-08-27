@@ -115,9 +115,8 @@ public class ClientEditController extends Controller implements Initializable {
                         stage.setResizable(false);
                         stage.show();
                     }
-                }else
-                    optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number! It must only contain 8 or 11 digits.", "Contact number error!", 2);
-
+                }optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number!\n" +
+                        "Landline must only contain exactly 8 digits.\n Cellphone Number must contain exactly 11 digits and must start with 09.", "Contact number error!", 2);
             }
         }
 

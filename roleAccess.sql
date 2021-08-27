@@ -29,8 +29,10 @@ GRANT DELETE on "credit_memo" to staff_role;
 GRANT UPDATE on "users" to supervisor_role;
 GRANT SELECT on "users" to supervisor_role;
 --CLIENTS
-GRANT UPDATE on "client" to supervisor_role;
-GRANT SELECT on "client" to supervisor_role; 
+GRANT UPDATE on "client" to staff_role;
+GRANT INSERT on "client" to staff_role; 
+GRANT SELECT on "client" to staff_role; 
+GRANT DELETE on "client" to staff_role; 
 --BILLINGS
 GRANT UPDATE on "billings" to supervisor_role;
 GRANT SELECT on "billings" to supervisor_role; 

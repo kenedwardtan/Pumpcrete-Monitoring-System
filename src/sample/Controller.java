@@ -298,7 +298,7 @@ public class Controller {
                     }
                 }else
                     optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number!\n" +
-                            "Landline must only contain exactly 8 digits.\n Cellphone Number must contain exactly 11 digits.", "Contact number error!", 2);
+                            "Landline must only contain exactly 8 digits.\n Cellphone Number must contain exactly 11 digits and must start with 09.", "Contact number error!", 2);
             }
         }
 
