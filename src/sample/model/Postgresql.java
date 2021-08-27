@@ -288,6 +288,7 @@ public class Postgresql {
     public void editUser (Connection con, String old, String uname, String fname, String mname, String lname, String email, String role){
 
         String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ?, username = ? WHERE username = ?";
+        String query1= "ALTER ROLE "+old+" RENAME TO " + uname;
 
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -303,6 +304,9 @@ public class Postgresql {
             ps.setString(7, old);
 
             ps.executeUpdate();
+
+            PreparedStatement p = con.prepareStatement(query1);
+            p.execute();
 
             System.out.println("Edit success!");
 
