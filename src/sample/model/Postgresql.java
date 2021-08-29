@@ -471,6 +471,31 @@ public class Postgresql {
             }
     }
 
+    public long getClientID (Connection connection, String fName, String lName){
+
+        String query = "SELECT * FROM client WHERE client_firstname= ?, client_lastname = ?";
+        ObservableList<Client> c_result = FXCollections.observableArrayList();
+        Client c;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1, fName);
+            ps.setString(1, lName);
+
+            ResultSet result = ps.executeQuery();
+
+            result.next();
+            return result.getLong("c_id");
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return -1;
+        }
+    }
+
 
     public static ObservableList<Client> getAllClients(Connection con)
     {
@@ -873,6 +898,33 @@ public class Postgresql {
 
 
     }
+    public ObservableList<Pumpcrete> getAllinventory (Connection connection) {
+
+        ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
+        String query = "SELECT * FROM pumpcrete";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                long id = rs.getLong("pumpcrete_id");
+                String desc = rs.getString("description");
+                String plate = rs.getString("plate_no");
+                String fuel = rs.getString("fuel_type");
+                LocalDate date = rs.getDate("purchase_date").toLocalDate();
+                long cr = rs.getLong("cr_no");
+                long or = rs.getLong("or_no");
+                int tires = rs.getInt("tires");
+                boolean rented = rs.getBoolean("rented");
+                String name = rs.getString("client_name");
+
+                p.add(new Pumpcrete(id, desc, plate, fuel, date, cr, or, tires, rented, name));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
 
     public void deletePumpcrete (Connection con, long id){
         String query = "DELETE FROM pumpcrete WHERE pumpcrete_id = ?";
@@ -885,7 +937,57 @@ public class Postgresql {
         }
     }
 
+    public ObservableList<Pumpcrete> getPumpcrete (Connection connection, long id) {
 
+        ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
+        String query = "SELECT * FROM pumpcrete where pumpcrete_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1,id);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+
+            Long p_id = rs.getLong("pumpcrete_id");
+            String desc = rs.getString("description");
+            String plate = rs.getString("plate_no");
+            String fuel = rs.getString("fuel_type");
+            LocalDate date = rs.getDate("purchase_date").toLocalDate();
+            long cr = rs.getLong("cr_no");
+            long or = rs.getLong("or_no");
+            int tires = rs.getInt("tires");
+            boolean rented = rs.getBoolean("rented");
+            String name = rs.getString("client_name");
+
+            p.add(new Pumpcrete(p_id, desc, plate, fuel, date, cr, or, tires, rented, name));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+
+    public void editPumpcrete(Connection con, long id, String desc, String plate, String fuel, Date date, long cr, long or, int tires) {
+        try {
+            String query = "UPDATE pumpcrete SET description=?, plate_no=?, fuel_type=?,"
+                    + "purchase_date=?, cr_no =?, or_no=?, tires=? WHERE pumpcrete_id = ?";
+
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1,desc);
+            ps.setString(2,plate);
+            ps.setString(3,fuel);
+            ps.setDate(4,date);
+            ps.setLong(5,cr);
+            ps.setLong(6,or);
+            ps.setInt(7,tires);
+            ps.setLong(8,id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
 
 //    //Once all information are verified, adds new user to the database.

@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import sample.Controller;
 
 import java.time.LocalDate;
 
@@ -18,6 +19,7 @@ public class Pumpcrete {
     public SimpleIntegerProperty tires;
     public SimpleBooleanProperty rented;
     public SimpleStringProperty client_name;
+    public Postgresql p = new Postgresql();
 
 
     public Pumpcrete(long id, String desc, String plate, String fuel, LocalDate purchase_date, long cr, long or,
@@ -43,5 +45,5 @@ public class Pumpcrete {
     public long getOr_no(){ return or_no.get();}
     public int getTires() {return tires.get();}
     public boolean getRented() {return rented.get();}
-    public String getClient_name() {return client_name.getName();}
+    public String getClient_name() {return client_name.get();}
 }

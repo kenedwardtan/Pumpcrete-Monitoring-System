@@ -34,36 +34,42 @@ public class InventoryController extends Controller implements Initializable {
     public Postgresql postgresql;
     public static Connection con;
     public Controller Controller;
-    public long selectedID =0;
+    public static long selectedID =0;
     @FXML
     private TableView inventory_tb;
-    /*
     @FXML
-    private TableColumn<Inventory, Long> idColumn;
-    @FXML
-    private TableColumn<Inventory, String> descColumn;
-    @FXML
-    private TableColumn<Inventory, Boolean> cidColumn;
+    private TableView inventory_tb1;
 
     @FXML
-    private TableColumn<Inventory, Long> idColumn1;
+    private TableColumn<Pumpcrete, Long> idColumn;
     @FXML
-    private TableColumn<Inventory, LocalDate> dateColumn1;
+    private TableColumn<Pumpcrete, String> descColumn;
     @FXML
-    private TableColumn<Inventory, String> descColumn1;
+    private TableColumn<Pumpcrete, Boolean> statusColumn;
     @FXML
-    private TableColumn<Inventory, Boolean> cidColumn1;
+    private TableColumn<Pumpcrete, String> cidColumn;
+
     @FXML
-    private TableColumn<Inventory, Long> plateColumn1;
+    private TableColumn<Pumpcrete, Long> idColumn1;
     @FXML
-    private TableColumn<Inventory, LocalDate> fuelColumn1;
+    private TableColumn<Pumpcrete, Boolean> statusColumn1;
     @FXML
-    private TableColumn<Inventory, Long> crColumn1;
+    private TableColumn<Pumpcrete, LocalDate> dateColumn1;
     @FXML
-    private TableColumn<Inventory, Long> orColumn1;
+    private TableColumn<Pumpcrete, String> descColumn1;
     @FXML
-    private TableColumn<Inventory, Long> tiresColumn1;
-*/
+    private TableColumn<Pumpcrete, String> cidColumn1;
+    @FXML
+    private TableColumn<Pumpcrete, String> plateColumn1;
+    @FXML
+    private TableColumn<Pumpcrete, String> fuelColumn1;
+    @FXML
+    private TableColumn<Pumpcrete, Long> crColumn1;
+    @FXML
+    private TableColumn<Pumpcrete, Long> orColumn1;
+    @FXML
+    private TableColumn<Pumpcrete, Integer> tiresColumn1;
+
     @FXML
     private Button inventory_create_btn;
     @FXML
@@ -83,15 +89,14 @@ public class InventoryController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
 
-        //inventory_tb.setItems(postgresql.getAllinventory(Controller.con));
+        inventory_tb.setItems(postgresql.getAllinventory(Controller.con));
 
-        //idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("pumpcrete_id"));
+        descColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String >("description"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Boolean>("rented"));
+        cidColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("client_name"));
 
-        //dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_doc"));
-        //postedColumn.setCellValueFactory(new PropertyValueFactory<>("posted"));
-
-        //inventory_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        inventory_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     @FXML
@@ -176,27 +181,46 @@ public class InventoryController extends Controller implements Initializable {
         }
     }
 
+
     @FXML
     private void handleMouseAction(MouseEvent e) throws IOException, SQLException {
 
         inventory_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                Pumpcrete p  = (Pumpcrete) inventory_tb.getSelectionModel().getSelectedItem();
+                Pumpcrete p = (Pumpcrete) inventory_tb.getSelectionModel().getSelectedItem();
                 selectedID = p.getPumpcrete_Id();
                 System.out.println(selectedID); //test
                 inventory_2img.setVisible(true);
                 inventory_edit_btn.setVisible(true);
+                inventory_delete_btn.setVisible(true);
+
+                inventory_tb1.setItems(inventory_tb.getSelectionModel().getSelectedItems());
+                idColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("pumpcrete_id"));
+                descColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String >("description"));
+                statusColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Boolean>("rented"));
+                cidColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("client_name"));
+                plateColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("plate_no"));
+                fuelColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("fuel_type"));
+                dateColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, LocalDate>("purchase_date"));
+                crColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("cr_no"));
+                orColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("or_no"));
+                tiresColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Integer>("tires"));
             }
         });
 
         inventory_tb.setOnMouseExited((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
+                Pumpcrete p = (Pumpcrete) inventory_tb.getSelectionModel().getSelectedItem();
                 System.out.println(inventory_tb.getSelectionModel().getSelectedItem()); //test
                 selectedID =0;
+                inventory_tb.getItems().removeAll();
                 inventory_2img.setVisible(false);
                 inventory_edit_btn.setVisible(false);
             }
         });
+    }
+    public static long getSelectedID() {
+        return selectedID;
     }
 }
 
