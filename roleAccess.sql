@@ -14,10 +14,10 @@ GRANT INSERT on "billings" to staff_role;
 GRANT SELECT on "billings" to staff_role; 
 GRANT DELETE on "billings" to staff_role; 
 --PUMPCRETE
-GRANT UPDATE on "pumpcretes" to staff_role;
-GRANT INSERT on "pumpcretes" to staff_role; 
-GRANT SELECT on "pumpcretes" to staff_role; 
-GRANT DELETE on "pumpcretes" to staff_role; 
+GRANT UPDATE on "pumpcrete" to staff_role;
+GRANT INSERT on "pumpcrete" to staff_role; 
+GRANT SELECT on "pumpcrete" to staff_role; 
+GRANT DELETE on "pumpcrete" to staff_role; 
 --CREDIT MEMOS
 GRANT UPDATE on "credit_memo" to staff_role;
 GRANT INSERT on "credit_memo" to staff_role; 
@@ -37,8 +37,8 @@ GRANT DELETE on "client" to staff_role;
 GRANT UPDATE on "billings" to supervisor_role;
 GRANT SELECT on "billings" to supervisor_role; 
 --PUMPCRETE
-GRANT UPDATE on "pumpcretes" to supervisor_role;
-GRANT SELECT on "pumpcretes" to supervisor_role; 
+GRANT UPDATE on "pumpcrete" to supervisor_role;
+GRANT SELECT on "pumpcrete" to supervisor_role; 
 --CREDIT MEMOS
 GRANT UPDATE on "credit_memo" to supervisor_role;
 GRANT SELECT on "credit_memo" to supervisor_role; 

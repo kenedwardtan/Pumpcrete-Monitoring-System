@@ -595,6 +595,35 @@ public class Postgresql {
         }
     }
 
+    public void editBilling (Connection connection, String client_name, String project_name, String project_add,
+                            Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price, String struct, float total){
+
+        String query = "UPDATE billings SET date_used=?, client_name=?, project_name=?, project_add=?, PSC_id=?, posted=?,filled_by=?, floor_level=?, qty=?, unit_price=?, conc_structure=?, total=? WHERE";
+        String filled_by = getCurrUser(connection);
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setDate(1, date_used);
+            ps.setString(2, client_name);
+            ps.setString(3, project_name);
+            ps.setString(4, project_add);
+            ps.setInt(5, PSC_id);
+            ps.setBoolean(6, false);
+            ps.setString(7, filled_by);
+            ps.setInt(8, floor);
+            ps.setFloat(9, qty);
+            ps.setFloat(10,unit_price);
+            ps.setString(11,struct);
+            ps.setFloat(12, total);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void updateBillingClient(Connection connection, String ogName, String fullname) {
         String query = "UPDATE billings SET client_name = ? WHERE client_name = ?";
 
