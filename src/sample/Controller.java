@@ -124,30 +124,6 @@ public class Controller {
     @FXML
     private Button inventory_cancel_btn;
 
-    //billings - edit
-    @FXML
-    private ChoiceBox edit_billings_client;
-    @FXML
-    private DatePicker edit_billings_date;
-    @FXML
-    private TextField edit_billings_psc_tf;
-    @FXML
-    private TextField edit_billings_padd_tf;
-    @FXML
-    private TextField edit_billings_pname_tf;
-    @FXML
-    private TextField edit_billings_struct_tf;
-    @FXML
-    private TextField edit_billings_flr_tf;
-    @FXML
-    private TextField edit_billings_qty_tf;
-    @FXML
-    private TextField edit_billings_price_tf;
-    @FXML
-    private Button edit_billings_submit_btn;
-    @FXML
-    private Button edit_billings_cancel_btn;
-
 
 
     //employees - create
@@ -295,27 +271,7 @@ public class Controller {
             stage.show();
         }
 
-        //billings
-        if (e.getSource() == edit_billings_submit_btn) {
-            stage = (Stage) edit_billings_submit_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
 
-        if (e.getSource() == edit_billings_cancel_btn) {
-            //clear fields
-            stage = (Stage) edit_billings_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
 
 
 

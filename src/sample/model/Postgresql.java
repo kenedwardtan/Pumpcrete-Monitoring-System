@@ -596,9 +596,10 @@ public class Postgresql {
     }
 
     public void editBilling (Connection connection, String client_name, String project_name, String project_add,
-                            Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price, String struct, float total){
+                            Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price,
+                             String struct, float total, long bill_no){
 
-        String query = "UPDATE billings SET date_used=?, client_name=?, project_name=?, project_add=?, PSC_id=?, posted=?,filled_by=?, floor_level=?, qty=?, unit_price=?, conc_structure=?, total=? WHERE";
+        String query = "UPDATE billings SET date_used=?, client_name=?, project_name=?, project_add=?, PSC_id=?, posted=?,filled_by=?, floor_level=?, qty=?, unit_price=?, conc_structure=?, total=?, date_doc =? WHERE bill_no=?";
         String filled_by = getCurrUser(connection);
 
         try {
@@ -613,9 +614,11 @@ public class Postgresql {
             ps.setString(7, filled_by);
             ps.setInt(8, floor);
             ps.setFloat(9, qty);
-            ps.setFloat(10,unit_price);
-            ps.setString(11,struct);
+            ps.setFloat(10, unit_price);
+            ps.setString(11, struct);
             ps.setFloat(12, total);
+            ps.setFloat(14, bill_no);
+            ps.setDate(13, date_doc);
 
             ps.executeUpdate();
 
@@ -643,13 +646,14 @@ public class Postgresql {
         }
     }
 
-    public Billing getBilling(Connection connection, int billing_id) {
+    public Billing getBilling(Connection connection, long billing_id) {
         String query = "SELECT * from billings WHERE bill_no = ?";
         //ObservableList<Billing> b_result = FXCollections.observableArrayList();
-
+        System.out.println("in billing");
         try{
+            System.out.println("in try");
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setInt(1,billing_id);
+            ps.setLong(1,billing_id);
             ResultSet result = ps. executeQuery();
 
             result.next();
@@ -667,7 +671,7 @@ public class Postgresql {
             long floor_level = result.getLong("floor_level");
             float qty = result.getFloat("qty");
             float unit_price = result.getFloat("unit_price");
-            String struct = result.getString("conc_struct");
+            String struct = result.getString("conc_structure");
 
             Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
                     PSC_id,struct, floor_level, qty, unit_price, total, posted, filled_by, posted_by);
@@ -676,7 +680,7 @@ public class Postgresql {
 
 
         } catch (SQLException ex) {
-
+            System.out.println("in catch");
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
@@ -685,7 +689,7 @@ public class Postgresql {
 
 
     public ObservableList<Billing> getAllBillings(Connection con) {
-        String query = "SELECT * FROM billings";
+        String query = "SELECT * FROM billings ORDER BY bill_no";
 
         ObservableList<Billing> billings = FXCollections.observableArrayList();
 
@@ -930,7 +934,7 @@ public class Postgresql {
     public ObservableList<Pumpcrete> getAllinventory (Connection connection) {
 
         ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
-        String query = "SELECT * FROM pumpcrete";
+        String query = "SELECT * FROM pumpcrete ORDER BY pumpcrete_id";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery();

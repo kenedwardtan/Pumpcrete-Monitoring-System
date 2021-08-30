@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Billing;
+import sample.model.Client;
 import sample.model.Postgresql;
 
 import javax.swing.*;
@@ -24,6 +27,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class BillingsController extends Controller implements Initializable {
+    private static long editBilling;
     private Stage stage;
     private Parent root;
     private Scene scene;
@@ -75,6 +79,10 @@ public class BillingsController extends Controller implements Initializable {
 
         //edit
         if (e.getSource() == billings_edit_btn) {
+            ObservableList<Billing> b = FXCollections.observableArrayList();
+            b = billings_tb.getSelectionModel().getSelectedItems();
+            this.editBilling = b.get(0).bill_no.get();
+
             stage = (Stage) billings_edit_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("billingsEdit.fxml"));
             root = loader.load();
@@ -167,6 +175,10 @@ public class BillingsController extends Controller implements Initializable {
                 billings_edit_btn.setVisible(false);
             }
         });
+    }
+
+    public static long getEditBilling() {
+        return editBilling;
     }
 }
 
