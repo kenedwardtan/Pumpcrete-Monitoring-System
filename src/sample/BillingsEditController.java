@@ -164,7 +164,13 @@ public class BillingsEditController extends Controller implements Initializable 
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
-        // if everything is ok
+
+        if (!edit_billings_psc_tf.getText().matches("[0-9]+") || !edit_billings_flr_tf.getText().matches("[0-9]+") ||
+                !edit_billings_price_tf.getText().matches("[0-9]+.[0-9]++") || !edit_billings_qty_tf.getText().matches("[0-9]+.[0-9]++")) {
+            JOptionPane.showMessageDialog(null, "PSC and Floor fields must only contain whole numbers\n" +
+                    "Price and Quantity fields must only be in the format of a whole number with decimal values", "Invalid Number Inputs", 2);
+            return false;
+        }
         else {
             System.out.println("All fields are filled!");
             return true;
