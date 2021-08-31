@@ -5,7 +5,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,46 +18,46 @@
                 <Image url="@resources/img/home/admin/employeesEdit.png" />
             </image>
         </ImageView>
-        <TextArea fx:id="edit_fn_tf" layoutX="112.0" layoutY="222.0" prefHeight="47.0" prefWidth="209.0">
+        <TextField fx:id="edit_fn_tf" alignment="CENTER" layoutX="112.0" layoutY="222.0" prefHeight="47.0" prefWidth="209.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
-        </TextArea>
-        <TextArea fx:id="edit_mn_tf" layoutX="340.0" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
+        </TextField>
+        <TextField fx:id="edit_mn_tf" alignment="CENTER" layoutX="340.0" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
-        </TextArea>
-        <TextArea fx:id="edit_ln_tf" layoutX="568.0" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
+        </TextField>
+        <TextField fx:id="edit_ln_tf" alignment="CENTER" layoutX="568.0" onAction="#handleAction" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
-        </TextArea>
-        <TextArea fx:id="edit_email_tf" layoutX="112.0" layoutY="306.0" prefHeight="47.0" prefWidth="668.0">
+        </TextField>
+        <TextField fx:id="edit_email_tf" alignment="CENTER" layoutX="112.0" layoutY="306.0" onAction="#handleAction" prefHeight="47.0" prefWidth="668.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
-        </TextArea>
-        <TextArea fx:id="edit_user_tf" layoutX="112.0" layoutY="392.0" prefHeight="47.0" prefWidth="280.0">
+        </TextField>
+        <TextField fx:id="edit_user_tf" alignment="CENTER" layoutX="112.0" layoutY="392.0" onAction="#handleAction" prefHeight="47.0" prefWidth="280.0">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
-        </TextArea>
+        </TextField>
         <ChoiceBox fx:id="edit_role_dd" layoutX="405.0" layoutY="391.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="181.0" value="Select Role">
             <items>
                 <FXCollections fx:factory="observableArrayList">
