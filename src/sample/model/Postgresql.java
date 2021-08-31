@@ -355,7 +355,7 @@ public class Postgresql {
                                      String address,String landline, String cpnum, String email){
 
 
-        String query = "INSERT INTO client(client_firstname, client_lastname, client_position, client_address," +
+        String query = "INSERT INTO client(client_first_name, client_last_name, client_position, client_address," +
                 "client_landline, client_cellphone, client_email) VALUES (?,?,?,?,?,?,?)";
 
         //Date date = new Date(20000101);
@@ -384,7 +384,7 @@ public class Postgresql {
                             String address, String landline, String cpnum, String email){
         System.out.println("Inside edit");
 
-        String query = "UPDATE client SET client_position = ?, client_firstname = ?, client_lastname = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
+        String query = "UPDATE client SET client_position = ?, client_first_name = ?, client_last_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
         //Date date = new Date(20000101);
@@ -448,8 +448,8 @@ public class Postgresql {
 
                 result.next();
                 long id = result.getLong("client_id");
-                String fname = result.getString("client_firstname");
-                String lname = result.getString("client_lastname");
+                String fname = result.getString("client_first_name");
+                String lname = result.getString("client_last_name");
                 String position = result.getString("client_position");
                 String cpnum = result.getString("client_cellphone");
                 String landline = result.getString("client_landline");
@@ -473,7 +473,7 @@ public class Postgresql {
 
     public long getClientID (Connection connection, String fName, String lName){
 
-        String query = "SELECT * FROM client WHERE client_firstname= ?, client_lastname = ?";
+        String query = "SELECT * FROM client WHERE client_first_name= ?, client_last_name = ?";
         ObservableList<Client> c_result = FXCollections.observableArrayList();
         Client c;
 
@@ -481,7 +481,7 @@ public class Postgresql {
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, fName);
-            ps.setString(1, lName);
+            ps.setString(2, lName);
 
             ResultSet result = ps.executeQuery();
 
@@ -509,8 +509,8 @@ public class Postgresql {
             while (result.next()) {
 
                 long id = result.getLong("client_id");
-                String fname = result.getString("client_firstname");
-                String lname = result.getString("client_lastname");
+                String fname = result.getString("client_first_name");
+                String lname = result.getString("client_last_name");
                 String position = result.getString("client_position");
                 String cpnum = result.getString("client_cellphone");
                 String landline = result.getString("client_landline");
@@ -541,14 +541,14 @@ public class Postgresql {
 
     public static ObservableList<String> getAllClientNames(Connection con)
     {
-        String query = "SELECT client_firstname,client_lastname,client_id FROM client";
+        String query = "SELECT client_first_name,client_last_name,client_id FROM client";
         try {
             PreparedStatement pst = con.prepareStatement(query);
             ObservableList<String> cn_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
-                String fname = result.getString("client_firstname");
-                String lname = result.getString("client_lastname");
+                String fname = result.getString("client_first_name");
+                String lname = result.getString("client_last_name");
                 String name = fname+" "+lname;
                 cn_result.add(name);
             }

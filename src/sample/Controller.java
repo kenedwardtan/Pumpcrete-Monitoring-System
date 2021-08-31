@@ -498,10 +498,7 @@ public class Controller {
 
         // if everything is ok
         else {
-            if (this.checkFormat(position.trim()))
-                return true;
-            else
-                return false;
+            return true;
         }
     }
 
