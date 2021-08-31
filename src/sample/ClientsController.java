@@ -91,6 +91,7 @@ public class ClientsController extends Controller implements Initializable {
         emailColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
+        positionColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
 
         clients_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -185,10 +186,9 @@ public class ClientsController extends Controller implements Initializable {
 
                 clients_details_tb.setItems(clients_tb.getSelectionModel().getSelectedItems());
                 IDColumn1.setCellValueFactory(new PropertyValueFactory<Client, Long>("id"));
-//                emailColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
+                emailColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
                 nameColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
 //                dateColumn1.setCellValueFactory(new PropertyValueFactory<Client, LocalDate>("latest_date"));
-//                positionColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
                 landlineColumn1.setCellValueFactory(new PropertyValueFactory<Client, Integer>("landline"));
                 cellphoneColumn1.setCellValueFactory(new PropertyValueFactory<Client, Long>("cpnum"));
                 addressColumn1.setCellValueFactory(new PropertyValueFactory<Client, String>("address"));
