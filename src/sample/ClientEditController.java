@@ -35,23 +35,23 @@ public class ClientEditController extends Controller implements Initializable {
     @FXML
     private DatePicker edit_clients_date;
     @FXML
-    private TextArea edit_clients_fn_tf;
+    private TextField edit_clients_fn_tf;
     @FXML
-    private TextArea edit_clients_ln_tf;
+    private TextField edit_clients_ln_tf;
     @FXML
-    private TextArea edit_clients_email_tf;
+    private TextField edit_clients_email_tf;
     @FXML
-    private TextArea edit_clients_landline_tf;
+    private TextField edit_clients_landline_tf;
     @FXML
-    private TextArea edit_clients_cellphone_tf;
+    private TextField edit_clients_cellphone_tf;
     @FXML
-    private TextArea edit_clients_address_tf;
+    private TextField edit_clients_address_tf;
     @FXML
     private Button edit_clients_submit_btn;
     @FXML
     private Button edit_clients_cancel_btn;
     @FXML
-    private TextArea edit_clients_position_tf;
+    private TextField edit_clients_position_tf;
     @FXML
     private JOptionPane optionPane;
 

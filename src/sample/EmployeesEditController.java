@@ -33,15 +33,15 @@ public class EmployeesEditController extends Controller implements Initializable
     public static Connection con;
 
     @FXML
-    private TextArea edit_fn_tf;
+    private TextField edit_fn_tf;
     @FXML
-    private TextArea edit_mn_tf;
+    private TextField edit_mn_tf;
     @FXML
-    private TextArea edit_ln_tf;
+    private TextField edit_ln_tf;
     @FXML
-    private TextArea edit_email_tf;
+    private TextField edit_email_tf;
     @FXML
-    private TextArea edit_user_tf;
+    private TextField edit_user_tf;
     @FXML
     private Button edit_submit_btn;
     @FXML
