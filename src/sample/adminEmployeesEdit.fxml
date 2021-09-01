@@ -5,6 +5,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,47 +19,47 @@
                 <Image url="@resources/img/home/admin/employeesEdit.png" />
             </image>
         </ImageView>
-        <TextField fx:id="edit_fn_tf" alignment="CENTER" layoutX="112.0" layoutY="222.0" prefHeight="47.0" prefWidth="209.0">
+        <TextField fx:id="edit_fn_tf" alignment="CENTER" layoutX="112.0" layoutY="223.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Juan">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
         </TextField>
-        <TextField fx:id="edit_mn_tf" alignment="CENTER" layoutX="340.0" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
+        <TextField fx:id="edit_mn_tf" alignment="CENTER" layoutX="341.0" layoutY="223.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Cardo">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
         </TextField>
-        <TextField fx:id="edit_ln_tf" alignment="CENTER" layoutX="568.0" onAction="#handleAction" layoutY="223.0" prefHeight="47.0" prefWidth="209.0">
+        <TextField fx:id="edit_ln_tf" alignment="CENTER" layoutX="570.0" layoutY="223.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Dela Cruz">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
         </TextField>
-        <TextField fx:id="edit_email_tf" alignment="CENTER" layoutX="112.0" layoutY="306.0" onAction="#handleAction" prefHeight="47.0" prefWidth="668.0">
+        <TextField fx:id="edit_email_tf" alignment="CENTER" layoutX="112.0" layoutY="307.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="juandelacruz@gmail.com">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
         </TextField>
-        <TextField fx:id="edit_user_tf" alignment="CENTER" layoutX="112.0" layoutY="392.0" onAction="#handleAction" prefHeight="47.0" prefWidth="280.0">
+        <TextField fx:id="edit_user_tf" alignment="CENTER" layoutX="341.0" layoutY="307.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="cardo123">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
         </TextField>
-        <ChoiceBox fx:id="edit_role_dd" layoutX="405.0" layoutY="391.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="181.0" value="Select Role">
+        <ChoiceBox fx:id="edit_role_dd" layoutX="570.0" layoutY="306.0" onDragDetected="#handleAction" prefHeight="38.0" prefWidth="220.0" value="Select Role">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Admin" />
@@ -66,21 +67,47 @@
                     <String fx:value="Staff" />
                 </FXCollections>
             </items>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
         </ChoiceBox>
         <Button fx:id="edit_submit_btn" layoutX="450.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="51.0" prefWidth="90.0" text="Save">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
         <Button fx:id="edit_cancel_btn" layoutX="348.0" layoutY="526.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="edit_generate_btn" layoutX="597.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleAction" prefHeight="51.0" prefWidth="182.0" text="Generate Password">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Label layoutX="112.0" layoutY="210.0" text="First Name">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label layoutX="342.0" layoutY="210.0" text="Middle Name">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label layoutX="571.0" layoutY="210.0" text="Last Name">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label layoutX="113.0" layoutY="293.0" text="Email Address">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label layoutX="343.0" layoutY="293.0" text="Username">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label layoutX="571.0" layoutY="293.0" text="Role">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>

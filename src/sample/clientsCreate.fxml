@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,7 +16,15 @@
                 <Image url="@resources/img/clients/clientAdd.png" />
             </image>
         </ImageView>
-        <TextField fx:id="clients_fn_tf" alignment="CENTER" layoutX="178.0" layoutY="229.0" onAction="#handleAction" prefHeight="34.0" prefWidth="263.0" promptText="First Name">
+      <TextField fx:id="clients_position_tf" alignment="CENTER" layoutX="336.0" layoutY="192.0" prefHeight="38.0" prefWidth="220.0" promptText="Project Manager">
+        <font>
+            <Font name="Work Sans Regular" size="13.0" />
+        </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </TextField>
+        <TextField fx:id="clients_fn_tf" alignment="CENTER" layoutX="221.0" layoutY="256.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Juan">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -23,7 +32,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
         </TextField>
-        <TextField fx:id="clients_ln_tf" alignment="CENTER" layoutX="455.0" layoutY="228.0" onAction="#handleAction" prefHeight="34.0" prefWidth="263.0" promptText="Last Name">
+        <TextField fx:id="clients_ln_tf" alignment="CENTER" layoutX="450.0" layoutY="256.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Dela Cruz">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -31,7 +40,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
         </TextField>
-        <TextField fx:id="clients_email_tf" alignment="CENTER" layoutX="178.0" layoutY="283.0" onAction="#handleAction" prefHeight="34.0" prefWidth="540.0" promptText="Email Address">
+        <TextField fx:id="clients_email_tf" alignment="CENTER" layoutX="222.0" layoutY="345.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="juandelacruz@gmail.com">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -39,7 +48,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
         </TextField>
-      <TextField fx:id="clients_landline_tf" alignment="CENTER" layoutX="178.0" layoutY="361.0" onAction="#handleAction" prefHeight="34.0" prefWidth="263.0" promptText="Landline #">
+      <TextField fx:id="clients_landline_tf" alignment="CENTER" layoutX="451.0" layoutY="345.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="025359049">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -47,7 +56,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <TextField fx:id="clients_cellphone_tf" alignment="CENTER" layoutX="455.0" layoutY="361.0" onAction="#handleAction" prefHeight="34.0" prefWidth="263.0" promptText="Cellphone #">
+      <TextField fx:id="clients_address_tf" alignment="CENTER" layoutX="222.0" layoutY="404.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="843 New York St., Makati">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -55,7 +64,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <TextField fx:id="clients_address_tf" alignment="CENTER" layoutX="178.0" layoutY="412.0" onAction="#handleAction" prefHeight="34.0" prefWidth="540.0" promptText="Address">
+      <TextField fx:id="clients_cellphone_tf" alignment="CENTER" layoutX="451.0" layoutY="404.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="09991234567">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -71,13 +80,40 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <TextField fx:id="clients_position_tf" alignment="CENTER" layoutX="367.0" layoutY="175.0" prefHeight="34.0" prefWidth="166.0" promptText="Position">
-        <font>
-            <Font name="Work Sans Regular" size="13.0" />
-        </font>
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor>
-      </TextField>
+      <Label layoutX="337.0" layoutY="179.0" text="Position">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="222.0" layoutY="243.0" text="First Name">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="450.0" layoutY="243.0" text="Last Name">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="222.0" layoutY="332.0" text="Email Address">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="451.0" layoutY="332.0" text="Landline Number">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="451.0" layoutY="391.0" text="Cellphone Number">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="221.0" layoutY="391.0" text="Address">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

@@ -5,6 +5,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,7 +19,7 @@
             <Image url="@resources/img/home/admin/employeesCreate.png" />
          </image>
       </ImageView>
-      <TextField fx:id="create_fn_tf" alignment="CENTER" layoutX="112.0" layoutY="222.0" onAction="#handleAction" prefHeight="47.0" prefWidth="209.0" promptText="First Name">
+      <TextField fx:id="create_fn_tf" alignment="CENTER" layoutX="112.0" layoutY="223.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Juan">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -26,7 +27,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <TextField fx:id="create_mn_tf" alignment="CENTER" layoutX="342.0" layoutY="222.0" onAction="#handleAction" prefHeight="47.0" prefWidth="209.0" promptText="Middle Name">
+      <TextField fx:id="create_mn_tf" alignment="CENTER" layoutX="341.0" layoutY="223.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Cardo">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -34,7 +35,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <TextField fx:id="create_ln_tf" alignment="CENTER" layoutX="570.0" layoutY="222.0" onAction="#handleAction" prefHeight="47.0" prefWidth="209.0" promptText="Last Name">
+      <TextField fx:id="create_ln_tf" alignment="CENTER" layoutX="570.0" layoutY="223.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="Dela Cruz">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -42,7 +43,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <TextField fx:id="create_email_tf" alignment="CENTER" layoutX="112.0" layoutY="306.0" onAction="#handleAction" prefHeight="47.0" prefWidth="668.0" promptText="Email Address">
+      <TextField fx:id="create_email_tf" alignment="CENTER" layoutX="112.0" layoutY="307.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="juandelacruz@gmail.com">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -50,7 +51,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <TextField fx:id="create_user_tf" alignment="CENTER" layoutX="112.0" layoutY="392.0" onAction="#handleAction" prefHeight="47.0" prefWidth="329.0" promptText="Username">
+      <TextField fx:id="create_user_tf" alignment="CENTER" layoutX="341.0" layoutY="307.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="cardo123">
          <font>
             <Font name="Work Sans Regular" size="13.0" />
          </font>
@@ -58,7 +59,7 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <ChoiceBox fx:id="create_role_dd" layoutX="455.0" layoutY="392.0" onDragDetected="#handleAction" prefHeight="47.0" prefWidth="324.0" value="Select Role">
+      <ChoiceBox fx:id="create_role_dd" layoutX="570.0" layoutY="306.0" onDragDetected="#handleAction" prefHeight="38.0" prefWidth="220.0" value="Select Role">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Admin" />
@@ -78,5 +79,35 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
+      <Label layoutX="112.0" layoutY="210.0" text="First Name">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="342.0" layoutY="210.0" text="Middle Name">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="571.0" layoutY="210.0" text="Last Name">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="113.0" layoutY="293.0" text="Email Address">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="343.0" layoutY="293.0" text="Username">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="571.0" layoutY="293.0" text="Role">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
