@@ -19,35 +19,27 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="profile_btn" layoutX="-2.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
+      <Button fx:id="profile_btn" layoutX="-2.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="dashboard_btn" layoutX="-2.0" layoutY="131.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
+      <Button fx:id="dashboard_btn" layoutX="-2.0" layoutY="226.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="reports_btn" layoutX="-2.0" layoutY="181.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
+      <Button fx:id="clients_btn" layoutX="-2.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="clients_btn" layoutX="-3.0" layoutY="238.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
+      <Button fx:id="inventory_btn" layoutX="-2.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="inventory_btn" layoutX="-2.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
+      <Button fx:id="receivables_btn" layoutX="-2.0" layoutY="389.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="receivables_btn" layoutX="-2.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="billings_btn" layoutX="-2.0" layoutY="393.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="memos_btn" layoutX="-3.0" layoutY="444.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
+      <Button fx:id="billings_btn" layoutX="-2.0" layoutY="439.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="40.0" prefWidth="190.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -55,19 +47,11 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="settings_btn" layoutX="-3.0" layoutY="593.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="20.0" prefWidth="190.0">
+      <Button fx:id="dashboard_master_btn" layoutX="224.0" layoutY="95.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="163.0" prefWidth="302.0" text="Button">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="dashboard_master_btn" layoutX="224.0" layoutY="95.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="107.0" prefWidth="199.0" text="Button">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="dashboard_transactions_btn" layoutX="441.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="107.0" prefWidth="199.0" text="Button">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="dashboard_reports_btn" layoutX="657.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="107.0" prefWidth="199.0" text="Button">
+      <Button fx:id="dashboard_transactions_btn" layoutX="551.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="163.0" prefWidth="309.0" text="Button">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>

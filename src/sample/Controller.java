@@ -8,9 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -50,13 +52,35 @@ public class Controller {
 
     //profile
     @FXML
-    private TextArea profile_fn_ta;
+    private Label profile_name_lbl;
     @FXML
-    private TextArea profile_ln_ta;
+    private Label profile_user_lbl;
     @FXML
-    private TextArea profile_email_ta;
+    private Label profile_email_lbl;
     @FXML
-    private TextArea profile_user_ta;
+    private Label profile_role_lbl;
+    @FXML
+    private Label settings_oPass_lbl;
+    @FXML
+    private Label settings_roPass_lbl;
+    @FXML
+    private Label settings_nPass_lbl;
+    @FXML
+    private Button settings_change_btn;
+    @FXML
+    private ImageView settings_change_btn1;
+    @FXML
+    private PasswordField settings_oPass_tf;
+    @FXML
+    private PasswordField settings_roPass_tf;
+    @FXML
+    private PasswordField settings_nPass_tf;
+    @FXML
+    private Button settings_save_btn;
+    @FXML
+    private Button settings_cancel_btn;
+    @FXML
+    private ImageView settings_2btn;
 
     //clients - create
     @FXML
@@ -124,8 +148,6 @@ public class Controller {
     @FXML
     private Button inventory_cancel_btn;
 
-
-
     //employees - create
     @FXML
     private TextField create_fn_tf;
@@ -147,18 +169,6 @@ public class Controller {
     //employees - edit
     @FXML
     private Button employees_edit_btn;
-
-    // settings
-    @FXML
-    private PasswordField settings_oPass_tf;
-    @FXML
-    private PasswordField settings_roPass_tf;
-    @FXML
-    private PasswordField settings_nPass_tf;
-    @FXML
-    private Button settings_save_btn;
-    @FXML
-    private Button settings_cancel_btn;
 
     @FXML
     private JOptionPane optionPane;
@@ -222,109 +232,36 @@ public class Controller {
             }
         }
 
-        //clients
-        if (e.getSource() == clients_submit_btn) {
-            if (verifyCreateClient()) {
-                if (verifyClientNumbers()) {
-                    // retrieve inputs
-                    String fname = clients_fn_tf.getText();
-                    String lname = clients_ln_tf.getText();
-                    String position = clients_position_tf.getText();
-                    String address = clients_address_tf.getText();
-                    String email = clients_email_tf.getText();
-                    String landline = clients_landline_tf.getText();
-                    String cellphone =  clients_cellphone_tf.getText();
+        //profile
+        if (e.getSource() == settings_change_btn) {
+            settings_change_btn.setVisible(false);
+            settings_change_btn1.setVisible(false);
 
-                    String fullname =  fname.trim() + " " + lname.trim();
-
-                    //checks the format of the email
-                    if (EmailVerification(email)) {
-
-                        //creates the user and inserts into database
-                        postgresql.createClient(con, fname.trim(), lname.trim(), position.trim(), address.trim(), landline.trim(), cellphone.trim(), email.trim());
-                        String message = "Name: " + fullname;
-                        optionPane.showMessageDialog(null, message, "Client Created!", 1);
-                        //clear fields
-
-                        stage = (Stage) clients_submit_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("clients.fxml"));
-                        root = loader.load();
-                        scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
-                    }
-                }else
-                    optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number!\n" +
-                            "Landline must only contain exactly 8 digits.\n Cellphone Number must contain exactly 11 digits and must start with 09.", "Contact number error!", 2);
-            }
+            settings_oPass_lbl.setVisible(true);
+            settings_roPass_lbl.setVisible(true);
+            settings_nPass_lbl.setVisible(true);
+            settings_oPass_tf.setVisible(true);
+            settings_roPass_tf.setVisible(true);
+            settings_nPass_tf.setVisible(true);
+            settings_save_btn.setVisible(true);
+            settings_cancel_btn.setVisible(true);
+            settings_2btn.setVisible(true);
         }
 
-        if (e.getSource() == clients_cancel_btn) {
-            //clear fields code here
-            stage = (Stage) clients_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
-
-
-
-
-
-        //employees
-        if (e.getSource() == create_submit_btn) {
-            // check if the data are empty
-            if (verifyCreateFields()) {
-                // retrieve inputs
-                String fname = create_fn_tf.getText();
-                String lname = create_ln_tf.getText();
-                String mname = create_mn_tf.getText();
-                String email = create_email_tf.getText();
-                String uname = create_user_tf.getText();
-                String role = create_role_dd.getValue();
-
-                // check if the username already exists
-                if (!postgresql.checkUsername(con, uname)) {
-
-                    //checks the format of the email
-                    if (EmailVerification(email)) {
-                        //creates the user and inserts into database
-                        String passsword = postgresql.createUser(con, fname.trim(), mname.trim(), lname.trim(), email.trim(), uname.trim(), role.trim());
-                        String message ="Username: " + uname.trim() +"\nPassword: " + passsword.trim();
-                        optionPane.showMessageDialog(null, message, "User Created!", 1);
-                        //clear fields
-
-                        stage = (Stage) create_submit_btn.getScene().getWindow();
-                        loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
-                        root = loader.load();
-                        scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.setResizable(false);
-                        stage.show();
-                    }
-                } else
-                    optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
-            }
-            System.out.print(create_fn_tf.getText());
-        }
-
-        if (e.getSource() == create_cancel_btn) {
-            //clear fields code here
-            stage = (Stage) create_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
-
-        //settings
         if (e.getSource() == settings_cancel_btn) {
+            settings_change_btn.setVisible(true);
+            settings_change_btn1.setVisible(true);
+
+            settings_oPass_lbl.setVisible(false);
+            settings_roPass_lbl.setVisible(false);
+            settings_nPass_lbl.setVisible(false);
+            settings_oPass_tf.setVisible(false);
+            settings_roPass_tf.setVisible(false);
+            settings_nPass_tf.setVisible(false);
+            settings_save_btn.setVisible(false);
+            settings_cancel_btn.setVisible(false);
+            settings_2btn.setVisible(false);
+
             String role = postgresql.getRole(con);
             switch (role) {
                 case "Staff":
@@ -366,6 +303,19 @@ public class Controller {
         }
 
         if (e.getSource() == settings_save_btn) {
+            settings_change_btn.setVisible(true);
+            settings_change_btn1.setVisible(true);
+
+            settings_oPass_lbl.setVisible(false);
+            settings_roPass_lbl.setVisible(false);
+            settings_nPass_lbl.setVisible(false);
+            settings_oPass_tf.setVisible(false);
+            settings_roPass_tf.setVisible(false);
+            settings_nPass_tf.setVisible(false);
+            settings_save_btn.setVisible(false);
+            settings_cancel_btn.setVisible(false);
+            settings_2btn.setVisible(false);
+
             String oldpw = settings_oPass_tf.getText().trim();
             String newpw = settings_nPass_tf.getText().trim();
             String repeat = settings_roPass_tf.getText().trim();
@@ -423,6 +373,103 @@ public class Controller {
                 JOptionPane.showMessageDialog(null, "Fill up new password, blank spaces are not allowed", "New Password Failed", 2);
         }
 
+        //clients
+        if (e.getSource() == clients_submit_btn) {
+            if (verifyCreateClient()) {
+                if (verifyClientNumbers()) {
+                    // retrieve inputs
+                    String fname = clients_fn_tf.getText();
+                    String lname = clients_ln_tf.getText();
+                    String position = clients_position_tf.getText();
+                    String address = clients_address_tf.getText();
+                    String email = clients_email_tf.getText();
+                    String landline = clients_landline_tf.getText();
+                    String cellphone =  clients_cellphone_tf.getText();
+
+                    String fullname =  fname.trim() + " " + lname.trim();
+
+                    //checks the format of the email
+                    if (EmailVerification(email)) {
+
+                        //creates the user and inserts into database
+                        postgresql.createClient(con, fname.trim(), lname.trim(), position.trim(), address.trim(), landline.trim(), cellphone.trim(), email.trim());
+                        String message = "Name: " + fullname;
+                        optionPane.showMessageDialog(null, message, "Client Created!", 1);
+                        //clear fields
+
+                        stage = (Stage) clients_submit_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+                    }
+                }else
+                    optionPane.showMessageDialog(null, "Please check the format of your landline and cellphone number!\n" +
+                            "Landline must only contain exactly 8 digits.\n Cellphone Number must contain exactly 11 digits and must start with 09.", "Contact number error!", 2);
+            }
+        }
+
+        if (e.getSource() == clients_cancel_btn) {
+            //clear fields code here
+            stage = (Stage) clients_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("clients.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        }
+
+        //employees
+        if (e.getSource() == create_submit_btn) {
+            // check if the data are empty
+            if (verifyCreateFields()) {
+                // retrieve inputs
+                String fname = create_fn_tf.getText();
+                String lname = create_ln_tf.getText();
+                String mname = create_mn_tf.getText();
+                String email = create_email_tf.getText();
+                String uname = create_user_tf.getText();
+                String role = create_role_dd.getValue();
+
+                // check if the username already exists
+                if (!postgresql.checkUsername(con, uname)) {
+
+                    //checks the format of the email
+                    if (EmailVerification(email)) {
+                        //creates the user and inserts into database
+                        String passsword = postgresql.createUser(con, fname.trim(), mname.trim(), lname.trim(), email.trim(), uname.trim(), role.trim());
+                        String message ="Username: " + uname.trim() +"\nPassword: " + passsword.trim();
+                        optionPane.showMessageDialog(null, message, "User Created!", 1);
+                        //clear fields
+
+                        stage = (Stage) create_submit_btn.getScene().getWindow();
+                        loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+                        root = loader.load();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.show();
+                    }
+                } else
+                    optionPane.showMessageDialog(null, "This username is already taken, please choose another one", "Username Failed", 2);
+            }
+            System.out.print(create_fn_tf.getText());
+        }
+
+        if (e.getSource() == create_cancel_btn) {
+            //clear fields code here
+            stage = (Stage) create_cancel_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        }
+
         //INVENTORY CREATE BUTTONS
         if (e.getSource() == inventory_submit_btn) {
             if (checkInventoryFields()) {
@@ -462,6 +509,7 @@ public class Controller {
                 }
             }
         }
+
         if (e.getSource() == inventory_cancel_btn) {
             //clear fields
             stage = (Stage) inventory_cancel_btn.getScene().getWindow();
