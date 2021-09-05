@@ -31,8 +31,6 @@ public class AdminHomeController extends Controller implements Initializable {
     private Button dashboard_master_btn;
     @FXML
     private Button dashboard_transactions_btn;
-    @FXML
-    private Button dashboard_reports_btn;
 
     @FXML
     private Button profile_btn;
@@ -91,8 +89,6 @@ public class AdminHomeController extends Controller implements Initializable {
 
         } else if (e.getSource() == dashboard_transactions_btn) {
 
-        } else if (e.getSource() == dashboard_reports_btn) {
-
         }
 
         if (e.getSource() == reports_btn) {
@@ -127,7 +123,7 @@ public class AdminHomeController extends Controller implements Initializable {
 
         if (e.getSource() == receivables_btn) {
             stage = (Stage) receivables_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("receivables.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("collections.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);

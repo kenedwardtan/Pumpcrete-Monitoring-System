@@ -1,40 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.TextArea?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="988.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EmployeesEditController">
     <children>
-        <TextArea fx:id="profile_fn_ta" layoutX="290.0" layoutY="277.0" prefHeight="59.0" prefWidth="355.0" promptText="First Name">
+        <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@resources/img/profile.png" />
+            </image>
+        </ImageView>
+      <Label layoutX="334.0" layoutY="38.0" text="&lt;username&gt;'s Profile" textFill="#fffdfd">
+         <font>
+            <Font name="CeraPro-Bold" size="24.0" />
+         </font>
+      </Label>
+        <Button fx:id="settings_save_btn" layoutX="454.0" layoutY="617.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="68.0" text="Save" visible="false">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Button fx:id="settings_cancel_btn" layoutX="381.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="61.0" text="Cancel" visible="false">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Label layoutX="338.0" layoutY="149.0" text="Name">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+      <Label fx:id="profile_name_lbl" layoutX="339.0" layoutY="159.0" text="Juan Dela Cruz">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+        <Label layoutX="339.0" layoutY="222.0" text="Username">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+      <Label fx:id="profile_user_lbl" layoutX="343.0" layoutY="232.0" text="juan_dela_cruz">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+        <Label layoutX="339.0" layoutY="295.0" text="Email Address">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+      <Label fx:id="profile_email_lbl" layoutX="341.0" layoutY="306.0" text="juandelacruz@gmail.com">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+        <Label layoutX="340.0" layoutY="372.0" text="Role">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+      <Label fx:id="profile_role_lbl" layoutX="340.0" layoutY="383.0" text="Staff">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Button fx:id="profile_change_btn" layoutX="353.0" layoutY="514.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="72.0" prefWidth="194.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ImageView fx:id="settings_change_btn1" fitHeight="69.0" fitWidth="196.0" layoutX="352.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@resources/img/changePassBtn.png" />
+         </image>
+      </ImageView>
+      <PasswordField fx:id="settings_oPass_tf" alignment="CENTER" layoutX="341.0" layoutY="454.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" visible="false">
+         <font>
+            <Font name="Work Sans Regular" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </PasswordField>
+        <PasswordField fx:id="settings_nPass_tf" alignment="CENTER" layoutX="342.0" layoutY="511.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" visible="false">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-        </TextArea>
-        <TextArea fx:id="profile_ln_ta" layoutX="669.0" layoutY="276.0" prefHeight="59.0" prefWidth="355.0" promptText="Last Name">
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
+        </PasswordField>
+        <PasswordField fx:id="settings_roPass_tf" alignment="CENTER" layoutX="342.0" layoutY="568.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" visible="false">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
-        </TextArea>
-        <TextArea fx:id="profile_email_ta" layoutX="293.0" layoutY="365.0" prefHeight="59.0" prefWidth="729.0" promptText="Email Address">
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor>
+        </PasswordField>
+      <Label fx:id="settings_oPass_lbl" layoutX="343.0" layoutY="440.0" text="Old Password" visible="false">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+        <Label fx:id="settings_nPass_lbl" layoutX="343.0" layoutY="497.0" text="New Password" visible="false">
             <font>
-                <Font name="Work Sans Regular" size="13.0" />
+                <Font name="Work Sans Regular" size="10.0" />
             </font>
-        </TextArea>
-        <TextArea fx:id="profile_user_ta" layoutX="289.0" layoutY="462.0" prefHeight="59.0" prefWidth="365.0" promptText="Username">
+        </Label>
+        <Label fx:id="settings_roPass_lbl" layoutX="343.0" layoutY="555.0" text="New Password Confirmation" visible="false">
             <font>
-                <Font name="Work Sans Regular" size="13.0" />
+                <Font name="Work Sans Regular" size="10.0" />
             </font>
-        </TextArea>
-        <Text fill="#003459" layoutX="420.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account Details">
-            <font>
-                <Font name="Work Sans SemiBold" size="57.0" />
-            </font>
-        </Text>
+        </Label>
+      <ImageView fx:id="settings_2btn" fitHeight="35.0" fitWidth="176.0" layoutX="379.0" layoutY="617.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@resources/img/changePassConfirmBtn.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

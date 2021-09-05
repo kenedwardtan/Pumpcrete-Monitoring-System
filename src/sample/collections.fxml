@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BillingsController">
+    <children>
+        <ImageView fitHeight="688.0" fitWidth="892.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@resources/img/collections/collections.png" />
+            </image>
+        </ImageView>
+        <TableView fx:id="collections_tb" layoutX="87.0" layoutY="209.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="330.0" prefWidth="718.0">
+            <columns>
+                <TableColumn fx:id="prNumColumn" prefWidth="81.66667175292969" text="PR #" />
+                <TableColumn fx:id="clientNameColumn" prefWidth="135.33331298828125" text="Client Name" />
+            <TableColumn fx:id="pidcolumn" prefWidth="111.33331298828125" text="Pumpcrete ID" />
+                <TableColumn fx:id="totalColumn" prefWidth="122.33334350585938" text="Total Amount" />
+            <TableColumn fx:id="billNumColuimn" prefWidth="66.66668701171875" text="Bill #" />
+            <TableColumn fx:id="dateColumn" prefWidth="111.33331298828125" text="Date" />
+                <TableColumn fx:id="postedColumn" prefWidth="72.3333740234375" text="Posted" />
+            </columns>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+
+        </TableView>
+        <Button fx:id="collections_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Button fx:id="collections_create_btn" layoutX="85.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="130.0" text="Button">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <TextField fx:id="collections_search_tf" layoutX="664.0" layoutY="162.0" onAction="#handleAction" prefHeight="29.0" prefWidth="141.0" promptText="Search">
+            <cursor>
+                <Cursor fx:constant="TEXT" />
+            </cursor></TextField>
+        <ImageView fx:id="collections_2img" fitHeight="26.0" fitWidth="220.0" layoutX="423.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <image>
+                <Image url="@resources/img/billings/editBtn.png" />
+            </image>
+
+        </ImageView>
+        <Button fx:id="collections_edit_btn" layoutX="423.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false">
+        </Button>
+      <TableView fx:id="collections_tb1" layoutX="87.0" layoutY="555.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="66.0" prefWidth="718.0">
+         <columns>
+            <TableColumn fx:id="clientNameColumn1" prefWidth="142.66665649414062" text="Client Name" />
+            <TableColumn fx:id="amountColumn1" prefWidth="90.33334350585938" text="Amount" />
+            <TableColumn fx:id="bankColumn1" prefWidth="124.6666259765625" text="Name of Bank" />
+            <TableColumn fx:id="checkNumColumn1" prefWidth="86.33331298828125" text="Check #" />
+            <TableColumn fx:id="checkDateColumn" prefWidth="140.0" text="Date of Check" />
+            <TableColumn fx:id="dateColumn1" prefWidth="115.33331298828125" text="Total Amount" />
+         </columns>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </TableView>
+    </children>
+</AnchorPane>
