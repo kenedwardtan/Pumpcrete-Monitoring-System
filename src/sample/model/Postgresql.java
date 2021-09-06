@@ -990,7 +990,7 @@ public class Postgresql {
         try{
             PreparedStatement ps = con.prepareStatement(query);
             ps.setLong (1, id);
-            ps.executeQuery();
+            ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
