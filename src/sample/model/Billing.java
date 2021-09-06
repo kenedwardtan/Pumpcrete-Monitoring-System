@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 public class Billing {
     public SimpleLongProperty bill_no;
-    public SimpleLongProperty client_id;
     public SimpleStringProperty client_name;
     public SimpleStringProperty project_name;
     public SimpleStringProperty project_add;
@@ -23,14 +22,13 @@ public class Billing {
     public SimpleStringProperty posted_by;
 
 
-    public Billing (long bill_no, long client_id, String client_name, String project_name, String project_add, LocalDate date_doc,
+    public Billing (long bill_no, String client_name, String project_name, String project_add, LocalDate date_doc,
                     LocalDate date_used, long psc_id, String conc_structure, long floor_level, float qty, float unit_price,
                     float total,boolean posted,String edited_by,String posted_by){
 
         this.bill_no = new SimpleLongProperty(bill_no);
         this.date_doc = date_doc;
         this.date_used =date_used;
-        this.client_id = new SimpleLongProperty(client_id);
         this.client_name = new SimpleStringProperty(client_name);
         this.project_name = new SimpleStringProperty(project_name);
         this.project_add = new SimpleStringProperty(project_add);
@@ -79,7 +77,7 @@ public class Billing {
 
     public long getBill_no() {return bill_no.get();}
 
-    public long getClient_id (){return client_id.get();}
+    public String getClientName (){return client_name.get();}
 
     public String getConc_structure() {return conc_structure.get();}
 
@@ -90,4 +88,6 @@ public class Billing {
     public long getFloor_level(){return floor_level.get();}
 
     public String getClient_name(){return client_name.get();}
+
+
 }

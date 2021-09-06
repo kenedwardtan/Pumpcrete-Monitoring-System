@@ -68,10 +68,8 @@ public class CollectionsEditController extends Controller implements Initializab
         ObservableList<Collection> c = FXCollections.observableArrayList();
         c = postgresql.getCollection(Controller.con, CollectionsController.getEditCollection());
         this.names = FXCollections.observableArrayList();
-        this.test= postgresql.getAllClientNames(Controller.con);
-        for(int i=0; i<test.size(); i++){
-            names.add(test.get(i).getName());
-        }
+        this.names= postgresql.getAllClientNames(Controller.con);
+
         edit_collections_client.setItems(names);
 //
 //        edit_collections_date.setValue(LocalDate.now());

@@ -539,12 +539,12 @@ public class Postgresql {
         }
     }
 
-    public static ObservableList<Client> getAllClientNames(Connection con)
+    public static ObservableList<String> getAllClientNames(Connection con)
     {
         String query = "SELECT client_first_name,client_last_name,client_id FROM client";
         try {
             PreparedStatement pst = con.prepareStatement(query);
-            ObservableList<Client> cn_result = FXCollections.observableArrayList();
+            ObservableList<String> cn_result = FXCollections.observableArrayList();
             ResultSet result = pst.executeQuery();
             while (result.next()) {
                 Long id = result.getLong("client_id");
@@ -552,7 +552,7 @@ public class Postgresql {
                 String lname = result.getString("client_last_name");
                 String name = fname+" "+lname;
                 System.out.println(name);
-                cn_result.add(new Client(name, id));
+                cn_result.add(name);
             }
 
             return cn_result;
@@ -567,10 +567,10 @@ public class Postgresql {
 
 
 
-    public void addBilling (Connection connection, long client_id, String project_name, String project_add,
+    public void addBilling (Connection connection, String client_name, String project_name, String project_add,
                             Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price, String struct, float total){
 
-        String query = "INSERT INTO billings(date_doc, date_used, client_id, project_name, project_add, PSC_id, posted,edited_by, floor_level, " +
+        String query = "INSERT INTO billings(date_doc, date_used, client_name, project_name, project_add, PSC_id, posted,edited_by, floor_level, " +
                 "qty, unit_price, conc_structure, total, in_payments, is_paid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String edited_by = getCurrUser(connection);
 
@@ -579,7 +579,7 @@ public class Postgresql {
 
             ps.setDate(1, date_doc);
             ps.setDate(2, date_used);
-            ps.setLong(3, client_id);
+            ps.setString(3, client_name);
             ps.setString(4, project_name);
             ps.setString(5, project_add);
             ps.setInt(6, PSC_id);
@@ -600,18 +600,18 @@ public class Postgresql {
         }
     }
 
-    public void editBilling (Connection connection, long client_id, String project_name, String project_add,
+    public void editBilling (Connection connection, String client_name, String project_name, String project_add,
                             Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price,
                              String struct, float total, long bill_no, String edited_by){
 
-        String query = "UPDATE billings SET date_used=?, client_id=?, project_name=?, project_add=?, PSC_id=?, " +
+        String query = "UPDATE billings SET date_used=?, client_name=?, project_name=?, project_add=?, PSC_id=?, " +
                 "posted=?,edited_by=?, floor_level=?, qty=?, unit_price=?, conc_structure=?, total=?, date_doc =?, " +
                 "in_payments=?, is_paid=? WHERE bill_no=?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setDate(1, date_used);
-            ps.setLong(2, client_id);
+            ps.setString(2, client_name);
             ps.setString(3, project_name);
             ps.setString(4, project_add);
             ps.setInt(5, PSC_id);
@@ -634,16 +634,16 @@ public class Postgresql {
         }
     }
 
-    public void updateBillingClient(Connection connection, long id, long bill) {
-        String query = "UPDATE billings SET client_id = ?, WHERE bill_no = ?";
+    public void updateBillingClient(Connection connection, String ogName, String fullname) {
+        String query = "UPDATE billings SET client_name = ? WHERE client_name = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setLong(1, id);
-            ps.setLong(2, bill);
+            ps.setString(1, fullname);
+            ps.setString(2, ogName);
 
             ps.executeUpdate();
 
@@ -654,7 +654,6 @@ public class Postgresql {
 
     public Billing getBilling(Connection connection, long billing_id) {
         String query = "SELECT * from billings WHERE bill_no = ?";
-        String query2 = "SELECT * from client WHERE client_id =?";
 
         //ObservableList<Billing> b_result = FXCollections.observableArrayList();
         System.out.println("in billing");
@@ -666,7 +665,7 @@ public class Postgresql {
 
             result.next();
             long id = result.getLong("bill_no");
-            long client_id = result.getLong("client_id");
+            String client_name = result.getString("client_name");
             String project_name = result.getString("project_name");
             String project_add = result.getString("project_add");
             Date date_doc = result.getDate("date_doc");
@@ -681,16 +680,8 @@ public class Postgresql {
             float unit_price = result.getFloat("unit_price");
             String struct = result.getString("conc_structure");
 
-            PreparedStatement p = connection.prepareStatement(query2);
-            p.setLong(1,client_id);
-            ResultSet res = p.executeQuery();
-            res.next();
-            String first = res.getString("client_first_name");
-            String last = res.getString("client_last_name");
 
-            String client_name= first + " " + last;
-
-            Billing b = new Billing(id,client_id, client_name,project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+            Billing b = new Billing(id, client_name,project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
                     PSC_id,struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
 
             return b;
@@ -707,7 +698,6 @@ public class Postgresql {
 
     public ObservableList<Billing> getAllBillings(Connection con) {
         String query = "SELECT * FROM billings ORDER BY bill_no";
-        String query2 = "SELECT * FROM client WHERE client_id = ?";
 
         ObservableList<Billing> billings = FXCollections.observableArrayList();
 
@@ -717,7 +707,7 @@ public class Postgresql {
 
             while (results.next()){
                 long id = results.getLong("bill_no");
-                long client_id= results.getLong("client_id");
+                String client_name = results.getString("client_name");
                 String project_name = results.getString("project_name");
                 String project_add = results.getString("project_add");
                 Date date_doc = results.getDate("date_doc");
@@ -732,15 +722,7 @@ public class Postgresql {
                 float unit_price = results.getFloat("unit_price");
                 String struct = results.getString("conc_structure");
 
-                PreparedStatement p = con.prepareStatement(query2);
-                p.setLong(1, client_id);
-                ResultSet res = p.executeQuery();
-                res.next();
-                String first = res.getString("client_first_name");
-                String last = res.getString("client_last_name");
-                String client_name = first +" "+last;
-
-                Billing b = new Billing(id,client_id, client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+                Billing b = new Billing(id, client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
                         PSC_id,struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
                 billings.add(b);
             }
@@ -754,7 +736,7 @@ public class Postgresql {
 
     public void postBilling (Connection connection, long id, String posted_by) {
 
-        String query = "UPDATE billings SET posted = ?, posted_by = ? WHERE billing_id = ?";
+        String query = "UPDATE billings SET posted = ?, posted_by = ? WHERE bill_no = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -1015,7 +997,6 @@ public class Postgresql {
             long cr = rs.getLong("cr_no");
             long or = rs.getLong("or_no");
             int tires = rs.getInt("tires");
-            String name = rs.getString("client_name");
 
             p.add(new Pumpcrete(p_id, desc, plate, fuel, date, cr, or, tires));
 

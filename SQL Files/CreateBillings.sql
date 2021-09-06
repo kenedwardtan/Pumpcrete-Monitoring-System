@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS billings CASCADE;
 
 CREATE TABLE billings (
 	bill_no BIGSERIAL NOT NULL PRIMARY KEY,
-	client_id BIGINT NOT NULL,
+	client_name VARCHAR NOT NULL,
 	project_name VARCHAR NOT NULL,
 	project_add VARCHAR NOT NULL,
 	date_doc DATE NOT NULL,

@@ -68,9 +68,6 @@ public class BillingsController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
-        if (postgresql.getCurrUser(Controller.con).equals("Supervisor")){
-            billings_post_btn.setVisible(true);
-        }
 
         billings_tb.setItems(postgresql.getAllBillings(Controller.con));
 
@@ -179,6 +176,13 @@ public class BillingsController extends Controller implements Initializable {
                     b = billings_tb.getSelectionModel().getSelectedItems();
                     postgresql.postBilling(Controller.con, b.get(0).getBill_no(), postgresql.getCurrUser(Controller.con));
                 }
+                stage = (Stage) billings_post_btn.getScene().getWindow();
+                loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
             }
 
     }
@@ -189,7 +193,9 @@ public class BillingsController extends Controller implements Initializable {
         billings_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 Billing b = (Billing) billings_tb.getSelectionModel().getSelectedItem();
-                System.out.println(b.getBill_no()); //test
+                if (postgresql.getRole(Controller.con).equals("Supervisor")){
+                    billings_post_btn.setVisible(true);
+                }
                 billings_2img.setVisible(true);
                 billings_edit_btn.setVisible(true);
             }

@@ -60,7 +60,6 @@ public class BillingsEditController extends Controller implements Initializable 
 
     private static Billing b;
     private ObservableList<String> names;
-    private ObservableList<Client> test;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,14 +69,10 @@ public class BillingsEditController extends Controller implements Initializable 
 
         postgresql = new Postgresql();
         this.names = FXCollections.observableArrayList();
-        this.test= postgresql.getAllClientNames(Controller.con);
-        for(int i=0; i<test.size(); i++){
-            names.add(test.get(i).getName());
-        }
+        this.names= postgresql.getAllClientNames(Controller.con);
+
         edit_billings_client.setItems(names);
-        System.out.println(postgresql.getClient(Controller.con,
-                b.getClient_id()).get(0).getName());
-        edit_billings_client.setValue(postgresql.getClient(Controller.con, b.getClient_id()).get(0).getName());
+        edit_billings_client.setValue(b.getClientName());
         edit_billings_pname_tf.setText(b.getProject_name());
         edit_billings_padd_tf.setText(b.getProject_add());
         edit_billings_date.setValue(b.getDate_doc());
@@ -120,10 +115,9 @@ public class BillingsEditController extends Controller implements Initializable 
                 }
 
                 float total = (float) qty_final * unit_price;
-                long client_id = test.get(names.indexOf(client_name)).getId();
                 //checks if billing has unique psc and clientb.get(0).getPSC_id() == psc ||
                 if (b.getPSC_id() == psc || !postgresql.checkBillingPSC(Controller.con, psc)) {
-                    postgresql.editBilling(Controller.con, client_id, project_name, project_add,
+                    postgresql.editBilling(Controller.con, client_name, project_name, project_add,
                             Date.valueOf(date_doc), psc, date_used, floor_level, qty_final, unit_price,
                             struct, total, b.getBill_no(), postgresql.getCurrUser(Controller.con));
                     stage = (Stage) edit_billings_submit_btn.getScene().getWindow();

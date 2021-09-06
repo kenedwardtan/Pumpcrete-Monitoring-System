@@ -61,10 +61,8 @@ public class BillingsCreateController extends Controller implements  Initializab
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
         this.names = FXCollections.observableArrayList();
-        this.test= postgresql.getAllClientNames(Controller.con);
-        for(int i=0; i<test.size(); i++){
-            names.add(test.get(i).getName());
-        }
+        this.names= postgresql.getAllClientNames(Controller.con);
+
         create_billings_client.setItems(names);
     }
 
@@ -96,9 +94,8 @@ public class BillingsCreateController extends Controller implements  Initializab
 
                 float total = (float) qty_final * unit_price;
                 //checks if billing has unique psc and client
-                long client_id = test.get(names.indexOf(client_name)).getId();
                 if (!postgresql.checkBillingPSC(Controller.con, psc)) {
-                    postgresql.addBilling(Controller.con, client_id, project_name, project_add,
+                    postgresql.addBilling(Controller.con, client_name, project_name, project_add,
                             Date.valueOf(date_doc), psc, date_used, floor_level, qty_final, unit_price, struct, total);
                     stage = (Stage) create_billings_submit_btn.getScene().getWindow();
                     loader = new FXMLLoader(getClass().getResource("billings.fxml"));

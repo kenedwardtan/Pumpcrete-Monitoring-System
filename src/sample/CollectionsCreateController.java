@@ -67,10 +67,8 @@ public class CollectionsCreateController extends Controller implements  Initiali
         create_collections_date.setValue(LocalDate.now());
         create_collections_date.setEditable(false);
         this.names = FXCollections.observableArrayList();
-        this.test= postgresql.getAllClientNames(Controller.con);
-        for(int i=0; i<test.size(); i++){
-            names.add(test.get(i).getName());
-        }
+        this.names= postgresql.getAllClientNames(Controller.con);
+
         create_collections_client.setItems(names);
     }
 
