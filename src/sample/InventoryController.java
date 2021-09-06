@@ -92,9 +92,7 @@ public class InventoryController extends Controller implements Initializable {
         postgresql = new Postgresql();
 
         inventory_tb.setItems(postgresql.getAllinventory(Controller.con));
-
-        System.out.println("depression: "+postgresql.getAllinventory(Controller.con).get(0).getId());
-
+        
         p_idColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("id"));
         descColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String >("description"));
         plateColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("plate_no"));
