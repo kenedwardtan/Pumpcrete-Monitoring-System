@@ -19,13 +19,13 @@ public class Billing {
     public SimpleFloatProperty unit_price;
     public SimpleFloatProperty total;
     public SimpleBooleanProperty posted;
-    public SimpleStringProperty filled_by;
+    public SimpleStringProperty edited_by;
     public SimpleStringProperty posted_by;
 
 
     public Billing (long bill_no, long client_id, String client_name, String project_name, String project_add, LocalDate date_doc,
                     LocalDate date_used, long psc_id, String conc_structure, long floor_level, float qty, float unit_price,
-                    float total,boolean posted,String filled_by,String posted_by){
+                    float total,boolean posted,String edited_by,String posted_by){
 
         this.bill_no = new SimpleLongProperty(bill_no);
         this.date_doc = date_doc;
@@ -37,7 +37,7 @@ public class Billing {
         this.PSC_id = new SimpleLongProperty(psc_id);
         this.total = new SimpleFloatProperty(total);
         this.posted = new SimpleBooleanProperty(posted);
-        this.filled_by = new SimpleStringProperty(filled_by);
+        this.edited_by = new SimpleStringProperty(edited_by);
         this.posted_by= new SimpleStringProperty(posted_by);
         this.conc_structure = new SimpleStringProperty(conc_structure);
         this.floor_level = new SimpleLongProperty(floor_level);
@@ -45,6 +45,9 @@ public class Billing {
         this.unit_price = new SimpleFloatProperty(unit_price);
     }
 
+    public String getEdited_by() {
+        return edited_by.get();
+    }
 
     public LocalDate getDate_doc() {
         return date_doc;
@@ -56,10 +59,6 @@ public class Billing {
 
     public long getPSC_id() {
         return PSC_id.get();
-    }
-
-    public String getFilled_by() {
-        return filled_by.get();
     }
 
     public String getPosted_by() {

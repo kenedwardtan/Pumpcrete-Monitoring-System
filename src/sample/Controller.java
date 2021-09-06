@@ -128,25 +128,7 @@ public class Controller {
     @FXML
     private Button billings_cancel_btn;
 
-    //inventory (pumpcrete) - create
-    @FXML
-    private TextField inventory_desc_tf;
-    @FXML
-    private DatePicker inventory_date;
-    @FXML
-    private TextField inventory_tires_tf;
-    @FXML
-    private TextField inventory_plate_tf;
-    @FXML
-    private TextField inventory_fuel_tf;
-    @FXML
-    private TextField inventory_or_tf;
-    @FXML
-    private TextField inventory_cr_tf;
-    @FXML
-    private Button inventory_submit_btn;
-    @FXML
-    private Button inventory_cancel_btn;
+
 
     //employees - create
     @FXML
@@ -470,56 +452,8 @@ public class Controller {
             stage.show();
         }
 
-        //INVENTORY CREATE BUTTONS
-        if (e.getSource() == inventory_submit_btn) {
-            if (checkInventoryFields()) {
-                String desc = inventory_desc_tf.getText();
-                int tires = Integer.parseInt(inventory_tires_tf.getText());
-                String plate = inventory_plate_tf.getText();
-                Date date = Date.valueOf(inventory_date.getValue());
-                String fuel = inventory_fuel_tf.getText();
-                long cr = Long.parseLong(inventory_cr_tf.getText());
-                long or = Long.parseLong(inventory_or_tf.getText());
 
-                if (!postgresql.checkPumpcrete(Controller.con, plate, cr, or)) {
-                    System.out.println(date);
 
-                    postgresql.addPumpcrete(Controller.con, desc, plate, fuel,
-                            date, cr, or, tires);
-                    stage = (Stage) inventory_submit_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.setResizable(false);
-                    stage.show();
-                }
-                else {
-                    //clear
-                    //show error message
-                    JOptionPane.showMessageDialog(null, "A similar pumpcrete already exists.", "Unique Pumpcrete Violation", 2);
-                    stage = (Stage) inventory_submit_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("inventoryCreate.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.setResizable(false);
-                    stage.show();
-
-                }
-            }
-        }
-
-        if (e.getSource() == inventory_cancel_btn) {
-            //clear fields
-            stage = (Stage) inventory_cancel_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
     }
 
     public boolean verifyNewPw(String newpw, String repeat) {
@@ -608,49 +542,7 @@ public class Controller {
         }
     }
 
-    public boolean checkInventoryFields() {
 
-        String desc = inventory_desc_tf.getText();
-        String tires = inventory_tires_tf.getText();
-        String plate = inventory_plate_tf.getText();
-        String date = String.valueOf(inventory_date.getValue());
-        String fuel = inventory_fuel_tf.getText();
-        String cr = inventory_cr_tf.getText();
-        String or = inventory_or_tf.getText();
-        Boolean check = false;
-
-
-            //check if theyre null
-            if (desc == null || tires == null || plate == null
-                    || date == null || fuel == null
-                    || cr == null || or == null) {
-                JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
-                check = false;
-            }
-            // check empty fields
-            else if (desc.trim().equals("") || tires.trim().equals("") || plate.trim().equals("")
-                    || date.trim().equals("") || fuel.trim().equals("")
-                    || cr.trim().equals("") || or.trim().equals("")) {
-                JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
-                check = false;
-            }
-            // if everything is filled
-            else {
-                System.out.println("All fields are filled!");
-                check = true;
-            }
-
-
-            //check field types
-            if (inventory_tires_tf.getText().matches("[0-9]+") || inventory_cr_tf.getText().matches("[0-9]+") || inventory_or_tf.getText().matches("[0-9]+")) {
-
-                check = false;
-            }
-            else
-                check = false;
-
-            return check;
-    }
 
     public boolean checkFormat(String uname){
         String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+$";

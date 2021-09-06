@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Billing;
 import sample.model.Client;
+import sample.model.Collection;
 import sample.model.Postgresql;
 
 import javax.swing.*;
@@ -27,7 +28,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class CollectionsController extends Controller implements Initializable {
-    private static long editBilling;
+    private static long editCollection;
     private Stage stage;
     private Parent root;
     private Scene scene;
@@ -39,34 +40,38 @@ public class CollectionsController extends Controller implements Initializable {
     @FXML
     private TableView collections_tb;
     @FXML
-    private TableColumn<Billing, Long> prNumColumn;
+    private TableColumn<Collection, Long> prNumColumn;
     @FXML
-    private TableColumn<Billing, String> clientNameColumn;
+    private TableColumn<Collection, String> clientNameColumn;
+//    @FXML
+//    private TableColumn<Collection, Long> pidColumn;
     @FXML
-    private TableColumn<Billing, Long> pidColumn;
+    private TableColumn<Collection, Long> totalColumn;
+//    @FXML
+//    private TableColumn<Collection, Long> billNumColumn;
     @FXML
-    private TableColumn<Billing, Long> totalColumn;
+    private TableColumn<Collection, LocalDate> dateColumn;
     @FXML
-    private TableColumn<Billing, Long> billNumColumn;
+    private TableColumn<Collection, Boolean> postedColumn;
     @FXML
-    private TableColumn<Billing, LocalDate> dateColumn;
+    private TableColumn<Collection, String> editedColumn;
     @FXML
-    private TableColumn<Billing, Boolean> postedColumn;
+    private TableColumn<Collection, String> postedByColumn;
 
     @FXML
     private TableView collections_tb1;
+//    @FXML
+//    private TableColumn<Collection, Long> amountColumn1;
     @FXML
-    private TableColumn<Billing, Long> amountColumn1;
+    private TableColumn<Collection, String> clientNameColumn1;
     @FXML
-    private TableColumn<Billing, String> clientNameColumn1;
+    private TableColumn<Collection, String> bankColumn1;
     @FXML
-    private TableColumn<Billing, String> bankColumn1;
+    private TableColumn<Collection, Long> checkNumColumn1;
     @FXML
-    private TableColumn<Billing, Long> checkNumColumn1;
+    private TableColumn<Collection, LocalDate> checkDateColumn1;
     @FXML
-    private TableColumn<Billing, LocalDate> checkDateColumn1;
-    @FXML
-    private TableColumn<Billing, Long> totalColumn1;
+    private TableColumn<Collection, Long> totalColumn1;
 
     @FXML
     private Button collections_create_btn;
@@ -89,20 +94,16 @@ public class CollectionsController extends Controller implements Initializable {
 
         prNumColumn.setCellValueFactory(new PropertyValueFactory<>("pr_no"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("client_name"));
-        pidColumn.setCellValueFactory(new PropertyValueFactory<>("p_id"));
+        //pidColumn.setCellValueFactory(new PropertyValueFactory<>("p_id"));
         totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
-        billNumColumn.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
+        //billNumColumn.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_doc"));
         postedColumn.setCellValueFactory(new PropertyValueFactory<>("posted"));
+        postedColumn.setCellValueFactory(new PropertyValueFactory<>("posted_by"));
+        postedColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
         collections_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        clientNameColumn1.setCellValueFactory(new PropertyValueFactory<>("client_name"));
-        amountColumn1.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        bankColumn1.setCellValueFactory(new PropertyValueFactory<>("bank"));
-        checkNumColumn1.setCellValueFactory(new PropertyValueFactory<>("posted"));
-        totalColumn1.setCellValueFactory(new PropertyValueFactory<>("total"));
-        checkDateColumn1.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
-        collections_tb1.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
     }
 
     @FXML
@@ -186,8 +187,15 @@ public class CollectionsController extends Controller implements Initializable {
 
         collections_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                //Billing b = (Billing) collections_tb.getSelectionModel().getSelectedItem();
-                //System.out.println(b.getBill_no()); //test
+                Collection c = (Collection) collections_tb.getSelectionModel().getSelectedItem();
+                this.editCollection = c.getCollection_no(); //test
+                clientNameColumn1.setCellValueFactory(new PropertyValueFactory<>("client_name"));
+                bankColumn1.setCellValueFactory(new PropertyValueFactory<>("bank"));
+                checkNumColumn1.setCellValueFactory(new PropertyValueFactory<>("posted"));
+                totalColumn1.setCellValueFactory(new PropertyValueFactory<>("total"));
+                checkDateColumn1.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
+                collections_tb1.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
                 collections_2img.setVisible(true);
                 collections_edit_btn.setVisible(true);
             }
@@ -202,8 +210,8 @@ public class CollectionsController extends Controller implements Initializable {
         });
     }
 
-    /*public static long getEditBilling() {
-        return editBilling;
-    }*/
+    public static long getEditCollection() {
+        return editCollection;
+    }
 }
 

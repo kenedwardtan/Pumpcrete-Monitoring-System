@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.model.Postgresql;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -121,13 +122,17 @@ public class StaffHomeController extends Controller implements Initializable {
         }
 
         if (e.getSource() == billings_btn) {
-            stage = (Stage) billings_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
+            if (postgresql.getAllClients(Controller.con).size() != 0) {
+                stage = (Stage) billings_btn.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
+            }else{
+                JOptionPane.showMessageDialog(null,"Create a client first in order to create a billing.", "No existing clients!", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
 
         if (e.getSource() == memos_btn) {

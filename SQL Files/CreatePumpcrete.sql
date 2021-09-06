@@ -8,9 +8,7 @@ CREATE TABLE pumpcrete (
 	 purchase_date DATE NOT NULL,
 	 cr_no BIGINT UNIQUE,
 	 or_no BIGINT UNIQUE,
-	 tires INTEGER NOT NULL,
-	 rented BOOLEAN NOT NULL,
-	 client_name VARCHAR );
+	 tires INTEGER NOT NULL);
 
 
  -- Modify initial value and increment

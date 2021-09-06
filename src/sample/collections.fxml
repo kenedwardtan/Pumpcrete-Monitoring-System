@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BillingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BillingsController">
     <children>
         <ImageView fitHeight="688.0" fitWidth="892.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -20,11 +16,12 @@
             <columns>
                 <TableColumn fx:id="prNumColumn" prefWidth="81.66667175292969" text="PR #" />
                 <TableColumn fx:id="clientNameColumn" prefWidth="135.33331298828125" text="Client Name" />
-            <TableColumn fx:id="pidcolumn" prefWidth="111.33331298828125" text="Pumpcrete ID" />
                 <TableColumn fx:id="totalColumn" prefWidth="122.33334350585938" text="Total Amount" />
-            <TableColumn fx:id="billNumColuimn" prefWidth="66.66668701171875" text="Bill #" />
+            <!--<TableColumn fx:id="billNumColuimn" prefWidth="66.66668701171875" text="Bill #" />-->
             <TableColumn fx:id="dateColumn" prefWidth="111.33331298828125" text="Date" />
+            <TableColumn fx:id="editedColumn" prefWidth="111.33331298828125" text="Last Edited by" />
                 <TableColumn fx:id="postedColumn" prefWidth="72.3333740234375" text="Posted" />
+            <TableColumn fx:id="postedByColumn" prefWidth="111.33331298828125" text="Posted by" />
             </columns>
             <cursor>
                 <Cursor fx:constant="HAND" />
@@ -54,7 +51,7 @@
       <TableView fx:id="collections_tb1" layoutX="87.0" layoutY="555.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="66.0" prefWidth="718.0">
          <columns>
             <TableColumn fx:id="clientNameColumn1" prefWidth="142.66665649414062" text="Client Name" />
-            <TableColumn fx:id="amountColumn1" prefWidth="90.33334350585938" text="Amount" />
+            <!--<TableColumn fx:id="amountColumn1" prefWidth="90.33334350585938" text="Amount" />-->
             <TableColumn fx:id="bankColumn1" prefWidth="124.6666259765625" text="Name of Bank" />
             <TableColumn fx:id="checkNumColumn1" prefWidth="86.33331298828125" text="Check #" />
             <TableColumn fx:id="checkDateColumn" prefWidth="140.0" text="Date of Check" />

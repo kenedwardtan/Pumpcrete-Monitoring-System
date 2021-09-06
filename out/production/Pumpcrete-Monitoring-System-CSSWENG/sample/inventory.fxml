@@ -18,10 +18,9 @@
         </ImageView>
         <TableView fx:id="inventory_tb" layoutX="87.0" layoutY="209.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="333.0" prefWidth="718.0">
             <columns>
-                <TableColumn fx:id="idColumn" prefWidth="103.0" text="ID" />
-                <TableColumn fx:id="statusColumn" prefWidth="144.0" text="Status" />
+                <TableColumn fx:id="p_idColumn" prefWidth="103.66665649414062" text="ID" />
                 <TableColumn fx:id="descColumn" prefWidth="368.0" text="Description" />
-                <TableColumn fx:id="cidColumn" prefWidth="96.66668701171875" text="Client ID" />
+                <TableColumn fx:id="plateColumn" prefWidth="96.66668701171875" text="Plate Number" />
             </columns>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -30,8 +29,7 @@
         </TableView>
       <TableView fx:id="inventory_tb1" layoutX="87.0" layoutY="560.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="73.0" prefWidth="718.0">
          <columns>
-            <TableColumn fx:id="idColumn1" prefWidth="44.33332824707031" text="ID" />
-            <TableColumn fx:id="statusColumn1" prefWidth="51.66667175292969" text="Status" />
+             <TableColumn fx:id="p_idColumn1" prefWidth="44.66665649414062" text="ID" />
             <TableColumn fx:id="descColumn1" prefWidth="113.66665649414062" text="Description" />
             <TableColumn fx:id="plateColumn1" prefWidth="61.0" text="Plate #" />
             <TableColumn fx:id="fuelColumn1" minWidth="7.0" prefWidth="76.66665649414062" text="Fuel " />
@@ -39,7 +37,6 @@
             <TableColumn fx:id="crColumn1" minWidth="0.0" prefWidth="63.3333740234375" text="CR #" />
             <TableColumn fx:id="orColumn1" minWidth="0.0" prefWidth="53.6666259765625" text="OR #" />
             <TableColumn fx:id="tiresColumn1" prefWidth="62.0" text="# of Tires" />
-            <TableColumn fx:id="cidColumn1" prefWidth="73.0" text="Client ID" />
          </columns>
          <cursor>
             <Cursor fx:constant="HAND" />

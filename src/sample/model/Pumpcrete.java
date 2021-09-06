@@ -9,7 +9,7 @@ import sample.Controller;
 import java.time.LocalDate;
 
 public class Pumpcrete {
-    public SimpleLongProperty pumpcrete_id;
+    public SimpleLongProperty id;
     public SimpleStringProperty description;
     public SimpleStringProperty plate_no;
     public SimpleStringProperty fuel_type;
@@ -17,14 +17,11 @@ public class Pumpcrete {
     public SimpleLongProperty cr_no;
     public SimpleLongProperty or_no;
     public SimpleIntegerProperty tires;
-    public SimpleBooleanProperty rented;
-    public SimpleStringProperty client_name;
     public Postgresql p = new Postgresql();
 
 
-    public Pumpcrete(long id, String desc, String plate, String fuel, LocalDate purchase_date, long cr, long or,
-                     int tires, boolean rented, String name){
-        this.pumpcrete_id = new SimpleLongProperty(id);
+    public Pumpcrete(long id, String desc, String plate, String fuel, LocalDate purchase_date, long cr, long or, int tires){
+        this.id = new SimpleLongProperty(id);
         this.description = new SimpleStringProperty(desc);
         this.plate_no = new SimpleStringProperty(plate);
         this.fuel_type = new SimpleStringProperty(fuel);
@@ -32,11 +29,9 @@ public class Pumpcrete {
         this.cr_no = new SimpleLongProperty(cr);
         this.or_no = new SimpleLongProperty(or);
         this.tires = new SimpleIntegerProperty(tires);
-        this.rented = new SimpleBooleanProperty(rented);
-        this.client_name = new SimpleStringProperty(name);
     }
 
-    public long getPumpcrete_Id() {return pumpcrete_id.get();}
+    public long getId() {return id.get();}
     public String getDescription(){return description.get();}
     public String getPlate_no() {return plate_no.get();}
     public String getFuel_type() {return fuel_type.get();}
@@ -44,6 +39,4 @@ public class Pumpcrete {
     public long getCr_no(){return cr_no.get();}
     public long getOr_no(){ return or_no.get();}
     public int getTires() {return tires.get();}
-    public boolean getRented() {return rented.get();}
-    public String getClient_name() {return client_name.get();}
 }

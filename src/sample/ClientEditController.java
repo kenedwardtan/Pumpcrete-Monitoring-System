@@ -92,18 +92,12 @@ public class ClientEditController extends Controller implements Initializable {
                     String cp = edit_clients_cellphone_tf.getText().trim();
                     String landline = edit_clients_landline_tf.getText().trim();
 
-                    String fullname = fname.trim() + " " + lname.trim();
-
                     //checks the format of the email
                     if (this.EmailVerification(email)) {
 
-                        //updates name in billings if name is edited
-                        if (!fullname.equals(this.ogName)){
-                            postgresql.updateBillingClient(Controller.con, ogName, fullname);
-                        }
                         //creates the user and inserts into database
                         postgresql.editClient(con, ClientsController.getEditClient(), fname.trim(), lname.trim(), position.trim(), address.trim(), landline.trim(), cp.trim(), email.trim());
-                        String message = "Name: " + fullname;
+                        String message = "Name: " + fname+" "+lname;
                         optionPane.showMessageDialog(null, message, "Client edited!", 1);
                         //clear fields
 

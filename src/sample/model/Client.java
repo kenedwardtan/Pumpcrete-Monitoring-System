@@ -39,6 +39,10 @@ public class Client {
         this.landline = new SimpleStringProperty(landline);
         this.name = new SimpleStringProperty(fname +" "+lname);
     }
+    public Client(String name, long id){
+        this.id = new SimpleLongProperty(id);
+        this.name = new SimpleStringProperty(name);
+    }
 
     public String getName() {return name.get();}
 

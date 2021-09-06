@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import sample.model.Client;
 import sample.model.Postgresql;
 
 import javax.swing.*;
@@ -30,50 +32,58 @@ public class BillingsCreateController extends Controller implements  Initializab
     //FXML ELEMENTS
     //billings - create
     @FXML
-    private ChoiceBox<String> billings_client;
+    private ChoiceBox create_billings_client;
     @FXML
-    private TextField billings_psc_tf;
+    private TextField create_billings_psc_tf;
     @FXML
-    private TextField billings_padd_tf;
+    private TextField create_billings_padd_tf;
     @FXML
-    private TextField billings_pname_tf;
+    private TextField create_billings_pname_tf;
     @FXML
-    private TextField billings_struct_tf;
+    private TextField create_billings_struct_tf;
     @FXML
-    private TextField billings_flr_tf;
+    private TextField create_billings_flr_tf;
     @FXML
-    private TextField billings_qty_tf;
+    private TextField create_billings_qty_tf;
     @FXML
-    private TextField billings_price_tf;
+    private TextField create_billings_price_tf;
     @FXML
-    private DatePicker billings_date;
+    private DatePicker create_billings_date;
     @FXML
-    private Button billings_submit_btn;
+    private Button create_billings_submit_btn;
     @FXML
-    private Button billings_cancel_btn;
+    private Button create_billings_cancel_btn;
+
+    private ObservableList<String> names;
+    private ObservableList<Client> test;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> test = postgresql.getAllClientNames(Controller.con);
-        billings_client.setItems(test);
+        postgresql = new Postgresql();
+        this.names = FXCollections.observableArrayList();
+        this.test= postgresql.getAllClientNames(Controller.con);
+        for(int i=0; i<test.size(); i++){
+            names.add(test.get(i).getName());
+        }
+        create_billings_client.setItems(names);
     }
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
-        if (e.getSource() == billings_submit_btn) {
+        if (e.getSource() == create_billings_submit_btn) {
             if (checkFields()) {
-                String client_name = billings_client.getValue();
-                int psc = Integer.parseInt(billings_psc_tf.getText());
-                String project_name = billings_pname_tf.getText();
-                String project_add = billings_padd_tf.getText();
-                Date date_used = Date.valueOf(billings_date.getValue());
+                String client_name = create_billings_client.getValue().toString();
+                int psc = Integer.parseInt(create_billings_psc_tf.getText());
+                String project_name = create_billings_pname_tf.getText();
+                String project_add = create_billings_padd_tf.getText();
+                Date date_used = Date.valueOf(create_billings_date.getValue());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String date_doc = formatter.format(LocalDate.now());
-                String struct = billings_struct_tf.getText();
-                int floor_level = Integer.parseInt(billings_flr_tf.getText());
-                float qty_temp = Float.parseFloat(billings_qty_tf.getText());
-                float unit_price = Float.parseFloat(billings_price_tf.getText());
+                String struct = create_billings_struct_tf.getText();
+                int floor_level = Integer.parseInt(create_billings_flr_tf.getText());
+                float qty_temp = Float.parseFloat(create_billings_qty_tf.getText());
+                float unit_price = Float.parseFloat(create_billings_price_tf.getText());
                 float qty_added = 0;
                 float qty_final = 0;
                 //additional if less than 50
@@ -86,10 +96,11 @@ public class BillingsCreateController extends Controller implements  Initializab
 
                 float total = (float) qty_final * unit_price;
                 //checks if billing has unique psc and client
+                long client_id = test.get(names.indexOf(client_name)).getId();
                 if (!postgresql.checkBillingPSC(Controller.con, psc)) {
-                    postgresql.addBilling(Controller.con, client_name, project_name, project_add,
+                    postgresql.addBilling(Controller.con, client_id, project_name, project_add,
                             Date.valueOf(date_doc), psc, date_used, floor_level, qty_final, unit_price, struct, total);
-                    stage = (Stage) billings_submit_btn.getScene().getWindow();
+                    stage = (Stage) create_billings_submit_btn.getScene().getWindow();
                     loader = new FXMLLoader(getClass().getResource("billings.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
@@ -100,7 +111,7 @@ public class BillingsCreateController extends Controller implements  Initializab
                     //clear
                     //show error message
                     JOptionPane.showMessageDialog(null, "A Similar bill already exists. (Repeating PSC No.)", "Unique Billing Violation", 2);
-                    stage = (Stage) billings_submit_btn.getScene().getWindow();
+                    stage = (Stage) create_billings_submit_btn.getScene().getWindow();
                     loader = new FXMLLoader(getClass().getResource("billingsCreate.fxml"));
                     root = loader.load();
                     scene = new Scene(root);
@@ -113,9 +124,9 @@ public class BillingsCreateController extends Controller implements  Initializab
 
         }
 
-        if (e.getSource() == billings_cancel_btn) {
+        if (e.getSource() == create_billings_cancel_btn) {
             //clear fields
-            stage = (Stage) billings_cancel_btn.getScene().getWindow();
+            stage = (Stage) create_billings_cancel_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("billings.fxml"));
             root = loader.load();
             scene = new Scene(root);
@@ -127,15 +138,15 @@ public class BillingsCreateController extends Controller implements  Initializab
 
 
     public boolean checkFields() {
-        String client_name = billings_client.getValue();
-        String psc = billings_psc_tf.getText();
-        String project_name = billings_pname_tf.getText();
-        String project_add = billings_padd_tf.getText();
-        String date_used = String.valueOf(billings_date.getValue());
-        String floor_level = billings_flr_tf.getText();
-        String qty_temp = billings_qty_tf.getText();
-        String struct = billings_struct_tf.getText();
-        String unit = billings_price_tf.getText();
+        String client_name = create_billings_client.getValue().toString();
+        String psc = create_billings_psc_tf.getText();
+        String project_name = create_billings_pname_tf.getText();
+        String project_add = create_billings_padd_tf.getText();
+        String date_used = String.valueOf(create_billings_date.getValue());
+        String floor_level = create_billings_flr_tf.getText();
+        String qty_temp = create_billings_qty_tf.getText();
+        String struct = create_billings_struct_tf.getText();
+        String unit = create_billings_price_tf.getText();
 
 
         //check if theyre null
@@ -152,8 +163,8 @@ public class BillingsCreateController extends Controller implements  Initializab
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
-        if (!billings_psc_tf.getText().matches("[0-9]+") || !billings_flr_tf.getText().matches("[0-9]+") ||
-                !billings_price_tf.getText().matches("[0-9]+.[0-9]++") || !billings_qty_tf.getText().matches("[0-9]+.[0-9]++")) {
+        if (!create_billings_psc_tf.getText().matches("[0-9]+") || !create_billings_flr_tf.getText().matches("[0-9]+") ||
+                !create_billings_price_tf.getText().matches("[0-9]+.[0-9]++") || !create_billings_qty_tf.getText().matches("[0-9]+.[0-9]++")) {
             JOptionPane.showMessageDialog(null, "PSC and Floor fields must only contain whole numbers\n" +
                     "Price and Quantity fields must only be in the format of a whole number with decimal values", "Invalid Number Inputs", 2);
             return false;

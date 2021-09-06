@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.Billing;
+import sample.model.Client;
 import sample.model.Postgresql;
 import sample.model.Pumpcrete;
 
@@ -41,16 +43,16 @@ public class InventoryController extends Controller implements Initializable {
     private TableView inventory_tb1;
 
     @FXML
-    private TableColumn<Pumpcrete, Long> idColumn;
+    private TableColumn<Pumpcrete, Long> p_idColumn;
     @FXML
     private TableColumn<Pumpcrete, String> descColumn;
     @FXML
-    private TableColumn<Pumpcrete, Boolean> statusColumn;
+    private TableColumn<Pumpcrete, String> plateColumn;
     @FXML
     private TableColumn<Pumpcrete, String> cidColumn;
 
     @FXML
-    private TableColumn<Pumpcrete, Long> idColumn1;
+    private TableColumn<Pumpcrete, Long> p_idColumn1;
     @FXML
     private TableColumn<Pumpcrete, Boolean> statusColumn1;
     @FXML
@@ -91,10 +93,11 @@ public class InventoryController extends Controller implements Initializable {
 
         inventory_tb.setItems(postgresql.getAllinventory(Controller.con));
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("pumpcrete_id"));
+        System.out.println("depression: "+postgresql.getAllinventory(Controller.con).get(0).getId());
+
+        p_idColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("id"));
         descColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String >("description"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Boolean>("rented"));
-        cidColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("client_name"));
+        plateColumn.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("plate_no"));
 
         inventory_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -121,7 +124,7 @@ public class InventoryController extends Controller implements Initializable {
             p = inventory_tb.getSelectionModel().getSelectedItems();
             int i = 0;
             while (i < p.size()) {
-                postgresql.deletePumpcrete(Controller.con, p.get(i++).getPumpcrete_Id());
+                postgresql.deletePumpcrete(Controller.con, p.get(i++).getId());
             }
 
             inventory_tb.getItems().removeAll(inventory_tb.getSelectionModel().getSelectedItems());
@@ -188,17 +191,15 @@ public class InventoryController extends Controller implements Initializable {
         inventory_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 Pumpcrete p = (Pumpcrete) inventory_tb.getSelectionModel().getSelectedItem();
-                selectedID = p.getPumpcrete_Id();
+                selectedID = p.getId();
                 System.out.println(selectedID); //test
                 inventory_2img.setVisible(true);
                 inventory_edit_btn.setVisible(true);
                 inventory_delete_btn.setVisible(true);
 
                 inventory_tb1.setItems(inventory_tb.getSelectionModel().getSelectedItems());
-                idColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("pumpcrete_id"));
+                p_idColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("pumpcrete_id"));
                 descColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String >("description"));
-                statusColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Boolean>("rented"));
-                cidColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("client_name"));
                 plateColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("plate_no"));
                 fuelColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("fuel_type"));
                 dateColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, LocalDate>("purchase_date"));

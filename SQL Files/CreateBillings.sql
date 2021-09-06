@@ -15,7 +15,9 @@ CREATE TABLE billings (
 	unit_price NUMERIC NOT NULL,
 	total NUMERIC NOT NULL,
 	posted BOOLEAN NOT NULL,
-	filled_by VARCHAR REFERENCES users(username),
+	in_payments BOOLEAN NOT NULL,
+	is_paid BOOLEAN NOT NULL,
+	edited_by VARCHAR NOT NULL REFERENCES users(username),
 	posted_by VARCHAR REFERENCES users(username)
 	);
 	

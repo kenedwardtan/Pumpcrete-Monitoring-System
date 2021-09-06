@@ -47,11 +47,17 @@ public class BillingsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Billing, Boolean> postedColumn;
     @FXML
+    private TableColumn<Billing, String> editedColumn;
+    @FXML
+    private TableColumn<Billing, String> postedByColumn;
+    @FXML
     private Button billings_create_btn;
     @FXML
     private Button billings_back_btn;
     @FXML
     private Button billings_edit_btn;
+    @FXML
+    private Button billings_post_btn;
 
     @FXML
     private ImageView billings_2img;
@@ -62,12 +68,17 @@ public class BillingsController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
+        if (postgresql.getCurrUser(Controller.con).equals("Supervisor")){
+            billings_post_btn.setVisible(true);
+        }
 
         billings_tb.setItems(postgresql.getAllBillings(Controller.con));
 
         billNumColumn.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("client_name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_doc"));
+        editedColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
+        postedByColumn.setCellValueFactory(new PropertyValueFactory<>("posted_by"));
         postedColumn.setCellValueFactory(new PropertyValueFactory<>("posted"));
         billings_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -81,15 +92,21 @@ public class BillingsController extends Controller implements Initializable {
         if (e.getSource() == billings_edit_btn) {
             ObservableList<Billing> b = FXCollections.observableArrayList();
             b = billings_tb.getSelectionModel().getSelectedItems();
-            this.editBilling = b.get(0).bill_no.get();
+            if (b.get(0).getPosted() == false) {
+                this.editBilling = b.get(0).getBill_no();
+                System.out.println(editBilling);
 
-            stage = (Stage) billings_edit_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("billingsEdit.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
+                stage = (Stage) billings_edit_btn.getScene().getWindow();
+                loader = new FXMLLoader(getClass().getResource("billingsEdit.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
+            }else{
+                JOptionPane.showMessageDialog(null,"Billing is already posted and cannot be edited!",
+                        "Billing not editable", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         //delete selected rows
@@ -154,6 +171,16 @@ public class BillingsController extends Controller implements Initializable {
 
                 }
             }
+            if (e.getSource() == billings_post_btn){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Post selected item?", ButtonType.YES, ButtonType.NO);
+                alert.showAndWait();
+                if(alert.getResult() == ButtonType.YES) {
+                    ObservableList<Billing> b = FXCollections.observableArrayList();
+                    b = billings_tb.getSelectionModel().getSelectedItems();
+                    postgresql.postBilling(Controller.con, b.get(0).getBill_no(), postgresql.getCurrUser(Controller.con));
+                }
+            }
+
     }
 
     @FXML
