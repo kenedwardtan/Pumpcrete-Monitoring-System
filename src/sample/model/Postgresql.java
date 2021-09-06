@@ -648,6 +648,8 @@ public class Postgresql {
 
     public Billing getBilling(Connection connection, long billing_id) {
         String query = "SELECT * from billings WHERE bill_no = ?";
+        String query2 = "SELECT * from clients WHERE client_id =?";
+
         //ObservableList<Billing> b_result = FXCollections.observableArrayList();
         System.out.println("in billing");
         try{
@@ -658,7 +660,7 @@ public class Postgresql {
 
             result.next();
             long id = result.getLong("bill_no");
-            String client_name = result.getString("client_name");
+            long client_id = result.getLong("client_id");
             String project_name = result.getString("project_name");
             String project_add = result.getString("project_add");
             Date date_doc = result.getDate("date_doc");
@@ -672,8 +674,16 @@ public class Postgresql {
             float qty = result.getFloat("qty");
             float unit_price = result.getFloat("unit_price");
             String struct = result.getString("conc_structure");
+            PreparedStatement p = connection.prepareStatement(query2);
+            ps.setLong(1,client_id);
+            ResultSet res = ps. executeQuery();
+            res.next();
+            String first = res.getString("client_first_name");
+            String last = res.getString("client_last_name");
 
-            Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+            String client_name= first + " " + last;
+
+            Billing b = new Billing(id,client_id, client_name,project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
                     PSC_id,struct, floor_level, qty, unit_price, total, posted, filled_by, posted_by);
 
             return b;
@@ -690,6 +700,7 @@ public class Postgresql {
 
     public ObservableList<Billing> getAllBillings(Connection con) {
         String query = "SELECT * FROM billings ORDER BY bill_no";
+        String query2 = "SELECT * FROM client WITH client_id = ?";
 
         ObservableList<Billing> billings = FXCollections.observableArrayList();
 
@@ -699,7 +710,7 @@ public class Postgresql {
 
             while (results.next()){
                 long id = results.getLong("bill_no");
-                String client_name = results.getString("client_name");
+                long client_id= results.getLong("client_id");
                 String project_name = results.getString("project_name");
                 String project_add = results.getString("project_add");
                 Date date_doc = results.getDate("date_doc");
@@ -714,7 +725,15 @@ public class Postgresql {
                 float unit_price = results.getFloat("unit_price");
                 String struct = results.getString("conc_structure");
 
-                Billing b = new Billing(id,client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+                PreparedStatement p = con.prepareStatement(query2);
+                p.setLong(1, client_id);
+                ResultSet res = p.executeQuery();
+                res.next();
+                String first = res.getString("client_first_name");
+                String last = res.getString("client_last_name");
+                String client_name = first +" "+last;
+
+                Billing b = new Billing(id,client_id, client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
                         PSC_id,struct, floor_level, qty, unit_price, total, posted, filled_by, posted_by);
                 billings.add(b);
             }
@@ -1022,6 +1041,10 @@ public class Postgresql {
         }
     }
 }
+
+
+
+
 
 //    //Once all information are verified, adds new user to the database.
 //    public static void createContact (Connection connection, String fname, String lname, int cpnum, String email, String address, int landline){
