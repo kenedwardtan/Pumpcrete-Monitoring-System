@@ -43,6 +43,7 @@ public class Billing {
         this.unit_price = new SimpleFloatProperty(unit_price);
     }
 
+
     public String getEdited_by() {
         return edited_by.get();
     }

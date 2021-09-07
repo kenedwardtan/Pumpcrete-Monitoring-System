@@ -6,9 +6,8 @@ CREATE TABLE collections (
 	collection_no BIGSERIAL PRIMARY KEY, 
 	date DATE NOT NULL, 
 	/*collection_no BIGINT NOT NULL,*/
-	client_id BIGINT NOT NULL REFERENCES client(client_id),
+	client_name VARCHAR NOT NULL,
 	bill_no VARCHAR NOT NULL,
-	pumpcrete_id BIGINT NOT NULL REFERENCES pumpcrete(pumpcrete_id),
 	posted BOOLEAN NOT NULL,
 	grand_total NUMERIC NOT NULL, 
 	check_number BIGINT NOT NULL,

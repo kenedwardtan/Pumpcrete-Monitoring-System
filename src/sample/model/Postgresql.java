@@ -695,6 +695,34 @@ public class Postgresql {
         }
     }
 
+    public ObservableList<Long> getBillNosByName(Connection connection, String name) {
+        String query = "SELECT * from billings WHERE client_name = ? AND posted = true " +
+                "AND in_payments = false AND is_paid = false";
+
+        ObservableList<Long> b_result = FXCollections.observableArrayList();
+        System.out.println("in billing name");
+        try{
+            System.out.println("in try name");
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1,name);
+            ResultSet result = ps. executeQuery();
+
+            while(result.next()) {
+                long id = result.getLong("bill_no");
+                b_result.add(id);
+            }
+
+            return b_result;
+
+
+        } catch (SQLException ex) {
+            System.out.println("in catch");
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
+    }
+
 
     public ObservableList<Billing> getAllBillings(Connection con) {
         String query = "SELECT * FROM billings ORDER BY bill_no";
@@ -1040,7 +1068,7 @@ public class Postgresql {
 
             long collection_no = rs.getLong("collection_no");
             LocalDate date = rs.getDate("date").toLocalDate();
-            long client_id = rs.getLong("client_id");;
+            String client_name = rs.getString("client_name");
             String billing_id = rs.getString("billing_id");
             boolean posted = rs.getBoolean("posted");
             float grand_total = rs.getFloat("grand_total");
@@ -1050,13 +1078,90 @@ public class Postgresql {
             String edited_by = rs.getString("posted_by");;
             String posted_by = rs.getString("edited_by");;
 
-            c.add(new Collection(collection_no, date, client_id, billing_id, posted, grand_total,
+            c.add(new Collection(collection_no, date, client_name, billing_id, posted, grand_total,
                     check_number, check_date, bank, edited_by, posted_by));
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
         return c;
+    }
+
+    public ObservableList getAllCollections(Connection con) {
+        ObservableList<Collection> c = FXCollections.observableArrayList();
+        String query = "SELECT * FROM collections";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+
+                long collection_no = rs.getLong("collection_no");
+                LocalDate date = rs.getDate("date").toLocalDate();
+                String client_name = rs.getString("client_name");
+
+                String billing_id = rs.getString("billing_id");
+                boolean posted = rs.getBoolean("posted");
+                float grand_total = rs.getFloat("grand_total");
+                int check_number = rs.getInt("check_number");
+                LocalDate check_date = rs.getDate("check_date").toLocalDate();
+                String bank = rs.getString("bank");
+
+                String edited_by = rs.getString("posted_by");
+
+                String posted_by = rs.getString("edited_by");
+
+
+                c.add(new Collection(collection_no, date, client_name, billing_id, posted, grand_total,
+                        check_number, check_date, bank, edited_by, posted_by));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return c;
+    }
+
+    public long getPRNumber (Connection con){
+        String query = "SELECT MAX(collection_no) FROM collections";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            long pr_no = rs.getInt("collection_no")+1;
+
+            return pr_no;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    public void addCollection(Connection con, String date, String client,
+                              String id, boolean posted, float total,
+                              String bank, long c_no,  String c_date){
+        String query = "INSERT INTO collections (date, client_name, bill_no, "+
+                "posted, grand_total, check_number, check_date, bank)" +
+                "values(?,?,?,?,?,?,?,?)";
+        Date datedoc = Date.valueOf(date);
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setDate(1,datedoc);
+            ps.setString(2, client);
+            ps.setString(3, id);
+            ps.setBoolean(4, posted);
+            ps.setFloat(5, total);
+            ps.setString(7, bank);
+            ps.setLong(8, c_no);
+            ps.setString(9,c_date);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 

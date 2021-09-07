@@ -90,7 +90,7 @@ public class CollectionsController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
 
-        //collections_tb.setItems(postgresql.getAllCollections(Controller.con));
+        collections_tb.setItems(postgresql.getAllCollections(Controller.con));
 
         prNumColumn.setCellValueFactory(new PropertyValueFactory<>("pr_no"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("client_name"));

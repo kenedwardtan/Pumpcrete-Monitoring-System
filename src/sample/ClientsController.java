@@ -142,8 +142,6 @@ public class ClientsController extends Controller implements Initializable {
                 }
                 clients_tb.getItems().removeAll(clients_tb.getSelectionModel().getSelectedItems());
             }
-
-
         }
 
 
