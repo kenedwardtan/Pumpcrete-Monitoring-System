@@ -144,11 +144,14 @@ public class inventoryCreateController extends  Controller implements Initializa
 
 
         //check field types
-        if (create_inventory_tires_tf.getText().matches("[0-9]+") || create_inventory_cr_tf.getText().matches("[0-9]+") || create_inventory_or_tf.getText().matches("[0-9]+")) {
+        if (create_inventory_tires_tf.getText().matches("[0-9]+") && create_inventory_cr_tf.getText().matches("[0-9]+") && create_inventory_or_tf.getText().matches("[0-9]+")) {
             check = true;
         }
-        else
+        else{
+            JOptionPane.showMessageDialog(null, "Number of tires, OR, and CR fields must only contain numbers!", "Input Error!", JOptionPane.ERROR_MESSAGE);
             check = false;
+        }
+
 
         return check;
     }

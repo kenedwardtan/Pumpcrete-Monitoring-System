@@ -410,6 +410,7 @@ public class Postgresql {
         }
     }
 
+
     public void deleteClient (Connection connection, long c_id){
 
         String query = "DELETE FROM client WHERE client_id = ?";
@@ -753,6 +754,7 @@ public class Postgresql {
                 Billing b = new Billing(id, client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
                         PSC_id,struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
                 billings.add(b);
+                System.out.println(billings.size());
             }
 
         } catch (SQLException ex) {

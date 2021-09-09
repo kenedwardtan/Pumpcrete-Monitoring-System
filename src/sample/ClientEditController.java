@@ -97,6 +97,7 @@ public class ClientEditController extends Controller implements Initializable {
 
                         //creates the user and inserts into database
                         postgresql.editClient(con, ClientsController.getEditClient(), fname.trim(), lname.trim(), position.trim(), address.trim(), landline.trim(), cp.trim(), email.trim());
+                        postgresql.updateBillingClient(con, c.get(0).getName(), fname.trim()+" "+lname.trim());
                         String message = "Name: " + fname+" "+lname;
                         optionPane.showMessageDialog(null, message, "Client edited!", 1);
                         //clear fields

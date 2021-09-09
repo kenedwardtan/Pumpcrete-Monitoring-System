@@ -70,6 +70,7 @@ public class BillingsEditController extends Controller implements Initializable 
         postgresql = new Postgresql();
         this.names = FXCollections.observableArrayList();
         this.names= postgresql.getAllClientNames(Controller.con);
+        System.out.println("AAAAAA"+b.getClientName());
 
         edit_billings_client.setItems(names);
         edit_billings_client.setValue(b.getClientName());
