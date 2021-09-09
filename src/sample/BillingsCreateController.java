@@ -90,6 +90,8 @@ public class BillingsCreateController extends Controller implements  Initializab
                     qty_final = qty_temp + qty_added;
                     JOptionPane.showMessageDialog(null, "We added " + qty_added + " to the original qty. Final qty(in cubic meters): " + qty_final, "Qty. did not meet minimum", 2);
 
+                }else{
+                    qty_final = qty_temp;
                 }
 
                 float total = (float) qty_final * unit_price;

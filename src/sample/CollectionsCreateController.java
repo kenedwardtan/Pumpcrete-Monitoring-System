@@ -82,20 +82,35 @@ public class CollectionsCreateController extends Controller implements  Initiali
     @FXML
     private Button create_collections_remove_bill_btn;
 
-    private ArrayList<String> added_bills = new ArrayList<>();
+    private ObservableList<Long> cb;
+    private ArrayList<Long> added_bills = new ArrayList<>();
     private ObservableList<String> names;
     private Long selectedBill;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        postgresql = new Postgresql();
+
         create_pr_number_tf.setText(String.valueOf(postgresql.getPRNumber(Controller.con)));
+        create_pr_number_tf.setEditable(false);
         create_collections_date.setValue(LocalDate.now());
         create_collections_date.setEditable(false);
         this.names = FXCollections.observableArrayList();
-        this.names= postgresql.getAllClientNames(Controller.con);
+        this.names= postgresql.getClientsWithUnpaid(Controller.con);
 
         create_collections_client.setItems(names);
+        create_collections_client.setOnAction(this::getBills);
+
+    }
+
+    private void getBills(ActionEvent actionEvent) {
+        added_bills.clear();
+        create_collections_added_bills_tb.getItems().clear();
+        ObservableList<Long> b = FXCollections.observableArrayList();
+        b = postgresql.getBillNosByName(Controller.con, create_collections_client.getValue().trim());
+        System.out.println("Size: "+b.size());
+        create_collections_billings.setItems(b);
     }
 
     @FXML
@@ -106,10 +121,13 @@ public class CollectionsCreateController extends Controller implements  Initiali
                 String client_name = create_collections_client.getValue();
                 String bill_no = "";
                 for(int i=0; i<this.added_bills.size(); i++){
-                    if(i != this.added_bills.size()-1)
-                        bill_no += (added_bills.get(i) +",");
-                    else
+                    if(i != this.added_bills.size()-1) {
+                        bill_no += (added_bills.get(i) + ",");
+                        postgresql.inPayments(Controller.con, added_bills.get(i));
+                    }
+                    else {
                         bill_no += added_bills;
+                    }
                 }
                 String bank = create_collections_bank_tf.getText();
                 long c_no = Long.parseLong(create_collections_checkNum_tf.getText());
@@ -117,11 +135,10 @@ public class CollectionsCreateController extends Controller implements  Initiali
                 String date = formatter.format(create_collections_date.getValue());
                 String c_date = formatter.format(create_collections_checkDate.getValue());
                 long total = Long.parseLong(create_collections_total_tf.getText());
-
+//.substring(0, create_collections_total_tf.getLength()-1))
                 postgresql.addCollection(Controller.con, date, client_name, bill_no, false,
                         total, bank, c_no, c_date);
             }
-
         }
 
         if (e.getSource() == create_collections_cancel_btn) {
@@ -137,23 +154,25 @@ public class CollectionsCreateController extends Controller implements  Initiali
 
         if (e.getSource() == create_collections_add_bill_btn) {
             long id = create_collections_billings.getValue();
-            if (added_bills.indexOf(String.valueOf(id)) >= 0) {
-                this.added_bills.add(String.valueOf(id));
+            if (added_bills.indexOf(id) < 0) {
+                System.out.println(id);
+                this.added_bills.add(id);
                 float total = 0;
 
                 ObservableList<Billing> b = FXCollections.observableArrayList();
                 for (int i = 0; i < this.added_bills.size(); i++) {
-                    b.add(postgresql.getBilling(Controller.con, Long.parseLong(added_bills.get(i))));
+                    b.add(postgresql.getBilling(Controller.con, added_bills.get(i)));
                     total += b.get(i).getTotal();
                 }
                 create_collections_added_bills_tb.setItems(b);
 
                 tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
-                tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("psc_id"));
+                tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("PSC_id"));
                 tb_billing_total.setCellValueFactory(new PropertyValueFactory<Billing, Float>("total"));
+                tb_billing_total.setEditable(false);
 
                 create_collections_total_tf.setText(String.valueOf(total));
-            } else {
+            }else {
                 JOptionPane.showMessageDialog(null, "Bill is already in the list!", "Failed to add bill",JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -167,7 +186,7 @@ public class CollectionsCreateController extends Controller implements  Initiali
             if (alert.getResult() == ButtonType.YES) {
                 //do stuff
                 for(int i=0; i<b.size(); i++) {
-                    this.added_bills.remove(this.added_bills.indexOf(b.get(i).bill_no));
+                    this.added_bills.remove(this.added_bills.indexOf(b.get(i).getBill_no()));
                     create_collections_added_bills_tb.getItems().removeAll(create_collections_added_bills_tb.getSelectionModel().getSelectedItems());
                 }
             }
@@ -176,11 +195,10 @@ public class CollectionsCreateController extends Controller implements  Initiali
 
     public boolean checkFields() {
         String client_name = create_collections_client.getValue();
-        String amount = create_collections_amount_tf.getText();
         String bank = create_collections_bank_tf.getText();
         String c_no = create_collections_checkNum_tf.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String c_date = formatter.format(create_collections_checkDate.getValue());
+        String c_date = create_collections_checkDate.getValue().toString();
         String total = create_collections_total_tf.getText();
 
         //check if theyre null
@@ -190,14 +208,12 @@ public class CollectionsCreateController extends Controller implements  Initiali
             return false;
         }
         // check empty fields
-        else if (client_name.trim().equals("") || amount.trim().equals("") ||
-                bank.trim().equals("") || c_no.trim().equals("")
+        else if (client_name.trim().equals("") ||  bank.trim().equals("") || c_no.trim().equals("")
                 || c_date.trim().equals("") || total.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
-        if (!c_no.matches("[0-9]+") ||
-                !amount.matches("[0-9]+.[0-9]++") || !total.matches("[0-9]+.[0-9]++")) {
+        if (!c_no.matches("[0-9]+") || !total.matches("[0-9]+.[0-9]++")) {
             JOptionPane.showMessageDialog(null, "Bill Number, Pumpcrete ID and Check Number fields must only contain whole numbers\n" +
                     "Amount and Total Amount fields must only be in the format of a whole number with decimal values", "Invalid Number Inputs", 2);
             return false;
@@ -214,21 +230,24 @@ public class CollectionsCreateController extends Controller implements  Initiali
     @FXML
     private void handleMouseAction(MouseEvent e) throws IOException, SQLException {
 
-        create_collections_client.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        ObservableList<Long> b = FXCollections.observableArrayList();
-                        b = postgresql.getBillNosByName(Controller.con, names.get(newValue.intValue()));
-                        create_collections_billings.setItems(b);
-                        }
-                }
-        );
+//        create_collections_client.getSelectionModel().selectedIndexProperty().addListener(
+//
+//                new ChangeListener<Number>() {
+//                    @Override
+//                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                        System.out.println("Changed option!");
+//                        O
+//
+//                    }
+//                }
+//        );
+
+
 
         create_collections_added_bills_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                Collection c = (Collection) create_collections_added_bills_tb.getSelectionModel().getSelectedItem();
-                this.selectedBill = c.getCollection_no(); //test
+                Billing b = (Billing) create_collections_added_bills_tb.getSelectionModel().getSelectedItem();
+                this.selectedBill = b.getBill_no(); //test
                 create_collections_remove_bill_btn.setVisible(true);
             }
         });

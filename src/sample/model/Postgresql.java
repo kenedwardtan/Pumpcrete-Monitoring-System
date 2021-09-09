@@ -662,7 +662,7 @@ public class Postgresql {
             System.out.println("in try");
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setLong(1,billing_id);
-            ResultSet result = ps. executeQuery();
+            ResultSet result = ps.executeQuery();
 
             result.next();
             long id = result.getLong("bill_no");
@@ -697,19 +697,20 @@ public class Postgresql {
     }
 
     public ObservableList<Long> getBillNosByName(Connection connection, String name) {
-        String query = "SELECT * from billings WHERE client_name = ? AND posted = true " +
-                "AND in_payments = false AND is_paid = false";
+        String query = "select * FROM billings WHERE is_paid = false AND in_payments = false AND " +
+                "posted = true AND client_name = ?";
 
         ObservableList<Long> b_result = FXCollections.observableArrayList();
-        System.out.println("in billing name");
+        System.out.println("in billing name: "+name);
         try{
             System.out.println("in try name");
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1,name);
-            ResultSet result = ps. executeQuery();
+            ResultSet result = ps.executeQuery();
 
             while(result.next()) {
                 long id = result.getLong("bill_no");
+                System.out.println(id);
                 b_result.add(id);
             }
 
@@ -1130,14 +1131,14 @@ public class Postgresql {
             ResultSet rs = ps.executeQuery();
 
             rs.next();
-            long pr_no = rs.getInt("collection_no")+1;
+            long pr_no = rs.getLong("collection_no")+1;
 
             return pr_no;
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
-        return -1;
     }
 
     public void addCollection(Connection con, String date, String client,
@@ -1158,6 +1159,47 @@ public class Postgresql {
             ps.setString(7, bank);
             ps.setLong(8, c_no);
             ps.setString(9,c_date);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public ObservableList<String> getClientsWithUnpaid(Connection con) {
+
+        String query = "SELECT client_name FROM billings where " +
+                "posted = true AND is_paid = false " +
+                "AND in_payments = false";
+        try {
+            PreparedStatement pst = con.prepareStatement(query);
+            ObservableList<String> cn_result = FXCollections.observableArrayList();
+            ResultSet result = pst.executeQuery();
+            while (result.next()) {
+                String name = result.getString("client_name");
+                System.out.println(name);
+                if(cn_result.indexOf(name) < 0)
+                    cn_result.add(name);
+            }
+            return cn_result;
+
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
+
+    }
+    public void inPayments(Connection con, long bill_no){
+        String query = "UPDATE billings SET in_payments = true WHERE bill_no = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setLong(1, bill_no);
 
             ps.executeUpdate();
 
