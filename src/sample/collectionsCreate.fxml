@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,23 +20,11 @@
                 <Image url="@resources/img/collections/collectionsAdd.png" />
             </image>
         </ImageView>
-        <TextField fx:id="create_collections_billNum_tf" alignment="CENTER" layoutX="223.0" layoutY="233.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="123">
-            <font>
-                <Font name="Work Sans Regular" size="13.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="TEXT" />
-            </cursor>
-        </TextField>
-        <ChoiceBox fx:id="create_collections_client" layoutX="449.0" layoutY="174.0" prefHeight="38.0" prefWidth="220.0">
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor></ChoiceBox>
         <DatePicker fx:id="create_collections_date" layoutX="223.0" layoutY="174.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="07/20/2021">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor></DatePicker>
-        <TextField fx:id="create_collections_pid_tf" alignment="CENTER" layoutX="449.0" layoutY="232.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="2">
+        <TextField fx:id="create_pr_number_tf" alignment="CENTER" layoutX="450.0" layoutY="174.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="123">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -42,7 +32,16 @@
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
-        <TextField fx:id="create_collections_amount_tf" alignment="CENTER" layoutX="333.0" layoutY="291.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="10.00">
+        <ChoiceBox fx:id="create_collections_client" layoutX="222.0" layoutY="233.0" prefHeight="38.0" prefWidth="220.0">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></ChoiceBox>
+      <ChoiceBox fx:id="create_collections_billings" layoutX="450.0" layoutY="233.0" prefHeight="38.0" prefWidth="134.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ChoiceBox>
+        <TextField fx:id="create_collections_bank_tf" alignment="CENTER" layoutX="222.0" layoutY="445.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="BDO">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -50,7 +49,7 @@
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
-        <TextField fx:id="create_collections_bank_tf" alignment="CENTER" layoutX="221.0" layoutY="375.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="BDO">
+        <TextField fx:id="create_collections_checkNum_tf" alignment="CENTER" layoutX="449.0" layoutY="445.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="5">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -58,15 +57,12 @@
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
-        <TextField fx:id="create_collections_checkNum_tf" alignment="CENTER" layoutX="448.0" layoutY="375.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="5">
-            <font>
-                <Font name="Work Sans Regular" size="13.0" />
-            </font>
-            <cursor>
-                <Cursor fx:constant="TEXT" />
-            </cursor>
-        </TextField>
-        <TextField fx:id="create_collections_total_tf" alignment="CENTER" layoutX="448.0" layoutY="432.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="100.00">
+      <DatePicker fx:id="create_collections_checkDate" layoutX="223.0" layoutY="502.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="07/20/2021">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </DatePicker>
+        <TextField fx:id="create_collections_total_tf" alignment="CENTER" layoutX="449.0" layoutY="502.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="100.00">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
             </font>
@@ -82,17 +78,17 @@
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
-        <Label layoutX="222.0" layoutY="219.0" text="Bill Number">
+        <Label layoutX="449.0" layoutY="160.0" text="PR Number">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="450.0" layoutY="160.0" text="Client Name">
+        <Label layoutX="223.0" layoutY="219.0" text="Client Name">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="450.0" layoutY="219.0" text="Pumpcrete ID">
+        <Label layoutX="450.0" layoutY="219.0" text="Billings">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
@@ -102,35 +98,45 @@
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="333.0" layoutY="278.0" text="Amount">
+        <Label layoutX="223.0" layoutY="431.0" text="Name of Bank">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="222.0" layoutY="361.0" text="Name of Bank">
+        <Label layoutX="450.0" layoutY="431.0" text="Check Number">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="449.0" layoutY="361.0" text="Check Number">
+        <Label layoutX="222.0" layoutY="488.0" text="Date of Check">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="221.0" layoutY="418.0" text="Date of Check">
+        <Label layoutX="450.0" layoutY="489.0" text="Total Amount">
             <font>
                 <Font name="Work Sans Regular" size="11.0" />
             </font>
         </Label>
-        <Label layoutX="449.0" layoutY="419.0" text="Total Amount">
-            <font>
-                <Font name="Work Sans Regular" size="11.0" />
-            </font>
-        </Label>
-      <DatePicker fx:id="create_collections_checkDate" layoutX="222.0" layoutY="432.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="07/20/2021">
+      <TableView fx:id="create_collections_added_bills_tb" layoutX="223.0" layoutY="284.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="135.0" prefWidth="445.0">
+        <columns>
+          <TableColumn fx:id="tb_bill_no_column" prefWidth="150.0" text="Billing Number" />
+          <TableColumn fx:id="tb_PSC_id" prefWidth="129.0" text="Pumpcrete ID" />
+            <TableColumn fx:id="tb_billing_total" prefWidth="155.0" text="Amount" />
+        </columns>
          <cursor>
-            <Cursor fx:constant="TEXT" />
+            <Cursor fx:constant="HAND" />
          </cursor>
-      </DatePicker>
+      </TableView>
+      <Button fx:id="create_collections_remove_bill_btn" layoutX="593.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="create_collections_add_bill_btn" layoutX="593.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
     </children>
 </AnchorPane>

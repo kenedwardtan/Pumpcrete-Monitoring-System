@@ -46,8 +46,6 @@ public class CollectionsCreateController extends Controller implements  Initiali
     @FXML
     private ChoiceBox<Long> create_collections_billings;
     @FXML
-    private TextField create_collections_billNum_tf;
-    @FXML
     private TextField create_collections_pid_tf;
     @FXML
     private TextField create_collections_amount_tf;
