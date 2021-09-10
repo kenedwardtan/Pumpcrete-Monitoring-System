@@ -145,18 +145,19 @@ public class InventoryEditController extends Controller implements Initializable
         else {
             System.out.println("All fields are filled!");
             check = true;
+            if (edit_inventory_tires_tf.getText().matches("[0-9]+") && edit_inventory_cr_tf.getText().matches("[0-9]+") && edit_inventory_or_tf.getText().matches("[0-9]+")) {
+
+                check = true;
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Number of tires, OR, and CR fields must only contain numbers!", "Input Error!", JOptionPane.ERROR_MESSAGE);
+                check = false;
+            }
         }
 
 
         //check field types
-        if (edit_inventory_tires_tf.getText().matches("[0-9]+") && edit_inventory_cr_tf.getText().matches("[0-9]+") && edit_inventory_or_tf.getText().matches("[0-9]+")) {
 
-            check = true;
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "Number of tires, OR, and CR fields must only contain numbers!", "Input Error!", JOptionPane.ERROR_MESSAGE);
-            check = false;
-        }
 
         return check;
     }

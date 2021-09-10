@@ -7,8 +7,8 @@ CREATE TABLE client (
 	 client_last_name VARCHAR NOT NULL,
 	 client_position VARCHAR NOT NULL,
 	 client_address VARCHAR NOT NULL,
-	 client_landline INTEGER NOT NULL,
-	 client_cellphone BIGINT NOT NULL,
+	 client_landline VARCHAR NOT NULL,
+	 client_cellphone VARCHAR NOT NULL,
 	 client_email VARCHAR NOT NULL,
 	 latest_doc_date DATE);
 

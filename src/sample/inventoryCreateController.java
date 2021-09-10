@@ -88,14 +88,6 @@ public class inventoryCreateController extends  Controller implements Initializa
                     //clear
                     //show error message
                     JOptionPane.showMessageDialog(null, "A similar pumpcrete already exists.", "Unique Pumpcrete Violation", 2);
-                    stage = (Stage) create_inventory_submit_btn.getScene().getWindow();
-                    loader = new FXMLLoader(getClass().getResource("inventoryCreate.fxml"));
-                    root = loader.load();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.setResizable(false);
-                    stage.show();
-
                 }
             }
         }
@@ -136,21 +128,21 @@ public class inventoryCreateController extends  Controller implements Initializa
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             check = false;
         }
+
         // if everything is filled
         else {
             System.out.println("All fields are filled!");
             check = true;
+            //check field types
+            if (create_inventory_tires_tf.getText().matches("[0-9]+") && create_inventory_cr_tf.getText().matches("[0-9]+") && create_inventory_or_tf.getText().matches("[0-9]+")) {
+                check = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Number of tires, OR, and CR fields must only contain numbers!", "Input Error!", JOptionPane.ERROR_MESSAGE);
+                check = false;
+            }
         }
 
-
-        //check field types
-        if (create_inventory_tires_tf.getText().matches("[0-9]+") && create_inventory_cr_tf.getText().matches("[0-9]+") && create_inventory_or_tf.getText().matches("[0-9]+")) {
-            check = true;
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Number of tires, OR, and CR fields must only contain numbers!", "Input Error!", JOptionPane.ERROR_MESSAGE);
-            check = false;
-        }
 
 
         return check;
