@@ -102,6 +102,8 @@ public class CollectionsCreateController extends Controller implements  Initiali
         create_collections_client.setItems(names);
         create_collections_client.setOnAction(this::getBills);
 
+        create_collections_total_tf.setEditable(false);
+
     }
 
     private void getBills(ActionEvent actionEvent) {
@@ -117,27 +119,37 @@ public class CollectionsCreateController extends Controller implements  Initiali
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         if (e.getSource() == create_collections_submit_btn) {
-            if (checkFields()) {
+            if (checkFields() && postgresql.isUniqueCheckNo(Controller.con,Long.parseLong(create_collections_checkNum_tf.getText().trim()))) {
                 String client_name = create_collections_client.getValue();
                 String bill_no = "";
                 for(int i=0; i<this.added_bills.size(); i++){
                     if(i != this.added_bills.size()-1) {
                         bill_no += (added_bills.get(i) + ",");
-                        postgresql.inPayments(Controller.con, added_bills.get(i));
+                        postgresql.setBillingPayment(Controller.con, added_bills.get(i), true);
                     }
                     else {
-                        bill_no += added_bills;
+                        bill_no += added_bills.get(i);
+                        postgresql.setBillingPayment(Controller.con, added_bills.get(i), true);
                     }
                 }
                 String bank = create_collections_bank_tf.getText();
-                long c_no = Long.parseLong(create_collections_checkNum_tf.getText());
+                long c_no = Long.parseLong(create_collections_checkNum_tf.getText().trim());
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String date = formatter.format(create_collections_date.getValue());
                 String c_date = formatter.format(create_collections_checkDate.getValue());
-                long total = Long.parseLong(create_collections_total_tf.getText());
+                long total = (long)Double.parseDouble(create_collections_total_tf.getText().trim());
 //.substring(0, create_collections_total_tf.getLength()-1))
                 postgresql.addCollection(Controller.con, date, client_name, bill_no, false,
                         total, bank, c_no, c_date);
+
+                JOptionPane.showMessageDialog(null, "Successfully added Collection for "+client_name, "Collection added!", JOptionPane.PLAIN_MESSAGE);
+                stage = (Stage) create_collections_submit_btn.getScene().getWindow();
+                loader = new FXMLLoader(getClass().getResource("collections.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
             }
         }
 
@@ -218,7 +230,10 @@ public class CollectionsCreateController extends Controller implements  Initiali
                     "Amount and Total Amount fields must only be in the format of a whole number with decimal values", "Invalid Number Inputs", 2);
             return false;
         }
-
+        if (!postgresql.isUniqueCheckNo(Controller.con, Long.parseLong(c_no))){
+            JOptionPane.showMessageDialog(null, "Check number already exists! Please try again.", "Unique Check Number Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
 
         // if everything is ok
         else {

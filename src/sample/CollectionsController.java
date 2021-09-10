@@ -69,7 +69,7 @@ public class CollectionsController extends Controller implements Initializable {
     @FXML
     private TableColumn<Collection, Long> checkNumColumn1;
     @FXML
-    private TableColumn<Collection, LocalDate> checkDateColumn1;
+    private TableColumn<Collection, LocalDate> checkDateColumn;
     @FXML
     private TableColumn<Collection, Long> totalColumn1;
 
@@ -92,15 +92,15 @@ public class CollectionsController extends Controller implements Initializable {
 
         collections_tb.setItems(postgresql.getAllCollections(Controller.con));
 
-        prNumColumn.setCellValueFactory(new PropertyValueFactory<>("pr_no"));
+        prNumColumn.setCellValueFactory(new PropertyValueFactory<>("collection_no"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("client_name"));
         //pidColumn.setCellValueFactory(new PropertyValueFactory<>("p_id"));
-        totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+        totalColumn.setCellValueFactory(new PropertyValueFactory<>("grand_total"));
         //billNumColumn.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_doc"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         postedColumn.setCellValueFactory(new PropertyValueFactory<>("posted"));
-        postedColumn.setCellValueFactory(new PropertyValueFactory<>("posted_by"));
-        postedColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
+        editedColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
+        postedByColumn.setCellValueFactory(new PropertyValueFactory<>("posted_by"));
         collections_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
@@ -189,11 +189,13 @@ public class CollectionsController extends Controller implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 Collection c = (Collection) collections_tb.getSelectionModel().getSelectedItem();
                 this.editCollection = c.getCollection_no(); //test
+
+                collections_tb1.setItems(collections_tb.getSelectionModel().getSelectedItems());
                 clientNameColumn1.setCellValueFactory(new PropertyValueFactory<>("client_name"));
                 bankColumn1.setCellValueFactory(new PropertyValueFactory<>("bank"));
-                checkNumColumn1.setCellValueFactory(new PropertyValueFactory<>("posted"));
-                totalColumn1.setCellValueFactory(new PropertyValueFactory<>("total"));
-                checkDateColumn1.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
+                checkNumColumn1.setCellValueFactory(new PropertyValueFactory<>("check_number"));
+                totalColumn1.setCellValueFactory(new PropertyValueFactory<>("grand_total"));
+                checkDateColumn.setCellValueFactory(new PropertyValueFactory<>("check_date"));
                 collections_tb1.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
                 collections_2img.setVisible(true);

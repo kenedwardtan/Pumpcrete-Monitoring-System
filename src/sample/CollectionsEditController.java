@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.scripts.JO;
 import sample.model.Billing;
 import sample.model.Client;
 import sample.model.Collection;
@@ -84,21 +85,25 @@ public class CollectionsEditController extends Controller implements  Initializa
     @FXML
     private Button edit_collections_remove_bill_btn;
 
-    private ArrayList<String> added_bills = new ArrayList<>();
+    private ArrayList<String> updated_bills = new ArrayList<>();
+    private ArrayList<String> orig_bills = new ArrayList<>();
+    private ObservableList<Collection> c;
     private ObservableList<String> names;
     private Long selectedBill;
 
+                  //  edit_collections_added_bills_tb.getItems().removeAll(edit_collections_added_bills_tb.getSelectionModel().getSelectedItems());
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
         System.out.println("Collections no="+CollectionsController.getEditCollection());
-        ObservableList<Collection> c = FXCollections.observableArrayList();
+        c = FXCollections.observableArrayList();
         c = postgresql.getCollection(Controller.con, CollectionsController.getEditCollection());
         this.names = FXCollections.observableArrayList();
         this.names= postgresql.getAllClientNames(Controller.con);
 
         edit_collections_client.setItems(names);
+        edit_collections_client.setOnAction(this::getBills);
 
         edit_pr_number_tf.setText(String.valueOf(c.get(0).getCollection_no()));
         edit_collections_date.setValue(c.get(0).getDate());
@@ -108,28 +113,42 @@ public class CollectionsEditController extends Controller implements  Initializa
         edit_collections_checkDate.setValue(c.get(0).getCheck_date());
         edit_collections_checkNum_tf.setText(String.valueOf(c.get(0).getCheck_number()));
 
+        edit_collections_total_tf.setEditable(false);
+
         ObservableList<Billing> b = FXCollections.observableArrayList();
         for(int i=0; i<c.get(0).getBilling_id().size(); i++) {
             b.add(postgresql.getBilling(Controller.con, Long.parseLong(c.get(0).getBilling_id().get(i))));
+            orig_bills.add(c.get(0).getBilling_id().get(i));
         }
+        updated_bills = orig_bills;
         edit_collections_added_bills_tb.setItems(b);
-        tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("billing_no"));
+        tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
         tb_billing_total.setCellValueFactory(new PropertyValueFactory<Billing, Float>("total"));
-        tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("psc_id"));
+        tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("PSC_id"));
     }
 
     @FXML
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         if (e.getSource() == edit_collections_submit_btn) {
-            if (checkFields()) {
+            if (checkFields()&& postgresql.isUniqueCheckNo(Controller.con,Long.parseLong(edit_collections_checkNum_tf.getText().trim()))) {
                 String client_name = edit_collections_client.getValue();
                 String bill_no = "";
-                for(int i=0; i<this.added_bills.size(); i++){
-                    if(i != this.added_bills.size()-1)
-                        bill_no += (added_bills.get(i) +",");
-                    else
-                        bill_no += added_bills;
+                for(int i=0; i<this.orig_bills.size(); i++){
+                    if(updated_bills.indexOf(orig_bills.get(i)) <= 0)
+                        postgresql.setBillingPayment(Controller.con, Long.parseLong(orig_bills.get(i)),false);
+                }
+                for(int i=0; i<this.updated_bills.size(); i++){
+                    if(orig_bills.indexOf(updated_bills.get(i)) <= 0)
+                        postgresql.setBillingPayment(Controller.con, Long.parseLong(updated_bills.get(i)), true);
+                }
+                for(int i=0; i<this.updated_bills.size(); i++){
+                    if(i != this.updated_bills.size()-1) {
+                        bill_no += (updated_bills.get(i) + ",");
+                    }
+                    else {
+                        bill_no += updated_bills.get(i);
+                    }
                 }
                 String bank = edit_collections_bank_tf.getText();
                 long c_no = Long.parseLong(edit_collections_checkNum_tf.getText());
@@ -157,13 +176,13 @@ public class CollectionsEditController extends Controller implements  Initializa
 
         if (e.getSource() == edit_collections_add_bill_btn) {
             long id = edit_collections_billings.getValue();
-            if (added_bills.indexOf(String.valueOf(id)) >= 0) {
-                this.added_bills.add(String.valueOf(id));
+            if (updated_bills.indexOf(String.valueOf(id)) >= 0) {
+                this.updated_bills.add(String.valueOf(id));
                 float total = 0;
 
                 ObservableList<Billing> b = FXCollections.observableArrayList();
-                for (int i = 0; i < this.added_bills.size(); i++) {
-                    b.add(postgresql.getBilling(Controller.con, Long.parseLong(added_bills.get(i))));
+                for (int i = 0; i < this.updated_bills.size(); i++) {
+                    b.add(postgresql.getBilling(Controller.con, Long.parseLong(updated_bills.get(i))));
                     total += b.get(i).getTotal();
                 }
                 edit_collections_added_bills_tb.setItems(b);
@@ -187,8 +206,23 @@ public class CollectionsEditController extends Controller implements  Initializa
             if (alert.getResult() == ButtonType.YES) {
                 //do stuff
                 for(int i=0; i<b.size(); i++) {
-                    this.added_bills.remove(this.added_bills.indexOf(b.get(i).bill_no));
-                    edit_collections_added_bills_tb.getItems().removeAll(edit_collections_added_bills_tb.getSelectionModel().getSelectedItems());
+                    this.updated_bills.remove(this.updated_bills.indexOf(String.valueOf(b.get(i).getBill_no())));
+                    postgresql.setBillingPayment(Controller.con, b.get(i).getBill_no(), false);
+                    float total = 0;
+
+                    ObservableList<Billing> blist = FXCollections.observableArrayList();
+                    for (i = 0; i < this.updated_bills.size(); i++) {
+                        blist.add(postgresql.getBilling(Controller.con, Long.parseLong(updated_bills.get(i))));
+                        total += blist.get(i).getTotal();
+                    }
+                    edit_collections_added_bills_tb.setItems(blist);
+
+                    tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
+                    tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("PSC_id"));
+                    tb_billing_total.setCellValueFactory(new PropertyValueFactory<Billing, Float>("total"));
+                    tb_billing_total.setEditable(false);
+
+                    edit_collections_total_tf.setText(String.valueOf(total));
                 }
             }
         }
@@ -223,6 +257,10 @@ public class CollectionsEditController extends Controller implements  Initializa
             return false;
         }
 
+        if (!(c_no.equals(c.get(0).getCheck_number()) || postgresql.isUniqueCheckNo(Controller.con, Long.parseLong(c_no)))){
+            JOptionPane.showMessageDialog(null, "Check number already exists! Please try again.", "Unique Check Number Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
 
         // if everything is ok
         else {
@@ -247,8 +285,8 @@ public class CollectionsEditController extends Controller implements  Initializa
 
         edit_collections_added_bills_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                Collection c = (Collection) edit_collections_added_bills_tb.getSelectionModel().getSelectedItem();
-                this.selectedBill = c.getCollection_no(); //test
+                Billing c = (Billing) edit_collections_added_bills_tb.getSelectionModel().getSelectedItem();
+                this.selectedBill = c.getBill_no(); //test
                 edit_collections_remove_bill_btn.setVisible(true);
             }
         });
@@ -260,6 +298,14 @@ public class CollectionsEditController extends Controller implements  Initializa
             }
         });
 
+    }
+    private void getBills(ActionEvent actionEvent) {
+        updated_bills.clear();
+        edit_collections_added_bills_tb.getItems().clear();
+        ObservableList<Long> b = FXCollections.observableArrayList();
+        b = postgresql.getBillNosByName(Controller.con, edit_collections_client.getValue().trim());
+        System.out.println("Size: "+b.size());
+        edit_collections_billings.setItems(b);
     }
 
 }

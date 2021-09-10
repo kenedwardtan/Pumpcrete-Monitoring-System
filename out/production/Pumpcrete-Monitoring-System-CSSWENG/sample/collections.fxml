@@ -55,7 +55,7 @@
             <TableColumn fx:id="bankColumn1" prefWidth="124.6666259765625" text="Name of Bank" />
             <TableColumn fx:id="checkNumColumn1" prefWidth="86.33331298828125" text="Check #" />
             <TableColumn fx:id="checkDateColumn" prefWidth="140.0" text="Date of Check" />
-            <TableColumn fx:id="dateColumn1" prefWidth="115.33331298828125" text="Total Amount" />
+            <TableColumn fx:id="totalColumn1" prefWidth="115.33331298828125" text="Total Amount" />
          </columns>
          <cursor>
             <Cursor fx:constant="HAND" />

@@ -23,17 +23,15 @@ import java.util.logging.Logger;
 
 public class Postgresql {
 
-    public Postgresql(){
+    public Postgresql() {
     }
 
-    public static Connection loginUser(String u_username, String u_password)
-    {
+    public static Connection loginUser(String u_username, String u_password) {
         String url = "jdbc:postgresql:Pumpcrete";
 
-        try
-           {
-               Connection con = DriverManager.getConnection(url,u_username, u_password);
-                return con;
+        try {
+            Connection con = DriverManager.getConnection(url, u_username, u_password);
+            return con;
         } catch (SQLException ex) {
 
             Logger lgr = Logger.getLogger(Postgresql.class.getName());
@@ -45,8 +43,7 @@ public class Postgresql {
     }
 
 
-    public static String getCurrUser(Connection con)
-    {
+    public static String getCurrUser(Connection con) {
         String query = "SELECT current_user";
         try {
             PreparedStatement ps = con.prepareStatement(query);
@@ -72,8 +69,7 @@ public class Postgresql {
     }
 
     //Getting info of current user
-    public ObservableList<User> getUser(Connection connection, String uname)
-    {
+    public ObservableList<User> getUser(Connection connection, String uname) {
         System.out.println(" Inside get user!");
         String query = "SELECT * FROM users WHERE username = ?";
         try {
@@ -88,11 +84,11 @@ public class Postgresql {
                 String email = result.getString("email");
                 String first_name = result.getString("first_name");
                 String middle_name = result.getString("middle_name");
-                String last_name= result.getString("last_name");
+                String last_name = result.getString("last_name");
                 String password = result.getString("password");
                 String role = result.getString("role");
 
-                User u = new User(username,email,first_name, middle_name, last_name,password,role);
+                User u = new User(username, email, first_name, middle_name, last_name, password, role);
                 u_result.add(u);
 
                 return u_result;
@@ -109,13 +105,12 @@ public class Postgresql {
     }
 
 
-    public static ArrayList<User> getAllStaff()
-    {
+    public static ArrayList<User> getAllStaff() {
         String url = "jdbc:postgresql:Pumpcrete";
 
         String query = "SELECT * FROM users WHERE role = 'staff'";
 
-        try (Connection con = DriverManager.getConnection(url, "postgres","swengt3y2");
+        try (Connection con = DriverManager.getConnection(url, "postgres", "swengt3y2");
              PreparedStatement pst = con.prepareStatement(query)) {
 
             ArrayList<User> u_result = new ArrayList<User>();
@@ -125,11 +120,11 @@ public class Postgresql {
                 String email = result.getString("email");
                 String first_name = result.getString("first_name");
                 String middle_name = result.getString("middle_name");
-                String last_name= result.getString("last_name");
+                String last_name = result.getString("last_name");
                 String password = result.getString("password");
                 String role = result.getString("role");
 
-                User u = new User(username,email,first_name, middle_name, last_name,password,role);
+                User u = new User(username, email, first_name, middle_name, last_name, password, role);
                 u_result.add(u);
             }
 
@@ -143,8 +138,7 @@ public class Postgresql {
         }
     }
 
-    public static ObservableList<User> getAllUsers(Connection con)
-    {
+    public static ObservableList<User> getAllUsers(Connection con) {
         String query = "SELECT * FROM users";
         try {
             PreparedStatement pst = con.prepareStatement(query);
@@ -156,11 +150,11 @@ public class Postgresql {
                 String email = result.getString("email");
                 String first_name = result.getString("first_name");
                 String middle_name = result.getString("middle_name");
-                String last_name= result.getString("last_name");
+                String last_name = result.getString("last_name");
                 String password = result.getString("password");
                 String role = result.getString("role");
 
-                User u = new User(username,email,first_name, middle_name, last_name,password,role);
+                User u = new User(username, email, first_name, middle_name, last_name, password, role);
                 u_result.add(u);
             }
 
@@ -175,8 +169,7 @@ public class Postgresql {
     }
 
 
-    public static String getRole(Connection con)
-    {
+    public static String getRole(Connection con) {
         String query = "SELECT role FROM users WHERE username = ?";
 
         try {
@@ -200,26 +193,26 @@ public class Postgresql {
         return "";
     }
 
-    public static boolean editPassword (Connection connection,String old, String npw){
+    public static boolean editPassword(Connection connection, String old, String npw) {
 
-        String DBPassword = "'"+npw+"'";
+        String DBPassword = "'" + npw + "'";
         String url = "jdbc:postgresql:Pumpcrete";
         String u_username = getCurrUser(connection);
-        try (Connection con = DriverManager.getConnection(url, u_username,old)){
-            String query = "ALTER USER "+u_username+" WITH PASSWORD "+DBPassword;
-                PreparedStatement p = connection.prepareStatement(query);
-                p.execute();
+        try (Connection con = DriverManager.getConnection(url, u_username, old)) {
+            String query = "ALTER USER " + u_username + " WITH PASSWORD " + DBPassword;
+            PreparedStatement p = connection.prepareStatement(query);
+            p.execute();
 
-                String query2 = "UPDATE users SET password = ? WHERE username = ?";
-                PreparedStatement ps = connection.prepareStatement(query2);
-                ps.setString(1, DBPassword);
-                ps.setString(2, u_username);
-                ps.executeUpdate();
+            String query2 = "UPDATE users SET password = ? WHERE username = ?";
+            PreparedStatement ps = connection.prepareStatement(query2);
+            ps.setString(1, DBPassword);
+            ps.setString(2, u_username);
+            ps.executeUpdate();
 
-                con.close();
-                p.close();
-                ps.close();
-                return  true;
+            con.close();
+            p.close();
+            ps.close();
+            return true;
         } catch (SQLException throwables) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Edit Password Failed");
@@ -231,64 +224,69 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static String createUser (Connection connection, String fname, String mname, String lname, String email, String uname, String role) {
+    public static String createUser(Connection connection, String fname, String mname, String lname, String email, String uname, String role) {
 
         Random r = new Random();
         String u_password = "password" + Integer.toString(r.nextInt(9999) + 1);
 
         String DBRole = "";
-        String DBPassword = "'" + u_password +"'";
+        String DBPassword = "'" + u_password + "'";
 
         String query1 = "";
         String query2 = "INSERT INTO users(first_name, last_name, middle_name, username, password, email, role) VALUES (?,?,?,?,?,?,?)";
-        switch (role)
-        {
+        switch (role) {
             case "Staff":
-            case "staff":      DBRole = "staff_role"; break;
+            case "staff":
+                DBRole = "staff_role";
+                break;
             case "Supervisor":
-            case "supervisor": DBRole = "supervisor_role"; break;
+            case "supervisor":
+                DBRole = "supervisor_role";
+                break;
             case "Admin":
-            case "admin":      DBRole = "admin_role"; break;
+            case "admin":
+                DBRole = "admin_role";
+                break;
             default:
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setHeaderText("ERROR: Invalid Role");
                 errorAlert.setContentText("role is null");
                 errorAlert.showAndWait();
         }
-        query1 = "CREATE ROLE " +uname+ " with login password "+DBPassword+ "; Grant "+DBRole+" to " +uname+";";
+        query1 = "CREATE ROLE " + uname + " with login password " + DBPassword + "; Grant " + DBRole + " to " + uname + ";";
 
-            try {
-                //This will ad user as postgres user
-                PreparedStatement p = connection.prepareStatement(query1);
-                p.execute();
+        try {
+            //This will ad user as postgres user
+            PreparedStatement p = connection.prepareStatement(query1);
+            p.execute();
 
-                //This will keep user info in the 'users' table
-                PreparedStatement ps = connection.prepareStatement(query2);
-                ps.setString(1, fname);
-                ps.setString(2, lname);
-                ps.setString(3, mname);
-                ps.setString(4, uname);
-                ps.setString(5, DBPassword);
-                ps.setString(6, email);
-                ps.setString(7, role);
+            //This will keep user info in the 'users' table
+            PreparedStatement ps = connection.prepareStatement(query2);
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, mname);
+            ps.setString(4, uname);
+            ps.setString(5, DBPassword);
+            ps.setString(6, email);
+            ps.setString(7, role);
 
-                ps.executeUpdate();
+            ps.executeUpdate();
 
-                System.out.println("Insert Successful!");
-                ps.close();
-                p.close();
+            System.out.println("Insert Successful!");
+            ps.close();
+            p.close();
 
-            } catch (SQLException ex) {
-                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
         return u_password;
     }
 
 
-    public void editUser (Connection con, String old, String uname, String fname, String mname, String lname, String email, String role){
+    public void editUser(Connection con, String old, String uname, String fname, String mname, String lname, String email, String role) {
 
         String query = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, email = ?, role = ?, username = ? WHERE username = ?";
-        String query1= "ALTER ROLE "+old+" RENAME TO " + uname;
+        String query1 = "ALTER ROLE " + old + " RENAME TO " + uname;
 
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -311,17 +309,16 @@ public class Postgresql {
 
             System.out.println("Edit success!");
 
-		} catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
-	}
+    }
 
-    public boolean deleteUser (Connection connection, String uname){
+    public boolean deleteUser(Connection connection, String uname) {
 
-        if (uname.equals(getCurrUser(connection).toString())){
+        if (uname.equals(getCurrUser(connection).toString())) {
             return false;
-        }
-        else {
+        } else {
             String query1 = "DROP ROLE " + uname;
 
             String query2 = "DELETE FROM users WHERE username = ?";
@@ -351,8 +348,8 @@ public class Postgresql {
 
 
     //Once all information are verified, adds new user to the database.
-    public static void createClient (Connection connection, String fname, String lname, String position,
-                                     String address,String landline, String cpnum, String email){
+    public static void createClient(Connection connection, String fname, String lname, String position,
+                                    String address, String landline, String cpnum, String email) {
 
 
         String query = "INSERT INTO client(client_first_name, client_last_name, client_position, client_address," +
@@ -360,7 +357,7 @@ public class Postgresql {
 
         //Date date = new Date(20000101);
 
-        try{
+        try {
             PreparedStatement ps = connection.prepareStatement(query);
 
             ps.setString(1, fname);
@@ -375,13 +372,13 @@ public class Postgresql {
             ps.executeUpdate();
 
             System.out.println("Insert Successful!");
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
-    public void editClient (Connection connection, long c_id, String fname, String lname, String position,
-                            String address, String landline, String cpnum, String email){
+    public void editClient(Connection connection, long c_id, String fname, String lname, String position,
+                           String address, String landline, String cpnum, String email) {
         System.out.println("Inside edit");
 
         String query = "UPDATE client SET client_position = ?, client_first_name = ?, client_last_name = ?, client_landline = ?, client_cellphone = ?, client_email = ?, client_address = ? WHERE client_id = ?";
@@ -389,7 +386,7 @@ public class Postgresql {
         String url = "jdbc:postgresql:Pumpcrete";
         //Date date = new Date(20000101);
 
-        try{
+        try {
             System.out.println("try");
             PreparedStatement ps = connection.prepareStatement(query);
 
@@ -399,7 +396,7 @@ public class Postgresql {
             ps.setString(4, landline);
             ps.setString(5, cpnum);
             ps.setString(6, email);
-            ps.setString(7,address);
+            ps.setString(7, address);
             ps.setLong(8, c_id);
 
             ps.executeUpdate();
@@ -411,7 +408,7 @@ public class Postgresql {
     }
 
 
-    public void deleteClient (Connection connection, long c_id){
+    public void deleteClient(Connection connection, long c_id) {
 
         String query = "DELETE FROM client WHERE client_id = ?";
 
@@ -429,7 +426,7 @@ public class Postgresql {
     }
 
 
-    public ObservableList<Client> getClient (Connection connection, long c_id){
+    public ObservableList<Client> getClient(Connection connection, long c_id) {
 
         String query = "SELECT * FROM client WHERE client_id = ?";
         ObservableList<Client> c_result = FXCollections.observableArrayList();
@@ -437,9 +434,9 @@ public class Postgresql {
 
         try {
 
-                PreparedStatement ps = connection.prepareStatement(query);
-                ps.setLong(1, c_id);
-                ResultSet result = ps.executeQuery();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, c_id);
+            ResultSet result = ps.executeQuery();
 
 
 //                query = "SELECT * FROM contact_details WHERE contact_id = ?";
@@ -447,32 +444,32 @@ public class Postgresql {
 //                ps.setInt(1, c_id);
 //                ResultSet result = ps.executeQuery();
 
-                result.next();
-                long id = result.getLong("client_id");
-                String fname = result.getString("client_first_name");
-                String lname = result.getString("client_last_name");
-                String position = result.getString("client_position");
-                String cpnum = result.getString("client_cellphone");
-                String landline = result.getString("client_landline");
-                String email = result.getString("client_email");
-                String address = result.getString("client_address");
-                Date date = result.getDate("latest_doc_date");
+            result.next();
+            long id = result.getLong("client_id");
+            String fname = result.getString("client_first_name");
+            String lname = result.getString("client_last_name");
+            String position = result.getString("client_position");
+            String cpnum = result.getString("client_cellphone");
+            String landline = result.getString("client_landline");
+            String email = result.getString("client_email");
+            String address = result.getString("client_address");
+            Date date = result.getDate("latest_doc_date");
 
-                if (date != null)
-                    c = new Client(id, position, fname, lname, cpnum, email, address, landline, date.toLocalDate());
-                else
-                    c = new Client(id, position, fname, lname, cpnum, email, address, landline);
-                c_result.add(c);
-                return c_result;
-            } catch (SQLException ex) {
+            if (date != null)
+                c = new Client(id, position, fname, lname, cpnum, email, address, landline, date.toLocalDate());
+            else
+                c = new Client(id, position, fname, lname, cpnum, email, address, landline);
+            c_result.add(c);
+            return c_result;
+        } catch (SQLException ex) {
 
-                Logger lgr = Logger.getLogger(Postgresql.class.getName());
-                lgr.log(Level.SEVERE, ex.getMessage(), ex);
-                return null;
-            }
+            Logger lgr = Logger.getLogger(Postgresql.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
+        }
     }
 
-    public long getClientID (Connection connection, String fName, String lName){
+    public long getClientID(Connection connection, String fName, String lName) {
 
         String query = "SELECT * FROM client WHERE client_first_name= ?, client_last_name = ?";
         ObservableList<Client> c_result = FXCollections.observableArrayList();
@@ -498,8 +495,7 @@ public class Postgresql {
     }
 
 
-    public static ObservableList<Client> getAllClients(Connection con)
-    {
+    public static ObservableList<Client> getAllClients(Connection con) {
         Client c;
 
         String query = "SELECT * FROM client ORDER BY client_id";
@@ -517,12 +513,11 @@ public class Postgresql {
                 String landline = result.getString("client_landline");
                 String email = result.getString("client_email");
                 String address = result.getString("client_address");
-                if(result.getDate("latest_doc_date") != null) {
+                if (result.getDate("latest_doc_date") != null) {
                     Date date = result.getDate("latest_doc_date");
                     c = new Client(id, position, fname, lname, cpnum, email, address, landline, date.toLocalDate());
                     c_result.add(c);
-                }
-                else {
+                } else {
                     c = new Client(id, position, fname, lname, cpnum, email, address, landline);
                     c_result.add(c);
                 }
@@ -540,8 +535,7 @@ public class Postgresql {
         }
     }
 
-    public static ObservableList<String> getAllClientNames(Connection con)
-    {
+    public static ObservableList<String> getAllClientNames(Connection con) {
         String query = "SELECT client_first_name,client_last_name,client_id FROM client";
         try {
             PreparedStatement pst = con.prepareStatement(query);
@@ -551,7 +545,7 @@ public class Postgresql {
                 Long id = result.getLong("client_id");
                 String fname = result.getString("client_first_name");
                 String lname = result.getString("client_last_name");
-                String name = fname+" "+lname;
+                String name = fname + " " + lname;
                 System.out.println(name);
                 cn_result.add(name);
             }
@@ -567,9 +561,8 @@ public class Postgresql {
     }
 
 
-
-    public void addBilling (Connection connection, String client_name, String project_name, String project_add,
-                            Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price, String struct, float total){
+    public void addBilling(Connection connection, String client_name, String project_name, String project_add,
+                           Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price, String struct, float total) {
 
         String query = "INSERT INTO billings(date_doc, date_used, client_name, project_name, project_add, PSC_id, posted,edited_by, floor_level, " +
                 "qty, unit_price, conc_structure, total, in_payments, is_paid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -588,8 +581,8 @@ public class Postgresql {
             ps.setString(8, edited_by);
             ps.setInt(9, floor);
             ps.setFloat(10, qty);
-            ps.setFloat(11,unit_price);
-            ps.setString(12,struct);
+            ps.setFloat(11, unit_price);
+            ps.setString(12, struct);
             ps.setFloat(13, total);
             ps.setBoolean(14, false);
             ps.setBoolean(15, false);
@@ -601,9 +594,9 @@ public class Postgresql {
         }
     }
 
-    public void editBilling (Connection connection, String client_name, String project_name, String project_add,
+    public void editBilling(Connection connection, String client_name, String project_name, String project_add,
                             Date date_doc, int PSC_id, Date date_used, int floor, float qty, float unit_price,
-                             String struct, float total, long bill_no, String edited_by){
+                            String struct, float total, long bill_no, String edited_by) {
 
         String query = "UPDATE billings SET date_used=?, client_name=?, project_name=?, project_add=?, PSC_id=?, " +
                 "posted=?,edited_by=?, floor_level=?, qty=?, unit_price=?, conc_structure=?, total=?, date_doc =?, " +
@@ -658,10 +651,10 @@ public class Postgresql {
 
         //ObservableList<Billing> b_result = FXCollections.observableArrayList();
         System.out.println("in billing");
-        try{
+        try {
             System.out.println("in try");
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setLong(1,billing_id);
+            ps.setLong(1, billing_id);
             ResultSet result = ps.executeQuery();
 
             result.next();
@@ -682,8 +675,8 @@ public class Postgresql {
             String struct = result.getString("conc_structure");
 
 
-            Billing b = new Billing(id, client_name,project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
-                    PSC_id,struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
+            Billing b = new Billing(id, client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
+                    PSC_id, struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
 
             return b;
 
@@ -701,14 +694,14 @@ public class Postgresql {
                 "posted = true AND client_name = ?";
 
         ObservableList<Long> b_result = FXCollections.observableArrayList();
-        System.out.println("in billing name: "+name);
-        try{
+        System.out.println("in billing name: " + name);
+        try {
             System.out.println("in try name");
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1,name);
+            ps.setString(1, name);
             ResultSet result = ps.executeQuery();
 
-            while(result.next()) {
+            while (result.next()) {
                 long id = result.getLong("bill_no");
                 System.out.println(id);
                 b_result.add(id);
@@ -735,7 +728,7 @@ public class Postgresql {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet results = ps.executeQuery();
 
-            while (results.next()){
+            while (results.next()) {
                 long id = results.getLong("bill_no");
                 String client_name = results.getString("client_name");
                 String project_name = results.getString("project_name");
@@ -753,7 +746,7 @@ public class Postgresql {
                 String struct = results.getString("conc_structure");
 
                 Billing b = new Billing(id, client_name, project_name, project_add, date_doc.toLocalDate(), date_used.toLocalDate(),
-                        PSC_id,struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
+                        PSC_id, struct, floor_level, qty, unit_price, total, posted, edited_by, posted_by);
                 billings.add(b);
                 System.out.println(billings.size());
             }
@@ -765,7 +758,7 @@ public class Postgresql {
         return billings;
     }
 
-    public void postBilling (Connection connection, long id, String posted_by) {
+    public void postBilling(Connection connection, long id, String posted_by) {
 
         String query = "UPDATE billings SET posted = ?, posted_by = ? WHERE bill_no = ?";
 
@@ -776,7 +769,7 @@ public class Postgresql {
 
             ps.setBoolean(1, true);
             ps.setString(2, posted_by);
-            ps.setLong(3,id);
+            ps.setLong(3, id);
 
             ps.executeUpdate();
 
@@ -791,8 +784,8 @@ public class Postgresql {
 
     public String resetPassword(Connection connection, String uname, String old) {
         Random r = new Random();
-        String password = "'password" + (r.nextInt(9999)+1) +"'";
-        String query1 = "ALTER USER "+uname+" WITH PASSWORD "+ password;
+        String password = "'password" + (r.nextInt(9999) + 1) + "'";
+        String query1 = "ALTER USER " + uname + " WITH PASSWORD " + password;
         String query2 = "UPDATE users SET password = ? WHERE username = ?";
         String url = "jdbc:postgresql:Pumpcrete";
 
@@ -813,7 +806,7 @@ public class Postgresql {
 
 
     //checks if there are the same existing username found in the db
-    public boolean checkUsername(Connection connection, String uname){
+    public boolean checkUsername(Connection connection, String uname) {
 
         ResultSet rs;
         boolean username_exist = false;
@@ -829,15 +822,14 @@ public class Postgresql {
             ps.setString(1, uname.toLowerCase().trim());
             rs = ps.executeQuery();
 
-            if(rs.next())
-            {
+            if (rs.next()) {
                 username_exist = true;
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(username_exist)
+        if (username_exist)
             System.out.println("Username is not unique!");
         else
             System.out.println("Username is unique!");
@@ -845,7 +837,7 @@ public class Postgresql {
         return username_exist;
     }
 
-    public boolean checkName(Connection connection, String name){
+    public boolean checkName(Connection connection, String name) {
         ResultSet rs;
         boolean name_exist = false;
 
@@ -859,8 +851,7 @@ public class Postgresql {
             ps.setString(1, name);
             rs = ps.executeQuery();
 
-            if(rs.next())
-            {
+            if (rs.next()) {
                 name_exist = true;
             }
 
@@ -871,8 +862,8 @@ public class Postgresql {
         return name_exist;
     }
 
-//Checks if billing psc and client
-    public boolean checkBillingPSC(Connection connection, long id){
+    //Checks if billing psc and client
+    public boolean checkBillingPSC(Connection connection, long id) {
         ResultSet rs;
         boolean billing_exist = false;
 
@@ -885,8 +876,7 @@ public class Postgresql {
             ps.setLong(1, id);
             rs = ps.executeQuery();
 
-            if(rs.next())
-            {
+            if (rs.next()) {
                 billing_exist = true;
             }
 
@@ -898,8 +888,7 @@ public class Postgresql {
     }
 
 
-    public boolean checkPumpcrete (Connection connection, String plate, long cr, long or)
-    {
+    public boolean checkPumpcrete(Connection connection, String plate, long cr, long or) {
 
         Boolean pumpcrete_exist = false;
         //check plate_no
@@ -948,8 +937,9 @@ public class Postgresql {
 
         return pumpcrete_exist;
     }
-    public void addPumpcrete (Connection connection, String desc, String plate, String fuel, Date date,
-                              long cr, long or, int tires) {
+
+    public void addPumpcrete(Connection connection, String desc, String plate, String fuel, Date date,
+                             long cr, long or, int tires) {
 
         String query = "INSERT INTO pumpcrete( description, plate_no, fuel_type, purchase_date, cr_no, or_no, tires) VALUES (?,?,?,?,?,?,?)";
         try {
@@ -959,7 +949,7 @@ public class Postgresql {
             ps.setString(2, plate);
             ps.setString(3, fuel);
             ps.setDate(4, date);
-            ps.setLong(5,cr);
+            ps.setLong(5, cr);
             ps.setLong(6, or);
             ps.setInt(7, tires);
 
@@ -971,7 +961,8 @@ public class Postgresql {
 
 
     }
-    public ObservableList<Pumpcrete> getAllinventory (Connection connection) {
+
+    public ObservableList<Pumpcrete> getAllinventory(Connection connection) {
 
         ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
         String query = "SELECT * FROM pumpcrete ORDER BY pumpcrete_id";
@@ -998,24 +989,24 @@ public class Postgresql {
         return p;
     }
 
-    public void deletePumpcrete (Connection con, long id){
+    public void deletePumpcrete(Connection con, long id) {
         String query = "DELETE FROM pumpcrete WHERE pumpcrete_id = ?";
-        try{
+        try {
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setLong (1, id);
+            ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public ObservableList<Pumpcrete> getPumpcrete (Connection connection, long id) {
+    public ObservableList<Pumpcrete> getPumpcrete(Connection connection, long id) {
 
         ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
         String query = "SELECT * FROM pumpcrete where pumpcrete_id = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setLong(1,id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
             rs.next();
@@ -1043,14 +1034,14 @@ public class Postgresql {
                     + "purchase_date=?, cr_no =?, or_no=?, tires=? WHERE pumpcrete_id = ?";
 
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1,desc);
-            ps.setString(2,plate);
-            ps.setString(3,fuel);
-            ps.setDate(4,date);
-            ps.setLong(5,cr);
-            ps.setLong(6,or);
-            ps.setInt(7,tires);
-            ps.setLong(8,id);
+            ps.setString(1, desc);
+            ps.setString(2, plate);
+            ps.setString(3, fuel);
+            ps.setDate(4, date);
+            ps.setLong(5, cr);
+            ps.setLong(6, or);
+            ps.setInt(7, tires);
+            ps.setLong(8, id);
 
             ps.executeUpdate();
 
@@ -1064,7 +1055,7 @@ public class Postgresql {
         String query = "SELECT * FROM collections where collection_no = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setLong(1,editCollection);
+            ps.setLong(1, editCollection);
             ResultSet rs = ps.executeQuery();
 
             rs.next();
@@ -1072,14 +1063,17 @@ public class Postgresql {
             long collection_no = rs.getLong("collection_no");
             LocalDate date = rs.getDate("date").toLocalDate();
             String client_name = rs.getString("client_name");
-            String billing_id = rs.getString("billing_id");
+            String billing_id = rs.getString("bill_no");
             boolean posted = rs.getBoolean("posted");
             float grand_total = rs.getFloat("grand_total");
             int check_number = rs.getInt("check_number");
             LocalDate check_date = rs.getDate("check_date").toLocalDate();
-            String bank = rs.getString("bank");;
-            String edited_by = rs.getString("posted_by");;
-            String posted_by = rs.getString("edited_by");;
+            String bank = rs.getString("bank");
+            ;
+            String edited_by = rs.getString("posted_by");
+            ;
+            String posted_by = rs.getString("edited_by");
+            ;
 
             c.add(new Collection(collection_no, date, client_name, billing_id, posted, grand_total,
                     check_number, check_date, bank, edited_by, posted_by));
@@ -1097,24 +1091,23 @@ public class Postgresql {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
 
                 long collection_no = rs.getLong("collection_no");
                 LocalDate date = rs.getDate("date").toLocalDate();
                 String client_name = rs.getString("client_name");
 
-                String billing_id = rs.getString("billing_id");
+                String billing_id = rs.getString("bill_no");
                 boolean posted = rs.getBoolean("posted");
                 float grand_total = rs.getFloat("grand_total");
                 int check_number = rs.getInt("check_number");
                 LocalDate check_date = rs.getDate("check_date").toLocalDate();
                 String bank = rs.getString("bank");
+                String edited_by = rs.getString("edited_by");
 
-                String edited_by = rs.getString("posted_by");
+                String posted_by = rs.getString("posted_by");
 
-                String posted_by = rs.getString("edited_by");
-
-
+                System.out.println(edited_by);
                 c.add(new Collection(collection_no, date, client_name, billing_id, posted, grand_total,
                         check_number, check_date, bank, edited_by, posted_by));
             }
@@ -1124,41 +1117,43 @@ public class Postgresql {
         return c;
     }
 
-    public long getPRNumber (Connection con){
+    public long getPRNumber(Connection con) {
+        long pr_no = 0;
         String query = "SELECT MAX(collection_no) FROM collections";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
-            rs.next();
-            long pr_no = rs.getLong("collection_no")+1;
-
-            return pr_no;
+            if (rs.next())
+                pr_no = rs.getLong("collection_no") + 1;
+            else
+                pr_no = 0;
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
         }
+        return pr_no;
     }
 
     public void addCollection(Connection con, String date, String client,
                               String id, boolean posted, float total,
-                              String bank, long c_no,  String c_date){
-        String query = "INSERT INTO collections (date, client_name, bill_no, "+
-                "posted, grand_total, check_number, check_date, bank)" +
-                "values(?,?,?,?,?,?,?,?)";
+                              String bank, long c_no, String c_date) {
+        String query = "INSERT INTO collections (date, client_name, bill_no, " +
+                "posted, grand_total, bank, check_number, check_date, edited_by)" +
+                "values(?,?,?,?,?,?,?,?,?)";
         Date datedoc = Date.valueOf(date);
         try {
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setDate(1,datedoc);
+            ps.setDate(1, datedoc);
             ps.setString(2, client);
             ps.setString(3, id);
             ps.setBoolean(4, posted);
             ps.setFloat(5, total);
-            ps.setString(7, bank);
-            ps.setLong(8, c_no);
-            ps.setString(9,c_date);
+            ps.setString(6, bank);
+            ps.setLong(7, c_no);
+            ps.setDate(8, Date.valueOf(c_date));
+            ps.setString(9, this.getCurrUser(con));
 
             ps.executeUpdate();
 
@@ -1179,7 +1174,7 @@ public class Postgresql {
             while (result.next()) {
                 String name = result.getString("client_name");
                 System.out.println(name);
-                if(cn_result.indexOf(name) < 0)
+                if (cn_result.indexOf(name) < 0)
                     cn_result.add(name);
             }
             return cn_result;
@@ -1191,21 +1186,45 @@ public class Postgresql {
         }
 
     }
-    public void inPayments(Connection con, long bill_no){
-        String query = "UPDATE billings SET in_payments = true WHERE bill_no = ?";
+
+    public void setBillingPayment(Connection con, long bill_no, boolean payment) {
+        String query = "UPDATE billings SET in_payments = " +
+                "? WHERE bill_no = ?";
 
         String url = "jdbc:postgresql:Pumpcrete";
 
         try {
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setLong(1, bill_no);
+            ps.setBoolean(1, payment);
+            ps.setLong(2, bill_no);
 
             ps.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public Boolean isUniqueCheckNo(Connection con, long checkNo) {
+        String query = "SELECT * FROM collections WHERE check_number = ?";
+
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setLong(1, checkNo);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 }
 

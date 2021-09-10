@@ -33,7 +33,8 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="2ce5958c-d1ad-4965-b63c-54001e1736b4">
-      <console name="Pumpcrete" type="STANDARD" schema="public" session="Main"><![CDATA[update billings set posted = false where client_name = 'Juan Edited Dela Cruz';]]></console>
+      <console name="Pumpcrete" type="STANDARD" schema="public" session="Main"><![CDATA[select * from collections;
+/*update billings set in_payments = false where client_name = 'Juan Edited Dela Cruz';]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

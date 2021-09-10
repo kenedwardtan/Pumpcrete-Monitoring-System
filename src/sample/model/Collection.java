@@ -9,7 +9,7 @@ public class Collection {
     public SimpleLongProperty collection_no;
     public LocalDate date; //date documented
     public SimpleStringProperty client_name;
-    public ArrayList<String> billing_id;
+    public ArrayList<String> billing_id = new ArrayList<>();
     public SimpleBooleanProperty posted;
     public SimpleFloatProperty grand_total;
     public SimpleIntegerProperty check_number;
@@ -25,6 +25,7 @@ public class Collection {
         this.date= date;
         this.client_name= new SimpleStringProperty(client);
         for (int i =0; i < billing.split(",").length; i++){
+            System.out.println(billing.split(",")[i]);
             billing_id.add(billing.split(",")[i]);
         }
         this.posted = new SimpleBooleanProperty(posted);
@@ -36,12 +37,13 @@ public class Collection {
     }
 
     public Collection(long collection, LocalDate date, String client, String billing,
-                      boolean posted, float grand_total, int check_no, LocalDate check_date, String bank,
-                      String edited_by, String posted_by){
+                      boolean posted, float grand_total, int check_no, LocalDate check_date,
+                      String bank, String edited_by, String posted_by){
         this.collection_no = new SimpleLongProperty(collection);
         this.date= date;
         this.client_name= new SimpleStringProperty(client);
         for (int i =0; i < billing.split(",").length; i++){
+            System.out.println(billing.split(",")[i]);
             billing_id.add(billing.split(",")[i]);
         }
         this.posted = new SimpleBooleanProperty(posted);
@@ -52,6 +54,7 @@ public class Collection {
         this.edited_by = new SimpleStringProperty(edited_by);
         this.posted_by = new SimpleStringProperty(posted_by);
     }
+
 
     public Collection(LocalDate date, String client, String billing,
                       boolean posted, float grand_total, int check_no,
@@ -105,5 +108,13 @@ public class Collection {
 
     public float getGrand_total() {
         return grand_total.get();
+    }
+
+    public String getEdited_by() {
+        return edited_by.get();
+    }
+
+    public String getPosted_by() {
+        return posted_by.get();
     }
 }
