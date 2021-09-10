@@ -758,10 +758,11 @@ public class Postgresql {
         return billings;
     }
 
-    public void postBilling(Connection connection, long id, String posted_by) {
+    public void postBilling(Connection connection, long id, String posted_by, String name, String date) {
+        ObservableList<Client> c = FXCollections.observableArrayList();
 
         String query = "UPDATE billings SET posted = ?, posted_by = ? WHERE bill_no = ?";
-
+        String query2 = "SELECT CONCAT(client_first_name,' ',client_last_name) as fullname, client_id FROM client";
         String url = "jdbc:postgresql:Pumpcrete";
 
         try {
@@ -772,6 +773,17 @@ public class Postgresql {
             ps.setLong(3, id);
 
             ps.executeUpdate();
+
+            PreparedStatement p = connection.prepareStatement(query2);
+
+            ResultSet r = p.executeQuery();
+            r.next();
+            if (name.equals(r.getString("fullname"))){
+                c.add((this.getClient(connection, r.getLong("client_id")).get(0)));
+                this.updateClientLatestDoc(connection, c.get(0).getFName(),
+                        c.get(0).getLName(), Date.valueOf(date));
+            }
+
 
         } catch (SQLException ex) {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
@@ -1218,6 +1230,7 @@ public class Postgresql {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
+                JOptionPane.showMessageDialog(null, "Check number already exists! Please try again.", "Unique Check Number Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
 
@@ -1225,6 +1238,49 @@ public class Postgresql {
             Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
+    }
+
+    public void editCollection(Connection con, long col_no, String date, String client_name, String bill_no, long total, String bank, long c_no, String c_date) {
+            String query = "UPDATE collections SET date=?, client_name=?, bill_no=?, " +
+                    "grand_total=?, bank=?, check_number=?, check_date=?, edited_by=?" +
+                    " WHERE collection_no = ?";
+            Date datedoc = Date.valueOf(date);
+            try {
+                PreparedStatement ps = con.prepareStatement(query);
+
+                ps.setDate(1, datedoc);
+                ps.setString(2, client_name);
+                ps.setString(3, bill_no);
+                ps.setFloat(4, total);
+                ps.setString(5, bank);
+                ps.setLong(6, c_no);
+                ps.setDate(7, Date.valueOf(c_date));
+                ps.setString(8, this.getCurrUser(con));
+                ps.setLong(9, col_no);
+
+                ps.executeUpdate();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+
+    public void updateClientLatestDoc(Connection con, String fname, String lname, Date date) {
+        String query = "UPDATE client SET latest_doc_date = ? WHERE client_first_name = ? AND client_last_name = ?";
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setDate(1, date);
+            ps.setString(2, fname);
+            ps.setString(3, lname);
+
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 

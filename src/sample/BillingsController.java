@@ -174,7 +174,8 @@ public class BillingsController extends Controller implements Initializable {
                 if(alert.getResult() == ButtonType.YES) {
                     ObservableList<Billing> b = FXCollections.observableArrayList();
                     b = billings_tb.getSelectionModel().getSelectedItems();
-                    postgresql.postBilling(Controller.con, b.get(0).getBill_no(), postgresql.getCurrUser(Controller.con));
+                    postgresql.postBilling(Controller.con, b.get(0).getBill_no(), postgresql.getCurrUser(Controller.con),
+                            b.get(0).getClient_name(), String.valueOf(b.get(0).getDate_doc()));
                 }
                 stage = (Stage) billings_post_btn.getScene().getWindow();
                 loader = new FXMLLoader(getClass().getResource("billings.fxml"));

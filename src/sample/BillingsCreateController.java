@@ -90,13 +90,14 @@ public class BillingsCreateController extends Controller implements  Initializab
                     qty_final = qty_temp + qty_added;
                     JOptionPane.showMessageDialog(null, "We added " + qty_added + " to the original qty. Final qty(in cubic meters): " + qty_final, "Qty. did not meet minimum", 2);
 
-                }else{
+                } else {
                     qty_final = qty_temp;
                 }
 
                 float total = (float) qty_final * unit_price;
                 //checks if billing has unique psc and client
                 if (!postgresql.checkBillingPSC(Controller.con, psc)) {
+
                     postgresql.addBilling(Controller.con, client_name, project_name, project_add,
                             Date.valueOf(date_doc), psc, date_used, floor_level, qty_final, unit_price, struct, total);
                     stage = (Stage) create_billings_submit_btn.getScene().getWindow();
@@ -117,10 +118,8 @@ public class BillingsCreateController extends Controller implements  Initializab
                     stage.setScene(scene);
                     stage.setResizable(false);
                     stage.show();
-
                 }
             }
-
         }
 
         if (e.getSource() == create_billings_cancel_btn) {

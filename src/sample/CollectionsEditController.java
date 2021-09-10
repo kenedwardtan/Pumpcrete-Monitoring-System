@@ -100,14 +100,17 @@ public class CollectionsEditController extends Controller implements  Initializa
         c = FXCollections.observableArrayList();
         c = postgresql.getCollection(Controller.con, CollectionsController.getEditCollection());
         this.names = FXCollections.observableArrayList();
-        this.names= postgresql.getAllClientNames(Controller.con);
+        this.names.add(c.get(0).getClient_name());
+
+        ObservableList<Long> billnospostgresql = postgresql.getBillNosByName(Controller.con, c.get(0).getClient_name());
+        edit_collections_billings.setItems(billnospostgresql);
 
         edit_collections_client.setItems(names);
+        edit_collections_client.setValue(c.get(0).getClient_name());
         edit_collections_client.setOnAction(this::getBills);
 
         edit_pr_number_tf.setText(String.valueOf(c.get(0).getCollection_no()));
         edit_collections_date.setValue(c.get(0).getDate());
-        edit_collections_client.setValue(c.get(0).getClient_name());
         edit_collections_total_tf.setText(String.valueOf(c.get(0).getGrand_total()));
         edit_collections_bank_tf.setText(c.get(0).getBank());
         edit_collections_checkDate.setValue(c.get(0).getCheck_date());
@@ -131,7 +134,7 @@ public class CollectionsEditController extends Controller implements  Initializa
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         if (e.getSource() == edit_collections_submit_btn) {
-            if (checkFields()&& postgresql.isUniqueCheckNo(Controller.con,Long.parseLong(edit_collections_checkNum_tf.getText().trim()))) {
+            if (checkFields() || postgresql.isUniqueCheckNo(Controller.con,Long.parseLong(edit_collections_checkNum_tf.getText().trim()))) {
                 String client_name = edit_collections_client.getValue();
                 String bill_no = "";
                 for(int i=0; i<this.orig_bills.size(); i++){
@@ -155,10 +158,18 @@ public class CollectionsEditController extends Controller implements  Initializa
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 String date = formatter.format(edit_collections_date.getValue());
                 String c_date = formatter.format(edit_collections_checkDate.getValue());
-                long total = Long.parseLong(edit_collections_total_tf.getText());
+                long total = (long) Double.parseDouble(edit_collections_total_tf.getText());
 
-                postgresql.addCollection(Controller.con, date, client_name, bill_no, false,
-                        total, bank, c_no, c_date);
+                postgresql.editCollection(Controller.con, Long.parseLong(edit_pr_number_tf.getText().trim())
+                        ,date, client_name, bill_no, total, bank, c_no, c_date);
+                JOptionPane.showMessageDialog(null, "Successfully edited Collection for "+client_name, "Collection edited!", JOptionPane.PLAIN_MESSAGE);
+                stage = (Stage) edit_collections_submit_btn.getScene().getWindow();
+                loader = new FXMLLoader(getClass().getResource("collections.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
             }
 
         }
@@ -230,7 +241,6 @@ public class CollectionsEditController extends Controller implements  Initializa
 
     public boolean checkFields() {
         String client_name = edit_collections_client.getValue();
-        String amount = edit_collections_amount_tf.getText();
         String bank = edit_collections_bank_tf.getText();
         String c_no = edit_collections_checkNum_tf.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -244,20 +254,18 @@ public class CollectionsEditController extends Controller implements  Initializa
             return false;
         }
         // check empty fields
-        else if (client_name.trim().equals("") || amount.trim().equals("") ||
-                bank.trim().equals("") || c_no.trim().equals("")
+        else if (client_name.trim().equals("") || bank.trim().equals("") || c_no.trim().equals("")
                 || c_date.trim().equals("") || total.trim().equals("")) {
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
-        if (!c_no.matches("[0-9]+") ||
-                !amount.matches("[0-9]+.[0-9]++") || !total.matches("[0-9]+.[0-9]++")) {
+        if (!c_no.matches("[0-9]+") || !total.matches("[0-9]+.[0-9]++")) {
             JOptionPane.showMessageDialog(null, "Bill Number, Pumpcrete ID and Check Number fields must only contain whole numbers\n" +
                     "Amount and Total Amount fields must only be in the format of a whole number with decimal values", "Invalid Number Inputs", 2);
             return false;
         }
 
-        if (!(c_no.equals(c.get(0).getCheck_number()) || postgresql.isUniqueCheckNo(Controller.con, Long.parseLong(c_no)))){
+        if (!(c_no.equals(String.valueOf(c.get(0).getCheck_number())) || postgresql.isUniqueCheckNo(Controller.con, Long.parseLong(c_no)))){
             JOptionPane.showMessageDialog(null, "Check number already exists! Please try again.", "Unique Check Number Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }

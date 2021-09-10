@@ -142,7 +142,8 @@ public class CollectionsCreateController extends Controller implements  Initiali
                 postgresql.addCollection(Controller.con, date, client_name, bill_no, false,
                         total, bank, c_no, c_date);
 
-                JOptionPane.showMessageDialog(null, "Successfully added Collection for "+client_name, "Collection added!", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Successfully added Collection for "+client_name+
+                        "\nCollection no: "+create_pr_number_tf.getText().trim(), "Collection added!", JOptionPane.PLAIN_MESSAGE);
                 stage = (Stage) create_collections_submit_btn.getScene().getWindow();
                 loader = new FXMLLoader(getClass().getResource("collections.fxml"));
                 root = loader.load();
