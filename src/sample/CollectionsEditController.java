@@ -90,6 +90,7 @@ public class CollectionsEditController extends Controller implements  Initializa
     private ObservableList<Collection> c;
     private ObservableList<String> names;
     private Long selectedBill;
+    private ObservableList<Long> billnospostgresql;
 
                   //  edit_collections_added_bills_tb.getItems().removeAll(edit_collections_added_bills_tb.getSelectionModel().getSelectedItems());
 
@@ -102,7 +103,7 @@ public class CollectionsEditController extends Controller implements  Initializa
         this.names = FXCollections.observableArrayList();
         this.names.add(c.get(0).getClient_name());
 
-        ObservableList<Long> billnospostgresql = postgresql.getBillNosByName(Controller.con, c.get(0).getClient_name());
+        billnospostgresql = postgresql.getBillNosByName(Controller.con, c.get(0).getClient_name());
         edit_collections_billings.setItems(billnospostgresql);
 
         edit_collections_client.setItems(names);
@@ -187,7 +188,7 @@ public class CollectionsEditController extends Controller implements  Initializa
 
         if (e.getSource() == edit_collections_add_bill_btn) {
             long id = edit_collections_billings.getValue();
-            if (updated_bills.indexOf(String.valueOf(id)) >= 0) {
+            if (updated_bills.indexOf(String.valueOf(id)) < 0) {
                 this.updated_bills.add(String.valueOf(id));
                 float total = 0;
 
@@ -199,7 +200,7 @@ public class CollectionsEditController extends Controller implements  Initializa
                 edit_collections_added_bills_tb.setItems(b);
 
                 tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
-                tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("psc_id"));
+                tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("PSC_id"));
                 tb_billing_total.setCellValueFactory(new PropertyValueFactory<Billing, Float>("total"));
 
                 edit_collections_total_tf.setText(String.valueOf(total));
@@ -219,13 +220,18 @@ public class CollectionsEditController extends Controller implements  Initializa
                 for(int i=0; i<b.size(); i++) {
                     this.updated_bills.remove(this.updated_bills.indexOf(String.valueOf(b.get(i).getBill_no())));
                     postgresql.setBillingPayment(Controller.con, b.get(i).getBill_no(), false);
-                    float total = 0;
 
+                    billnospostgresql.add(b.get(i).getBill_no());
+                    edit_collections_billings.setItems(billnospostgresql);
+
+                    float total = 0;
                     ObservableList<Billing> blist = FXCollections.observableArrayList();
                     for (i = 0; i < this.updated_bills.size(); i++) {
                         blist.add(postgresql.getBilling(Controller.con, Long.parseLong(updated_bills.get(i))));
                         total += blist.get(i).getTotal();
                     }
+
+
                     edit_collections_added_bills_tb.setItems(blist);
 
                     tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));

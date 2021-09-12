@@ -168,7 +168,6 @@ public class CollectionsCreateController extends Controller implements  Initiali
         if (e.getSource() == create_collections_add_bill_btn) {
             long id = create_collections_billings.getValue();
             if (added_bills.indexOf(id) < 0) {
-                System.out.println(id);
                 this.added_bills.add(id);
                 float total = 0;
 
@@ -182,7 +181,6 @@ public class CollectionsCreateController extends Controller implements  Initiali
                 tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
                 tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("PSC_id"));
                 tb_billing_total.setCellValueFactory(new PropertyValueFactory<Billing, Float>("total"));
-                tb_billing_total.setEditable(false);
 
                 create_collections_total_tf.setText(String.valueOf(total));
             }else {
@@ -201,6 +199,22 @@ public class CollectionsCreateController extends Controller implements  Initiali
                 for(int i=0; i<b.size(); i++) {
                     this.added_bills.remove(this.added_bills.indexOf(b.get(i).getBill_no()));
                     create_collections_added_bills_tb.getItems().removeAll(create_collections_added_bills_tb.getSelectionModel().getSelectedItems());
+
+                    float total = 0;
+
+                    ObservableList<Billing> blist = FXCollections.observableArrayList();
+                    for (i = 0; i < this.added_bills.size(); i++) {
+                        blist.add(postgresql.getBilling(Controller.con, Long.parseLong(String.valueOf(added_bills.get(i)))));
+                        total += blist.get(i).getTotal();
+                    }
+                    create_collections_added_bills_tb.setItems(blist);
+
+                    tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
+                    tb_PSC_id.setCellValueFactory(new PropertyValueFactory<Billing, Long>("PSC_id"));
+                    tb_billing_total.setCellValueFactory(new PropertyValueFactory<Billing, Float>("total"));
+                    tb_billing_total.setEditable(false);
+
+                    create_collections_total_tf.setText(String.valueOf(total));
                 }
             }
         }
