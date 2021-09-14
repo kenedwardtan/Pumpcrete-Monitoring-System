@@ -146,21 +146,25 @@ public class CollectionsController extends Controller implements Initializable {
         }
 
         if(e.getSource() == collections_post_btn) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Post selected item?", ButtonType.YES, ButtonType.NO);
-            alert.showAndWait();
-            if(alert.getResult() == ButtonType.YES) {
-                ObservableList<Collection> col = FXCollections.observableArrayList();
-                col = collections_tb.getSelectionModel().getSelectedItems();
-                postgresql.postCollection(Controller.con, col.get(0).getCollection_no(), postgresql.getCurrUser(Controller.con),
-                        col.get(0).getClient_name(), String.valueOf(LocalDate.now()));
+            ObservableList<Collection> col = FXCollections.observableArrayList();
+            col = collections_tb.getSelectionModel().getSelectedItems();
+            if (col.get(0).getPosted() == false){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Post selected item?", ButtonType.YES, ButtonType.NO);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    postgresql.postCollection(Controller.con, col.get(0).getCollection_no(), postgresql.getCurrUser(Controller.con),
+                            col.get(0).getClient_name(), String.valueOf(LocalDate.now()));
+                }
+                stage = (Stage) collections_tb.getScene().getWindow();
+                loader = new FXMLLoader(getClass().getResource("collections.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
+            } else{
+                JOptionPane.showMessageDialog(null, "This collection has already been posted!", "Posting of collection failed.", JOptionPane.ERROR_MESSAGE);
             }
-            stage = (Stage) collections_tb.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("collections.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
         }
 
         //back to dashboard

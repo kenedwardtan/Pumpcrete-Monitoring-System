@@ -42,18 +42,23 @@
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-        <ImageView fx:id="billings_2img" fitHeight="26.0" fitWidth="220.0" layoutX="423.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="billings_2img" fitHeight="26.0" fitWidth="220.0" layoutX="420.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
                 <Image url="@resources/img/billings/editBtn.png" />
             </image>
 
         </ImageView>
-        <Button fx:id="billings_edit_btn" layoutX="423.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false">
+      <ImageView fx:id="billings_3img" fitHeight="26.0" fitWidth="220.0" layoutX="420.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@resources/img/postBtn.png" />
+         </image>
+      </ImageView>
+        <Button fx:id="billings_edit_btn" layoutX="421.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
         </Button>
-        <Button fx:id="billings_post_btn" layoutX="490.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Post" visible="false">
+        <Button fx:id="billings_post_btn" layoutX="421.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Post" visible="false">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>

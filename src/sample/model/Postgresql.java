@@ -1098,7 +1098,7 @@ public class Postgresql {
 
     public ObservableList getAllCollections(Connection con) {
         ObservableList<Collection> c = FXCollections.observableArrayList();
-        String query = "SELECT * FROM collections";
+        String query = "SELECT * FROM collections ORDER BY collection_no";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();

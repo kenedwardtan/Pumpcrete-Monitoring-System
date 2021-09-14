@@ -28,14 +28,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
         </TableView>
-      <TableView fx:id="clients_details_tb" layoutX="87.0" layoutY="575.0" prefHeight="53.0" prefWidth="718.0">
+      <TableView fx:id="clients_details_tb" layoutX="87.0" layoutY="575.0" prefHeight="72.0" prefWidth="718.0">
          <columns>
             <TableColumn fx:id="IDColumn1" prefWidth="56.0" text="ID" />
             <TableColumn fx:id="nameColumn1" prefWidth="125.0" text="Name" />
             <TableColumn fx:id="addressColumn1" minWidth="2.0" prefWidth="166.0" text="Address" />
             <TableColumn fx:id="landlineColumn1" minWidth="2.0" prefWidth="114.0" text="Landline" />
             <TableColumn fx:id="cellphoneColumn1" minWidth="2.0" prefWidth="130.0" text="Cellphone" />
-            <TableColumn fx:id="emailColumn1" minWidth="2.0" prefWidth="121.0" text="Email" />
+            <TableColumn fx:id="emailColumn1" minWidth="2.0" prefWidth="110.0" text="Email" />
          </columns>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -53,12 +53,13 @@
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-        <ImageView fx:id="clients_2img" fitHeight="26.0" fitWidth="220.0" layoutX="385.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="clients_2img" fitHeight="26.0" fitWidth="220.0" layoutX="340.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
                 <Image url="@resources/img/clients/soa.png" />
             </image>
         </ImageView>
-        <Button fx:id="clients_remove_btn" layoutX="385.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="20.0" prefWidth="65.0" text="Button" visible="false" />
-        <Button fx:id="clients_edit_btn" layoutX="461.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false" />
+        <Button fx:id="clients_remove_btn" layoutX="340.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="31.0" prefWidth="52.0" text="Button" visible="false" />
+        <Button fx:id="clients_edit_btn" layoutX="402.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="18.0" prefWidth="35.0" text="Button" visible="false" />
+      <Button fx:id="clients_soa_btn" layoutX="453.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="11.0" prefWidth="106.0" text="Button" visible="false" />
     </children>
 </AnchorPane>

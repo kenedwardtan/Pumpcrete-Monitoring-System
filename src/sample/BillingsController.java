@@ -171,21 +171,25 @@ public class BillingsController extends Controller implements Initializable {
                 }
             }
             if (e.getSource() == billings_post_btn){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Post selected item?", ButtonType.YES, ButtonType.NO);
-                alert.showAndWait();
-                if(alert.getResult() == ButtonType.YES) {
-                    ObservableList<Billing> b = FXCollections.observableArrayList();
-                    b = billings_tb.getSelectionModel().getSelectedItems();
-                    postgresql.postBilling(Controller.con, b.get(0).getBill_no(), postgresql.getCurrUser(Controller.con),
-                            b.get(0).getClient_name(), String.valueOf(b.get(0).getDate_doc()));
+                ObservableList<Billing> b = FXCollections.observableArrayList();
+                b = billings_tb.getSelectionModel().getSelectedItems();
+                if (b.get(0).getPosted() == false) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Post selected item?", ButtonType.YES, ButtonType.NO);
+                    alert.showAndWait();
+                    if (alert.getResult() == ButtonType.YES) {
+                        postgresql.postBilling(Controller.con, b.get(0).getBill_no(), postgresql.getCurrUser(Controller.con),
+                                b.get(0).getClient_name(), String.valueOf(b.get(0).getDate_doc()));
+                    }
+                    stage = (Stage) billings_post_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("billings.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                } else{
+                    JOptionPane.showMessageDialog(null, "This billing has already been posted!", "Posting of billing failed.", JOptionPane.ERROR_MESSAGE);
                 }
-                stage = (Stage) billings_post_btn.getScene().getWindow();
-                loader = new FXMLLoader(getClass().getResource("billings.fxml"));
-                root = loader.load();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setResizable(false);
-                stage.show();
             }
 
     }
