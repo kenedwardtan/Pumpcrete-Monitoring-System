@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ClientsController">
+    <children>
+        <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@resources/img/clients/soa_view.png" />
+            </image>
+        </ImageView>
+        <Label layoutX="260.0" layoutY="218.0" text="Name">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label fx:id="client_name_lbl" layoutX="261.0" layoutY="228.0" text="Juan Dela Cruz">
+            <font>
+                <Font name="Work Sans Medium" size="22.0" />
+            </font>
+        </Label>
+        <Label layoutX="262.0" layoutY="262.0" text="Project">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label fx:id="project_lbl" layoutX="264.0" layoutY="272.0" text="Project">
+            <font>
+                <Font name="Work Sans Medium" size="22.0" />
+            </font>
+        </Label>
+        <Label layoutX="262.0" layoutY="335.0" text="Amount">
+            <font>
+                <Font name="Work Sans Regular" size="10.0" />
+            </font>
+        </Label>
+        <Label fx:id="amount_lbl" layoutX="264.0" layoutY="346.0" text="100,000">
+            <font>
+                <Font name="Work Sans Medium" size="22.0" />
+            </font>
+        </Label>
+      <Label layoutX="266.0" layoutY="169.0" text="Date of Pouring">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="date_lbl" layoutX="267.0" layoutY="179.0" text="September 10, 2021 - December 10, 2021">
+         <font>
+            <Font name="Work Sans Medium" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="575.0" layoutY="218.0" text="Bill Number">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="billnum_lbl" layoutX="577.0" layoutY="228.0" text="123">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="578.0" layoutY="335.0" text="Status of Check">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="status_lbl" layoutX="580.0" layoutY="346.0" text="Hi">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="579.0" layoutY="393.0" text="CM Number">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="cmnum_lbl" layoutX="579.0" layoutY="404.0" text="123">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="574.0" layoutY="260.0" text="PR Number">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="prnum_lbl" layoutX="576.0" layoutY="270.0" text="123">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="260.0" layoutY="389.0" text="Amount Paid">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="paid_lbl" layoutX="262.0" layoutY="400.0" text="100,000">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="262.0" layoutY="444.0" text="Balance">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="balance_lbl" layoutX="264.0" layoutY="455.0" text="100,000">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="261.0" layoutY="502.0" text="Overpaid">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="overpaid_lbl" layoutX="263.0" layoutY="513.0" text="100,000">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="261.0" layoutY="552.0" text="Total Balance">
+         <font>
+            <Font name="Work Sans Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="total_lbl" layoutX="263.0" layoutY="563.0" text="100,000">
+         <font>
+            <Font name="Work Sans Medium" size="22.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

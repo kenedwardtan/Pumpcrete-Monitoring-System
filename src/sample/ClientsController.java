@@ -78,6 +78,31 @@ public class ClientsController extends Controller implements Initializable {
     private Button clients_edit_btn;
 
     @FXML
+    private Label date_lbl;
+    @FXML
+    private Label name_lbl;
+    @FXML
+    private Label project_lbl;
+    @FXML
+    private Label billnum_lbl;
+    @FXML
+    private Label prnum_lbl;
+    @FXML
+    private Label amount_lbl;
+    @FXML
+    private Label status_lbl;
+    @FXML
+    private Label cmnum_lbl;
+    @FXML
+    private Label paid_lbl;
+    @FXML
+    private Label balance_lbl;
+    @FXML
+    private Label overpaid_lbl;
+    @FXML
+    private Label total_lbl;
+
+    @FXML
     private ImageView clients_2img;
 
     @FXML

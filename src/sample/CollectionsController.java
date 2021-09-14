@@ -84,6 +84,8 @@ public class CollectionsController extends Controller implements Initializable {
 
     @FXML
     private ImageView collections_2img;
+    @FXML
+    private ImageView collections_3img;
 
     @FXML
     private JOptionPane optionPane;
@@ -222,11 +224,17 @@ public class CollectionsController extends Controller implements Initializable {
                 checkDateColumn.setCellValueFactory(new PropertyValueFactory<>("check_date"));
                 collections_tb1.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-                if (postgresql.getRole(Controller.con).equals("Supervisor")){
+                if (postgresql.getRole(Controller.con).equals("Supervisor")) {
                     collections_post_btn.setVisible(true);
+                    collections_3img.setVisible(true);
+
                 }
-                collections_2img.setVisible(true);
-                collections_edit_btn.setVisible(true);
+
+                if (postgresql.getRole(Controller.con).equals("Staff")) {
+                    collections_2img.setVisible(true);
+                    collections_edit_btn.setVisible(true);
+                }
+
                 System.out.println(postgresql.getRole(Controller.con));
 
             }
@@ -235,8 +243,16 @@ public class CollectionsController extends Controller implements Initializable {
         collections_tb.setOnMouseExited((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(collections_tb.getSelectionModel().getSelectedItem()); //test
-                collections_2img.setVisible(false);
-                collections_edit_btn.setVisible(false);
+
+                if (postgresql.getRole(Controller.con).equals("Staff")) {
+                    collections_2img.setVisible(false);
+                    collections_edit_btn.setVisible(false);
+                }
+
+                if (postgresql.getRole(Controller.con).equals("Supervisor")) {
+                    collections_post_btn.setVisible(false);
+                    collections_3img.setVisible(false);
+                }
             }
         });
     }

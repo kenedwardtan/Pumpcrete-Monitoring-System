@@ -61,6 +61,8 @@ public class BillingsController extends Controller implements Initializable {
 
     @FXML
     private ImageView billings_2img;
+    @FXML
+    private ImageView billings_3img;
 
     @FXML
     private JOptionPane optionPane;
@@ -194,19 +196,34 @@ public class BillingsController extends Controller implements Initializable {
         billings_tb.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 Billing b = (Billing) billings_tb.getSelectionModel().getSelectedItem();
-                if (postgresql.getRole(Controller.con).equals("Supervisor")){
+
+                if (postgresql.getRole(Controller.con).equals("Supervisor")) {
                     billings_post_btn.setVisible(true);
+                    billings_3img.setVisible(true);
+
                 }
-                billings_2img.setVisible(true);
-                billings_edit_btn.setVisible(true);
+
+                if (postgresql.getRole(Controller.con).equals("Staff")) {
+                    billings_2img.setVisible(true);
+                    billings_edit_btn.setVisible(true);
+                }
             }
         });
 
         billings_tb.setOnMouseExited((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 System.out.println(billings_tb.getSelectionModel().getSelectedItem()); //test
-                billings_2img.setVisible(false);
-                billings_edit_btn.setVisible(false);
+
+                if (postgresql.getRole(Controller.con).equals("Staff")) {
+                    billings_2img.setVisible(false);
+                    billings_edit_btn.setVisible(false);
+                }
+
+                if (postgresql.getRole(Controller.con).equals("Supervisor")) {
+                    billings_post_btn.setVisible(false);
+                    billings_3img.setVisible(false);
+
+                }
             }
         });
     }

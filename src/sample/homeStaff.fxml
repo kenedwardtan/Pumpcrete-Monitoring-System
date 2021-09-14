@@ -8,6 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Label?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.StaffHomeController">
    <children>
       <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
@@ -56,5 +57,15 @@
             <Font name="CeraPro-Bold" size="35.0" />
          </font>
       </Text>
+      <Label fx:id="active_clients" alignment="CENTER" layoutX="262.0" layoutY="126.0" prefHeight="88.0" prefWidth="253.0" text="10" textFill="#437fee" wrapText="true">
+         <font>
+            <Font name="Work Sans Black" size="73.0" />
+         </font>
+      </Label>
+      <Label fx:id="available_pump" alignment="CENTER" layoutX="544.0" layoutY="122.0" prefHeight="88.0" prefWidth="260.0" text="10" textFill="#437fee" wrapText="true">
+         <font>
+            <Font name="Work Sans Black" size="73.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

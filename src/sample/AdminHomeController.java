@@ -37,8 +37,6 @@ public class AdminHomeController extends Controller implements Initializable {
     @FXML
     private Button dashboard_btn;
     @FXML
-    private Button reports_btn;
-    @FXML
     private Button clients_btn;
     @FXML
     private Button inventory_btn;
@@ -47,13 +45,14 @@ public class AdminHomeController extends Controller implements Initializable {
     @FXML
     private Button billings_btn;
     @FXML
-    private Button memos_btn;
-    @FXML
     private Button employees_btn;
     @FXML
-    private Button settings_btn;
-    @FXML
     private Button logout_btn;
+
+    @FXML
+    private Label available_pump;
+    @FXML
+    private Label active_clients;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,22 +77,6 @@ public class AdminHomeController extends Controller implements Initializable {
         if (e.getSource() == dashboard_btn) {
             stage = (Stage) dashboard_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("homeStaff.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
-
-        if (e.getSource() == dashboard_master_btn) {
-
-        } else if (e.getSource() == dashboard_transactions_btn) {
-
-        }
-
-        if (e.getSource() == reports_btn) {
-            stage = (Stage) reports_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("reports.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
@@ -141,16 +124,6 @@ public class AdminHomeController extends Controller implements Initializable {
             stage.show();
         }
 
-        if (e.getSource() == memos_btn) {
-            stage = (Stage) memos_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("memos.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
-
         if (e.getSource() == employees_btn) {
             stage = (Stage) employees_btn.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("adminEmployees.fxml"));
@@ -162,24 +135,9 @@ public class AdminHomeController extends Controller implements Initializable {
             stage.show();
         }
 
-        if (e.getSource() == settings_btn) {
-            stage = (Stage) settings_btn.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
-            root = loader.load();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        }
-
         if (e.getSource() == logout_btn) {
             postgresql.endConnection(Controller.con);
 
-//            //Check if user is still there, should print No connected user
-//            String getUser = postgresql.getCurrUser(con);
-//            System.out.println(getUser);
-
-            //put the login form here again hehe
             stage = (Stage) logout_btn.getScene().getWindow();
             loader = new FXMLLoader(getClass().getResource("login.fxml"));
             root = loader.load();
