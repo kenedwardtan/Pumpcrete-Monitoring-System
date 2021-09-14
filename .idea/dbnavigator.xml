@@ -17,7 +17,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="UTF-8" />
+      <charset value="windows-1252" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -27,13 +27,13 @@
     <loaded-nodes>
       <connection connection-id="2ce5958c-d1ad-4965-b63c-54001e1736b4">
         <schema name="pg_catalog" object-types="table, view, function" />
-        <schema name="public" object-types="table, view, sequence, function, constraint, index, column, dataset trigger" />
+        <schema name="public" object-types="table, view, function, column" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="2ce5958c-d1ad-4965-b63c-54001e1736b4">
-      <console name="Pumpcrete" type="STANDARD" schema="public" session="Main">update billings set in_payments = true where bill_no = 12 or bill_no = 14</console>
+      <console name="Pumpcrete" type="STANDARD" schema="public" session="Main"><![CDATA[select * from billings]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

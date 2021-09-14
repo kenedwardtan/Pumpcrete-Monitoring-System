@@ -56,6 +56,9 @@ public class StaffHomeController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        postgresql = new Postgresql();
+        active_clients.setText(String.valueOf(postgresql.getAllClients(Controller.con).size()));
+        available_pump.setText(String.valueOf(postgresql.getAllinventory(Controller.con).size()));
         dashboard_name_txt.setText(postgresql.getCurrUser(Controller.con));
     }
 

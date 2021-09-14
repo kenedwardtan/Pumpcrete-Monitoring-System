@@ -92,7 +92,11 @@ public class CollectionsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         postgresql = new Postgresql();
+        if(postgresql.getRole(Controller.con).trim().equals("Supervisor")){
+            collections_create_btn.setVisible(false);
+        }
 
         collections_tb.setItems(postgresql.getAllCollections(Controller.con));
 
@@ -106,7 +110,6 @@ public class CollectionsController extends Controller implements Initializable {
         editedColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
         postedByColumn.setCellValueFactory(new PropertyValueFactory<>("posted_by"));
         collections_tb.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
 
     }
 

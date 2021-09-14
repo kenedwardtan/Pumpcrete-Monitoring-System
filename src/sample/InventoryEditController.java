@@ -85,7 +85,7 @@ public class InventoryEditController extends Controller implements Initializable
                 long cr = Long.parseLong(edit_inventory_cr_tf.getText());
                 long or = Long.parseLong(edit_inventory_or_tf.getText());
 
-                if ((plate.equals(p.get(0).getPlate_no()) || cr == (p.get(0).getCr_no()) || or ==  p.get(0).getOr_no())
+                if ((plate.equals(p.get(0).getPlate_no()) && cr == (p.get(0).getCr_no()) && or ==  p.get(0).getOr_no())
                         || !postgresql.checkPumpcrete(Controller.con, plate, cr, or)) {
                     System.out.println(date);
 

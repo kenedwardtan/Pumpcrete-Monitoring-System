@@ -71,6 +71,10 @@ public class BillingsController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         postgresql = new Postgresql();
 
+        if(postgresql.getRole(Controller.con).trim().equals("Supervisor")){
+            billings_create_btn.setVisible(false);
+        }
+
         billings_tb.setItems(postgresql.getAllBillings(Controller.con));
 
         billNumColumn.setCellValueFactory(new PropertyValueFactory<>("bill_no"));
