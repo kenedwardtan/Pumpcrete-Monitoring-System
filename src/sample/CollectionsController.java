@@ -79,6 +79,8 @@ public class CollectionsController extends Controller implements Initializable {
     private Button collections_back_btn;
     @FXML
     private Button collections_edit_btn;
+    @FXML
+    private Button collections_post_btn;
 
     @FXML
     private ImageView collections_2img;
@@ -113,12 +115,27 @@ public class CollectionsController extends Controller implements Initializable {
 
         //edit
         if (e.getSource() == collections_edit_btn) {
-            //ObservableList<Billing> b = FXCollections.observableArrayList();
-            //b = collections_tb.getSelectionModel().getSelectedItems();
+            ObservableList<Collection> col = FXCollections.observableArrayList();
+            col = collections_tb.getSelectionModel().getSelectedItems();
             //this.editBilling = b.get(0).bill_no.get();
+            if (col.get(0).getPosted() == false) {
+                stage = (Stage) collections_edit_btn.getScene().getWindow();
+                loader = new FXMLLoader(getClass().getResource("collectionsEdit.fxml"));
+                root = loader.load();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
+            }else{
+                JOptionPane.showMessageDialog(null,"Collection is already posted and cannot be edited!",
+                        "Collection not editable", JOptionPane.ERROR_MESSAGE);
+            }
+        }
 
-            stage = (Stage) collections_edit_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("collectionsEdit.fxml"));
+        //add collection/payment
+        if (e.getSource() == collections_create_btn) {
+            stage = (Stage) collections_create_btn.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("collectionsCreate.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
@@ -126,10 +143,17 @@ public class CollectionsController extends Controller implements Initializable {
             stage.show();
         }
 
-        //add collection/payment
-        if (e.getSource() == collections_create_btn) {
-            stage = (Stage) collections_create_btn.getScene().getWindow();
-            loader = new FXMLLoader(getClass().getResource("collectionsCreate.fxml"));
+        if(e.getSource() == collections_post_btn) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Post selected item?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
+            if(alert.getResult() == ButtonType.YES) {
+                ObservableList<Collection> col = FXCollections.observableArrayList();
+                col = collections_tb.getSelectionModel().getSelectedItems();
+                postgresql.postCollection(Controller.con, col.get(0).getCollection_no(), postgresql.getCurrUser(Controller.con),
+                        col.get(0).getClient_name(), String.valueOf(LocalDate.now()));
+            }
+            stage = (Stage) collections_tb.getScene().getWindow();
+            loader = new FXMLLoader(getClass().getResource("collections.fxml"));
             root = loader.load();
             scene = new Scene(root);
             stage.setScene(scene);
@@ -198,8 +222,13 @@ public class CollectionsController extends Controller implements Initializable {
                 checkDateColumn.setCellValueFactory(new PropertyValueFactory<>("check_date"));
                 collections_tb1.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+                if (postgresql.getRole(Controller.con).equals("Supervisor")){
+                    collections_post_btn.setVisible(true);
+                }
                 collections_2img.setVisible(true);
                 collections_edit_btn.setVisible(true);
+                System.out.println(postgresql.getRole(Controller.con));
+
             }
         });
 

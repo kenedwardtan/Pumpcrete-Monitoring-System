@@ -124,6 +124,7 @@ public class CollectionsEditController extends Controller implements  Initializa
             b.add(postgresql.getBilling(Controller.con, Long.parseLong(c.get(0).getBilling_id().get(i))));
             orig_bills.add(c.get(0).getBilling_id().get(i));
         }
+        edit_pr_number_tf.setEditable(false);
         updated_bills = orig_bills;
         edit_collections_added_bills_tb.setItems(b);
         tb_bill_no_column.setCellValueFactory(new PropertyValueFactory<Billing, Long>("bill_no"));
@@ -135,42 +136,44 @@ public class CollectionsEditController extends Controller implements  Initializa
     private void handleAction(ActionEvent e) throws IOException, SQLException {
         postgresql = new Postgresql();
         if (e.getSource() == edit_collections_submit_btn) {
-            if (checkFields() || postgresql.isUniqueCheckNo(Controller.con,Long.parseLong(edit_collections_checkNum_tf.getText().trim()))) {
-                String client_name = edit_collections_client.getValue();
-                String bill_no = "";
-                for(int i=0; i<this.orig_bills.size(); i++){
-                    if(updated_bills.indexOf(orig_bills.get(i)) <= 0)
-                        postgresql.setBillingPayment(Controller.con, Long.parseLong(orig_bills.get(i)),false);
-                }
-                for(int i=0; i<this.updated_bills.size(); i++){
-                    if(orig_bills.indexOf(updated_bills.get(i)) <= 0)
-                        postgresql.setBillingPayment(Controller.con, Long.parseLong(updated_bills.get(i)), true);
-                }
-                for(int i=0; i<this.updated_bills.size(); i++){
-                    if(i != this.updated_bills.size()-1) {
-                        bill_no += (updated_bills.get(i) + ",");
+            if (checkFields()){
+                if(Integer.parseInt(edit_collections_checkNum_tf.getText().trim()) == this.c.get(0).getCheck_number()
+                || postgresql.isUniqueCheckNo(Controller.con,Long.parseLong(edit_collections_checkNum_tf.getText().trim()))) {
+                    String client_name = edit_collections_client.getValue();
+                    String bill_no = "";
+                    for (int i = 0; i < this.orig_bills.size(); i++) {
+                        if (updated_bills.indexOf(orig_bills.get(i)) <= 0)
+                            postgresql.setBillingPayment(Controller.con, Long.parseLong(orig_bills.get(i)), false);
                     }
-                    else {
-                        bill_no += updated_bills.get(i);
+                    for (int i = 0; i < this.updated_bills.size(); i++) {
+                        if (orig_bills.indexOf(updated_bills.get(i)) <= 0)
+                            postgresql.setBillingPayment(Controller.con, Long.parseLong(updated_bills.get(i)), true);
                     }
-                }
-                String bank = edit_collections_bank_tf.getText();
-                long c_no = Long.parseLong(edit_collections_checkNum_tf.getText());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                String date = formatter.format(edit_collections_date.getValue());
-                String c_date = formatter.format(edit_collections_checkDate.getValue());
-                long total = (long) Double.parseDouble(edit_collections_total_tf.getText());
+                    for (int i = 0; i < this.updated_bills.size(); i++) {
+                        if (i != this.updated_bills.size() - 1) {
+                            bill_no += (updated_bills.get(i) + ",");
+                        } else {
+                            bill_no += updated_bills.get(i);
+                        }
+                    }
+                    String bank = edit_collections_bank_tf.getText();
+                    long c_no = Long.parseLong(edit_collections_checkNum_tf.getText());
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String date = formatter.format(edit_collections_date.getValue());
+                    String c_date = formatter.format(edit_collections_checkDate.getValue());
+                    long total = (long) Double.parseDouble(edit_collections_total_tf.getText());
 
-                postgresql.editCollection(Controller.con, Long.parseLong(edit_pr_number_tf.getText().trim())
-                        ,date, client_name, bill_no, total, bank, c_no, c_date);
-                JOptionPane.showMessageDialog(null, "Successfully edited Collection for "+client_name, "Collection edited!", JOptionPane.PLAIN_MESSAGE);
-                stage = (Stage) edit_collections_submit_btn.getScene().getWindow();
-                loader = new FXMLLoader(getClass().getResource("collections.fxml"));
-                root = loader.load();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setResizable(false);
-                stage.show();
+                    postgresql.editCollection(Controller.con, Long.parseLong(edit_pr_number_tf.getText().trim())
+                            , date, client_name, bill_no, total, bank, c_no, c_date);
+                    JOptionPane.showMessageDialog(null, "Successfully edited Collection for " + client_name, "Collection edited!", JOptionPane.PLAIN_MESSAGE);
+                    stage = (Stage) edit_collections_submit_btn.getScene().getWindow();
+                    loader = new FXMLLoader(getClass().getResource("collections.fxml"));
+                    root = loader.load();
+                    scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                }
             }
 
         }
@@ -221,7 +224,8 @@ public class CollectionsEditController extends Controller implements  Initializa
                     this.updated_bills.remove(this.updated_bills.indexOf(String.valueOf(b.get(i).getBill_no())));
                     postgresql.setBillingPayment(Controller.con, b.get(i).getBill_no(), false);
 
-                    billnospostgresql.add(b.get(i).getBill_no());
+                    if(billnospostgresql.indexOf(b.get(i).getBill_no()) < 0)
+                        billnospostgresql.add(b.get(i).getBill_no());
                     edit_collections_billings.setItems(billnospostgresql);
 
                     float total = 0;
@@ -265,6 +269,11 @@ public class CollectionsEditController extends Controller implements  Initializa
             JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty", "Empty Fields", 2);
             return false;
         }
+        else if (updated_bills.size() == 0){
+            JOptionPane.showMessageDialog(null, "Cannot save collections without any billings!", "No bills added", 2);
+            return false;
+        }
+
         if (!c_no.matches("[0-9]+") || !total.matches("[0-9]+.[0-9]++")) {
             JOptionPane.showMessageDialog(null, "Bill Number, Pumpcrete ID and Check Number fields must only contain whole numbers\n" +
                     "Amount and Total Amount fields must only be in the format of a whole number with decimal values", "Invalid Number Inputs", 2);

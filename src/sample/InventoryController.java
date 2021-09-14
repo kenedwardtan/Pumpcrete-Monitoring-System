@@ -121,11 +121,17 @@ public class InventoryController extends Controller implements Initializable {
             ObservableList<Pumpcrete> p = FXCollections.observableArrayList();
             p = inventory_tb.getSelectionModel().getSelectedItems();
             int i = 0;
-            while (i < p.size()) {
-                postgresql.deletePumpcrete(Controller.con, p.get(i++).getId());
-            }
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to delete selected items?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
 
-            inventory_tb.getItems().removeAll(inventory_tb.getSelectionModel().getSelectedItems());
+            if (alert.getResult() == ButtonType.YES) {
+                while (i < p.size()) {
+                    postgresql.deletePumpcrete(Controller.con, p.get(i++).getId());
+                }
+
+                inventory_tb.getItems().removeAll(inventory_tb.getSelectionModel().getSelectedItems());
+
+            }
         }
 
         //add billing
@@ -196,7 +202,7 @@ public class InventoryController extends Controller implements Initializable {
                 inventory_delete_btn.setVisible(true);
 
                 inventory_tb1.setItems(inventory_tb.getSelectionModel().getSelectedItems());
-                p_idColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("pumpcrete_id"));
+                p_idColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, Long>("id"));
                 descColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String >("description"));
                 plateColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("plate_no"));
                 fuelColumn1.setCellValueFactory(new PropertyValueFactory<Pumpcrete, String>("fuel_type"));

@@ -48,7 +48,12 @@
         </ImageView>
         <Button fx:id="collections_edit_btn" layoutX="423.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="27.0" prefWidth="46.0" text="Button" visible="false">
         </Button>
-      <TableView fx:id="collections_tb1" layoutX="87.0" layoutY="555.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="66.0" prefWidth="718.0">
+        <Button fx:id="collections_post_btn" layoutX="490.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleAction" prefHeight="27.0" opacity="0.0" prefWidth="46.0" text="Post" visible="false">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+        <TableView fx:id="collections_tb1" layoutX="87.0" layoutY="555.0" onMouseClicked="#handleMouseAction" onMouseExited="#handleMouseAction" prefHeight="66.0" prefWidth="718.0">
          <columns>
             <TableColumn fx:id="clientNameColumn1" prefWidth="142.66665649414062" text="Client Name" />
             <!--<TableColumn fx:id="amountColumn1" prefWidth="90.33334350585938" text="Amount" />-->

@@ -33,7 +33,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="2ce5958c-d1ad-4965-b63c-54001e1736b4">
-      <console name="Pumpcrete" type="STANDARD" schema="public" session="Main"><![CDATA[select * from collections]]></console>
+      <console name="Pumpcrete" type="STANDARD" schema="public" session="Main"><![CDATA[update billings set in_payments = true where bill_no = 12 or bill_no = 14]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

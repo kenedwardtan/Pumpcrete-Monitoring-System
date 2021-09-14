@@ -1265,6 +1265,38 @@ public class Postgresql {
             }
     }
 
+    public void postCollection(Connection connection, long id, String posted_by, String name, String date) {
+        ObservableList<Client> c = FXCollections.observableArrayList();
+
+        String query = "UPDATE collections SET posted = ?, posted_by = ? WHERE collection_no = ?";
+        String query2 = "SELECT CONCAT(client_first_name,' ',client_last_name) as fullname, client_id FROM client";
+        String url = "jdbc:postgresql:Pumpcrete";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setBoolean(1, true);
+            ps.setString(2, posted_by);
+            ps.setLong(3, id);
+
+            ps.executeUpdate();
+
+            PreparedStatement p = connection.prepareStatement(query2);
+
+            ResultSet r = p.executeQuery();
+            r.next();
+            if (name.equals(r.getString("fullname"))){
+                c.add((this.getClient(connection, r.getLong("client_id")).get(0)));
+                this.updateClientLatestDoc(connection, c.get(0).getFName(),
+                        c.get(0).getLName(), Date.valueOf(date));
+            }
+
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Postgresql.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void updateClientLatestDoc(Connection con, String fname, String lname, Date date) {
         String query = "UPDATE client SET latest_doc_date = ? WHERE client_first_name = ? AND client_last_name = ?";
         String url = "jdbc:postgresql:Pumpcrete";
