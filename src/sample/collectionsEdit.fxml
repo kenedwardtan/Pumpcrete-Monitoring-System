@@ -41,6 +41,11 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </ChoiceBox>
+        <Button fx:id="edit_collections_add_bill_btn" layoutX="593.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
         <TextField fx:id="edit_collections_bank_tf" alignment="CENTER" layoutX="222.0" layoutY="445.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="BDO">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
@@ -74,7 +79,7 @@
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
-        <Button fx:id="edit_collections_cancel_btn" layoutX="348.0" layoutY="527.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel">
+        <Button fx:id="edit_collections_cancel_btn" focusTraversable="false" layoutX="348.0" layoutY="527.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
@@ -128,12 +133,7 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </TableView>
-        <Button fx:id="edit_collections_remove_bill_btn" layoutX="593.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-        </Button>
-        <Button fx:id="edit_collections_add_bill_btn" layoutX="593.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
+        <Button fx:id="edit_collections_remove_bill_btn" focusTraversable="false" layoutX="593.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>

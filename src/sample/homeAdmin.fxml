@@ -48,27 +48,19 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="dashboard_master_btn" layoutX="224.0" layoutY="95.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="163.0" prefWidth="302.0" text="Button">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Button fx:id="dashboard_transactions_btn" layoutX="551.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="163.0" prefWidth="309.0" text="Button">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
-      <Text fx:id="dashboard_name_txt" fill="#1b1a1a" layoutX="325.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="dashboard_name_txt" fill="#1b1a1a" layoutX="342.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Joshua">
          <font>
-            <Font name="CeraPro-Bold" size="35.0" />
+            <Font name="Arial Black" size="35.0" />
          </font>
       </Text>
-      <Label fx:id="active_clients" alignment="CENTER" layoutX="262.0" layoutY="126.0" prefHeight="88.0" prefWidth="253.0" text="10" textFill="#437fee" wrapText="true">
+      <Label fx:id="active_clients" alignment="CENTER" layoutX="262.0" layoutY="122.0" prefHeight="90.0" prefWidth="254.0" text="10" textFill="#437fee" wrapText="true">
          <font>
-            <Font name="Work Sans Black" size="73.0" />
+            <Font name="Impact" size="73.0" />
          </font>
       </Label>
-      <Label fx:id="available_pump" alignment="CENTER" layoutX="544.0" layoutY="122.0" prefHeight="88.0" prefWidth="260.0" text="10" textFill="#437fee" wrapText="true">
+      <Label fx:id="available_pump" alignment="CENTER" layoutX="544.0" layoutY="119.0" prefHeight="88.0" prefWidth="260.0" text="10" textFill="#437fee" wrapText="true">
          <font>
-            <Font name="Work Sans Black" size="73.0" />
+            <Font name="Impact" size="73.0" />
          </font>
       </Label>
     </children>
