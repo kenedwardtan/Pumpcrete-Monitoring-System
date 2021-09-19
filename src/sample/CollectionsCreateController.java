@@ -246,7 +246,6 @@ public class CollectionsCreateController extends Controller implements  Initiali
             return false;
         }
         if (!postgresql.isUniqueCheckNo(Controller.con, Long.parseLong(c_no))){
-            JOptionPane.showMessageDialog(null, "Check number already exists! Please try again.", "Unique Check Number Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 

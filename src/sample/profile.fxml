@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EmployeesEditController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ProfileController">
     <children>
         <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@resources/img/profile.png" />
             </image>
         </ImageView>
-      <Label layoutX="334.0" layoutY="38.0" text="&lt;username&gt;'s Profile" textFill="#fffdfd">
+      <Label fx:id="big_name" layoutX="334.0" layoutY="38.0" text="&lt;username&gt;'s Profile" textFill="#fffdfd">
          <font>
             <Font name="CeraPro-Bold" size="24.0" />
          </font>
       </Label>
-        <Button fx:id="settings_save_btn" layoutX="454.0" layoutY="617.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="68.0" text="Save" visible="false">
+        <Button id="ffff" fx:id="profile_back_btn" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="39.0" text="Button">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
-        <Button fx:id="settings_cancel_btn" layoutX="381.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="61.0" text="Cancel" visible="false">
+        <Button id="dsds" fx:id="settings_save_btn" layoutX="454.0" layoutY="611.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="46.0" prefWidth="70.0" text="Save" visible="false">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Button id="asas" fx:id="settings_cancel_btn" layoutX="381.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="35.0" prefWidth="61.0" text="Cancel" visible="false">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
@@ -69,7 +70,7 @@
             <Font name="Work Sans Medium" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="profile_change_btn" layoutX="353.0" layoutY="514.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="72.0" prefWidth="194.0">
+      <Button id="sadas" fx:id="profile_change_btn" layoutX="353.0" layoutY="514.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="72.0" prefWidth="194.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

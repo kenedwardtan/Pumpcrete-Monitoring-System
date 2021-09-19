@@ -777,11 +777,12 @@ public class Postgresql {
             PreparedStatement p = connection.prepareStatement(query2);
 
             ResultSet r = p.executeQuery();
-            r.next();
-            if (name.equals(r.getString("fullname"))){
-                c.add((this.getClient(connection, r.getLong("client_id")).get(0)));
-                this.updateClientLatestDoc(connection, c.get(0).getFName(),
-                        c.get(0).getLName(), Date.valueOf(date));
+            while(r.next()) {
+                if (name.equals(r.getString("fullname"))) {
+                    c.add((this.getClient(connection, r.getLong("client_id")).get(0)));
+                    this.updateClientLatestDoc(connection, c.get(0).getFName(),
+                            c.get(0).getLName(), Date.valueOf(date));
+                }
             }
 
 
@@ -1280,15 +1281,14 @@ public class Postgresql {
             ps.setLong(3, id);
 
             ps.executeUpdate();
-
             PreparedStatement p = connection.prepareStatement(query2);
-
             ResultSet r = p.executeQuery();
-            r.next();
-            if (name.equals(r.getString("fullname"))){
-                c.add((this.getClient(connection, r.getLong("client_id")).get(0)));
-                this.updateClientLatestDoc(connection, c.get(0).getFName(),
-                        c.get(0).getLName(), Date.valueOf(date));
+            while (r.next()) {
+                if (name.equals(r.getString("fullname"))) {
+                    c.add((this.getClient(connection, r.getLong("client_id")).get(0)));
+                    this.updateClientLatestDoc(connection, c.get(0).getFName(),
+                            c.get(0).getLName(), Date.valueOf(date));
+                }
             }
 
 
