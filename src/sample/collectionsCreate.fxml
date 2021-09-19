@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CollectionsCreateController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="891.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CollectionsCreateController">
     <children>
         <ImageView fitHeight="688.0" fitWidth="891.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -34,6 +41,11 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ChoiceBox>
+      <Button fx:id="create_collections_add_bill_btn" layoutX="593.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
         <TextField fx:id="create_collections_bank_tf" alignment="CENTER" layoutX="222.0" layoutY="445.0" onAction="#handleAction" prefHeight="38.0" prefWidth="220.0" promptText="BDO">
             <font>
                 <Font name="Work Sans Regular" size="13.0" />
@@ -67,7 +79,7 @@
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
-        <Button fx:id="create_collections_cancel_btn" layoutX="349.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel">
+        <Button fx:id="create_collections_cancel_btn" focusTraversable="false" layoutX="349.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="47.0" prefWidth="86.0" text="Cancel">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
@@ -121,12 +133,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </TableView>
-      <Button fx:id="create_collections_remove_bill_btn" layoutX="593.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Button fx:id="create_collections_add_bill_btn" layoutX="593.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
+      <Button fx:id="create_collections_remove_bill_btn" focusTraversable="false" layoutX="593.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleAction" opacity="0.0" prefHeight="28.0" prefWidth="70.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
